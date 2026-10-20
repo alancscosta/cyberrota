@@ -1,0 +1,154 @@
+:root{color-scheme:light;--ink:#f5f6f7;--ink-2:#fff;--ink-3:#eceef0;--line:#e1e3e6;--muted:#646a70;--muted-light:#8a9096;--paper:#f5f6f7;--white:#fff;--mint:#272a2e;--lime:#17191c;--blue:#647b91;--amber:#937447;--red:#985b58;--purple:#75637e;--radius:12px;--shadow:0 5px 18px rgba(28,33,38,.06)}
+*{font-family:Inter,"Segoe UI",Arial,sans-serif!important;letter-spacing:normal!important}
+html,body{background:#f5f6f7;color:#202327}
+body{-webkit-font-smoothing:antialiased;font-size:14px}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:#45494e}
+.sidebar,.topbar,.app-footer{background:#fff;color:#202327;border-color:#e3e5e7}
+.sidebar{box-shadow:1px 0 0 #eaebed}
+.brand,.profile-button,.profile-copy b,.breadcrumb strong,.nav-item:hover{color:#222529}
+.brand strong{font-weight:700;font-size:19px}
+.brand strong span,.brand-mark i,.brand-mark b{color:#333;background:#333}
+.brand-mark{border-color:#cfd2d5}
+.brand-mark b{box-shadow:-7px -5px 0 -1px #555,7px -5px 0 -1px #555,-7px 5px 0 -1px #555,7px 5px 0 -1px #555}
+.side-label,.brand small,.breadcrumb,.app-footer,.profile-copy small{color:#777d83}
+.nav-item{color:#62686e}
+.nav-item:hover{background:#f3f4f5}
+.nav-item.active{background:#eceef0;color:#202327}
+.nav-icon,.nav-item.active .nav-icon{color:#555b61}
+.nav-count{background:#f0f1f2;color:#555b61}
+.sync-card{background:#f7f8f9;border-color:#e4e6e8}
+.sync-dot,.online-pill i{background:#5d806a;box-shadow:none}
+.sync-card b,.sync-card small,.sync-check,.avatar,.profile-more{color:#555d64}
+.avatar{background:#f0f1f2;border-color:#dadde0}
+.topbar{backdrop-filter:none}
+#app{color:#25282c}
+.page-head h1,.hero h1,.section-title h2,.mission-panel h3,.mode-card h3,.dock-top h1,.modal-head h2,.game-card h2,.feedback-title,.empty-state h2{font-family:Inter,"Segoe UI",Arial,sans-serif;font-weight:650;letter-spacing:-.025em!important;color:#202327}
+.page-head p,.hero p,.section-title p,.mode-card p,.topic-name,.inline-help,.field-hint,.empty-state p{color:#666d73}
+.eyebrow,.hero-kicker,.side-label,.breadcrumb,.online-pill,.metric-copy small,.app-footer,.art-label,.world-title,.world-footer,.hud-brand small,.dock-top>div>small,.dock-live,.boss-float-hud small{font-family:Inter,"Segoe UI",Arial,sans-serif!important;font-size:10px;letter-spacing:.035em!important;color:#6c7278}
+.hero,.mission-panel{background:#fff;border:1px solid #e3e5e7;box-shadow:none}
+.hero{min-height:230px;border-radius:14px}
+.hero:before,.hero:after,.mission-panel:after{display:none}
+.hero-kicker,.hero h1 em{color:#34383c}
+.hero-kicker i,.hero-art .orbit:before,.hero-art .orbit:after{background:#858b91;box-shadow:none}
+.hero-art .orbit,.hero-art .orbit.two{border-color:#d7dadd}
+.core-node{background:#f1f2f3;border-color:#d5d8db;box-shadow:none}
+.core-node svg{stroke:#43484d}
+.art-label{color:#767c82}
+.metric-strip,.topic-panel,.panel,.mode-card,.mission-panel,.route-console,.game-card,.side-game-card{background:#fff;border:1px solid #e3e5e7;box-shadow:none}
+.metric-strip{border-radius:12px}
+.metric{border-color:#e7e8ea}
+.metric-icon,.metric:nth-child(2) .metric-icon,.metric:nth-child(3) .metric-icon,.metric:nth-child(4) .metric-icon,.mode-icon,.mode-card:nth-child(n) .mode-icon{color:#4b5055;background:#f1f2f3}
+.metric-copy strong{color:#24282c}
+.mode-card{min-height:168px;transition:border-color .15s,background-color .15s}
+.mode-card:hover,.mode-card.active-recommended{transform:none;background:#fafafa;border-color:#cfd2d5}
+.mode-tag{color:#545a60;background:#f0f1f2}
+.mode-arrow,.text-link,.profile-button:hover .profile-copy b{color:#353a3f}
+.topic-bar{background:#eceef0}
+.mission-panel{position:relative}
+.progress-line{background:#eceef0}
+.progress-line i{background:#454a50}
+.progress-caption,.mission-meta{color:#656b71}
+.btn-primary{background:#25292d;color:#fff;box-shadow:none}
+.btn-primary:hover{background:#111315;transform:none}
+.btn-secondary,.small-action,.btn-quiet{background:#fff;color:#34393e;border-color:#d9dcdf}
+.btn-secondary:hover,.small-action:hover,.btn-quiet:hover{border-color:#969ca2;color:#202327}
+.btn-danger{background:#fff3f2;color:#8f4c48;border-color:#ead2d0}
+.filter-chip,.field input,.field select,.field textarea,.search-input,.form-control,select,input,textarea{background:#fff;color:#292d31;border-color:#d8dbde}
+.filter-chip{color:#5e646a}
+.filter-chip.active{background:#262a2e;color:#fff;border-color:#262a2e}
+.panel h2,.panel h3,.side-game-card h3,.topic-panel h2,.empty-state h2{color:#272b2f}
+.topic-percent,.progress-caption,.table-caption,.card-meta,.deck-card small,.role-tile p{color:#696f75}
+.table-wrap,.card-list,.deck-card,.role-tile,.order-item,.turn-player,.route-stop,.route-icon,.review-toggle{background:#fafafa;color:#40464b;border-color:#e2e4e6}
+.turn-player.active,.route-stop.current,.route-stop.complete{background:#f0f2f3;color:#25292d;border-color:#d9dcdf}
+.route-icon{color:#51575d}
+.route-icon:before,.route-line{background-color:#c9cdd1}
+.alert-box{background:#f7f5ef;color:#5d5545;border-color:#e6dfcf}
+.empty-state{border-color:#d6d9dc;color:#63696f}
+.modal-backdrop{background:rgba(24,27,30,.34);backdrop-filter:none}
+.modal-card{background:#fff;color:#25292d;border:1px solid #e0e2e4;border-radius:14px;box-shadow:0 14px 40px rgba(24,27,30,.14)}
+.modal-head p,.close-button,.field-hint{color:#656b71}
+.close-button{background:#fff;border-color:#dedfe1}
+.segmented{background:#f2f3f4;border-color:#e1e3e5}
+.segmented button{color:#646a70}
+.segmented button.selected{background:#272b2f;color:#fff}
+.option-button,.difficulty-button,.role-button,.order-item button{background:#fff;color:#3d4247;border-color:#dfe1e3;box-shadow:none}
+.option-button:hover,.difficulty-button:hover,.role-button:hover:not(:disabled),.order-item:hover{background:#f5f6f7;border-color:#bfc3c7;color:#25292d}
+.option-button.selected,.difficulty-button.selected{background:#f0f1f2;border-color:#595e63;color:#24282c}
+.question-explain{background:#f4f5f6;color:#40464b;border-color:#e0e2e4}
+.result-banner,.result-banner.loss{background:#f3f4f5;color:#25292d;border-color:#dfe1e3}
+.result-banner p,.feedback-answer{color:#585f65}
+.result-mark{background:#f0f1f2;color:#34393e;border-color:#d9dcdf}
+.toast{background:#25292d;color:#fff;border-color:#25292d;box-shadow:0 5px 18px #0002;animation:none}
+.toast.error{background:#713e3b;color:#fff;border-color:#713e3b}
+
+/* A light control room surrounds the colorful tabletop scene. */
+body.in-game{background:#f1f2f4;color:#22262a}
+body.in-game .game-world{--game-ink:#24282c;--game-muted:#636a70;background:#f0f1f3;color:#24282c}
+body.in-game .game-world:before,body.in-game .game-world:after{display:none}
+.game-hud{background:#fff;border-color:#e1e3e5;backdrop-filter:none}
+.hud-brand b,.hud-center,.hud-exit{color:#282c30}
+.hud-brand small{color:#73797f}
+.hud-sigil{color:#353a3f;background:#f1f2f3;border-color:#d9dcdf}
+.hud-center .round-badge,.round-badge{background:#f0f1f2;color:#555b61;border-color:#e1e3e5}
+.hud-exit{background:#fff;border-color:#dfe1e3}
+.world-stage{background:#f0f1f3}
+.world-title,.world-title>b,.world-footer{color:#575e64}
+.game-control-dock{background:#fff;border-color:#e1e3e5;box-shadow:-8px 0 20px rgba(24,28,32,.035)}
+.dock-top h1,.dock-top>div>small{color:#272b2f}
+.dock-live{color:#4f7159}
+.dock-live i,.hacker-hud i{background:#5e826a;box-shadow:none;animation:none}
+.route-console,.game-control-dock .game-card,.game-control-dock .side-game-card{background:#fff;border-color:#e1e3e5;box-shadow:none}
+.game-control-dock .side-game-card h3,.turn-action>div b,.turn-copy strong{color:#292d31}
+.route-console .turn-banner,.game-control-dock .turn-banner{background:#f5f6f7;color:#30353a}
+.turn-copy small,.turn-action>div small{color:#666d73}
+.server-health,.seal-chip{background:#f6f7f8;border-color:#e0e2e4}
+.server-health small,.seal-chip small{color:#555d63}
+.server-health>b{color:var(--topic)}
+.server-health>i,.co-op-alerts i{background:#e4e6e8}
+.question-area,.question-area h2,.game-control-dock .question-area h2{color:#25292d}
+.question-meta .pill,.pill{background:#f0f1f2;color:#545a60;border-color:#e0e2e4}
+.difficulty-button.easy{--difficulty:#637d69}.difficulty-button.medium{--difficulty:#927447}.difficulty-button.hard{--difficulty:#895652}
+.game-card .game-progress span,.game-progress span{background:#e6e8ea}
+.game-card .game-progress span.done,.game-progress span.done{background:#565c62}
+.turn-token{background:#e7e9eb;color:#32373c}
+.health-bar{background:#e8e9eb}
+.hacker-caption,.hacker-head h3{color:#555c62}
+.role-button:disabled{background:#f5f6f7;color:#777d82;opacity:.7}
+.turn-player.active{background:#f0f1f2;color:#2d3236}
+.game-finished{background:#f0f1f3}
+
+/* Keep the board colorful, with a quieter gray route and low-cost rendering. */
+.board-svg{filter:none}
+.board-platform{filter:none}
+.road-shadow{stroke:#9ea4a9;opacity:.6}
+.road-bed{stroke:#42484e}
+.road-center{stroke:#eceeef;opacity:.9}
+.board-svg #ground stop:nth-child(1){stop-color:#91b8aa}
+.board-svg #ground stop:nth-child(2){stop-color:#aecbbf}
+.board-svg #ground stop:nth-child(3){stop-color:#c4d8c7}
+.board-side{fill:#8c765e;stroke:#b5a18a}
+.tile-face,.tile-spark,.player-pawn,.destination-crown,.landmark,.landmark-router,.landmark-server,.landmark-tower,.board-svg .boss-model{filter:none!important}
+.iso-tile[style*="#e6ad51"] .tile-face{fill:#c4a372;stroke:#ead9b8}
+.tile-fisica .tile-face{fill:#70a89c;stroke:#c3e2d7}
+.tile-rede .tile-face{fill:#748ba9;stroke:#d0dcea}
+.tile-transporte .tile-face{fill:#b09168;stroke:#e8d8bc}
+.tile-aplicacao .tile-face{fill:#93809e;stroke:#dfd4e5}
+.tile-seguranca .tile-face{fill:#b07972;stroke:#e7cfcc}
+.player-pawn text{stroke:#33383d}
+.destination-crown text{fill:#393326}
+.boss-float-hud{background:#fff;border-color:#dfc7c7;box-shadow:0 4px 14px rgba(38,30,30,.09)}
+.boss-float-hud>span,.boss-float-hud small{color:#6b4545}
+.boss-float-hud>i{background:#e8dddd}
+.boss-float-hud>i b{box-shadow:none}
+.boss-model{animation:none!important;filter:drop-shadow(0 5px 3px rgba(26,29,32,.18))!important}
+.boss-aura,.boss-eye{animation:none!important}
+.landmark-router,.player-pawn,.tile-current,.destination-crown,.dock-live i{animation:none!important}
+.cooperative .boss-model{translate:-18px 0;scale:1.06}
+.cooperative .boss-hit{animation:boss-hit-light .38s ease-out 2;filter:none}
+.cooperative .boss-hit .boss-impact{animation:impact-ring .46s ease-out 2;filter:none}
+.cooperative .boss-hit .boss-aura{animation:none;stroke:#fff1b2}
+@keyframes boss-hit-light{0%,100%{translate:-18px 0}30%{translate:-27px 1px}65%{translate:-11px 0}}
+@media(max-width:720px){.cooperative .boss-model{scale:1.02}.cooperative .boss-float-hud{background:#fff}}
+.hero-art .orbit,.hero-art .art-label{display:none}
+.core-node{width:92px;height:92px;border-radius:16px}
+html{scroll-behavior:auto}

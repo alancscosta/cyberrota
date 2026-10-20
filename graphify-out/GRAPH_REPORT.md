@@ -1,7 +1,7 @@
 # Graph Report - cyberrota  (2026-10-20)
 
 ## Corpus Check
-- 9 files · ~4,197 words
+- 9 files · ~4,299 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5b317716`
+- Built from commit: `f6c99a0e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
