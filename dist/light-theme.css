@@ -152,3 +152,15 @@ body.in-game .game-world:before,body.in-game .game-world:after{display:none}
 .hero-art .orbit,.hero-art .art-label{display:none}
 .core-node{width:92px;height:92px;border-radius:16px}
 html{scroll-behavior:auto}
+/* Contrast pass for co-op health and secondary copy on the light surface. */
+.cooperative .boss-float-hud{background:#fff;border:1px solid #d8dadd;box-shadow:0 3px 10px rgba(25,29,33,.08)}
+.cooperative .boss-float-hud>span{color:#33383d;font:700 10px Inter,"Segoe UI",Arial,sans-serif}
+.cooperative .boss-float-hud small{color:#555c62;font:500 9px Inter,"Segoe UI",Arial,sans-serif}
+.cooperative .boss-float-hud>i{background:#e2e4e6}
+.cooperative .boss-float-hud>i b{background:#ad4652;box-shadow:none}
+.game-control-dock .inline-help,.game-control-dock p,.game-control-dock .question-actions small,.game-control-dock .turn-copy small,.game-control-dock .turn-action>div small,.game-control-dock .hacker-caption,.game-control-dock .server-health small,.game-control-dock .seal-chip small,.game-control-dock .role-button,.game-control-dock .turn-player{color:#4c5359}
+.game-control-dock .role-button:disabled{color:#656b71}
+.game-control-dock .question-meta .pill,.game-control-dock .round-clock{color:#454b51}
+.game-control-dock .question-explain{background:#f1f2f3;color:#3d4349;border-color:#dfe1e3}
+.game-control-dock .question-explain strong{color:#25292d}
+.game-control-dock .hacker-health{color:#934b49}
