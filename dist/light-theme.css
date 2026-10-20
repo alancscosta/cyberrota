@@ -1,7 +1,8 @@
 :root{color-scheme:light;--ink:#f5f6f7;--ink-2:#fff;--ink-3:#eceef0;--line:#e1e3e6;--muted:#646a70;--muted-light:#8a9096;--paper:#f5f6f7;--white:#fff;--mint:#272a2e;--lime:#17191c;--blue:#647b91;--amber:#937447;--red:#985b58;--purple:#75637e;--radius:12px;--shadow:0 5px 18px rgba(28,33,38,.06)}
 *{font-family:Inter,"Segoe UI",Arial,sans-serif!important;letter-spacing:normal!important}
 html,body{background:#f5f6f7;color:#202327}
-body{-webkit-font-smoothing:antialiased;font-size:14px}
+body{-webkit-font-smoothing:antialiased;font-size:14px;caret-color:transparent}
+input,textarea,[contenteditable="true"],[contenteditable=""],[contenteditable="plaintext-only"]{caret-color:auto}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:#45494e}
 .sidebar,.topbar,.app-footer{background:#fff;color:#202327;border-color:#e3e5e7}
 .sidebar{box-shadow:1px 0 0 #eaebed}
