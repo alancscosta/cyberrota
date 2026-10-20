@@ -205,3 +205,22 @@ html{scroll-behavior:auto}
 @media(prefers-reduced-motion:reduce){.dice-cube.is-rolling,.round-start,.pawn-move,.feedback-card,.result-mark,.server-hit{animation:none!important}}
 
 .turn-action>.dice-widget{flex:0 0 58px}
+
+/* The die leaves from beneath the board, rolls across the scene, then rests in its tray. */
+.dice-tray{position:absolute;right:clamp(14px,3vw,42px);bottom:61px;z-index:2;width:84px;height:78px;display:grid;place-items:center;align-content:center;gap:5px;border:1px dashed #aeb5bb;border-radius:13px;background:rgba(255,255,255,.54);color:#71777d}
+.dice-tray-mark{width:49px;height:46px;border:1px dashed #b9bec3;border-radius:11px;background:linear-gradient(145deg,#f5f6f7aa,#e3e6e999);box-shadow:inset 0 2px 4px #fff9}
+.dice-tray>small{font-size:7px;font-weight:700;letter-spacing:.055em;color:#777e84;white-space:nowrap}
+.dice-tray-active{border-style:solid;border-color:#c7ccd0;background:rgba(255,255,255,.82);box-shadow:0 5px 15px #24282c12}
+.dice-tray-active .dice-tray-mark{border-style:solid;border-color:#e0e3e6}
+.dice-tray-active>small{color:#454b51}
+.stage-dice{position:absolute;right:13px;bottom:48px;z-index:3;width:62px;height:62px;display:grid;place-items:center;transform-origin:center}
+.stage-dice.throwing{animation:dice-travel 1.15s cubic-bezier(.18,.7,.2,1) both}
+.stage-dice.settled{transform:translate(0,0) scale(1)}
+.stage-dice .dice-perspective{width:58px;height:58px;perspective:270px}
+.stage-dice .dice-cube{width:52px;height:52px;margin:3px}
+.stage-dice .dice-face{width:52px;height:52px;border-radius:10px}
+.stage-dice .face-front{transform:translateZ(26px)}.stage-dice .face-back{transform:rotateY(180deg) translateZ(26px)}.stage-dice .face-right{transform:rotateY(90deg) translateZ(26px)}.stage-dice .face-left{transform:rotateY(-90deg) translateZ(26px)}.stage-dice .face-top{transform:rotateX(90deg) translateZ(26px)}.stage-dice .face-bottom{transform:rotateX(-90deg) translateZ(26px)}
+.stage-dice .dice-pips{padding:8px}.stage-dice .dice-pips i{width:7px;height:7px}
+@keyframes dice-travel{0%{translate:-46vw 45vh;scale:.56;rotate:-35deg;opacity:0}14%{opacity:1}37%{translate:-38vw 35vh;scale:.78;rotate:20deg}62%{translate:-23vw 22vh;scale:.94;rotate:-9deg}82%{translate:-8vw 8vh;scale:1.04;rotate:6deg}94%{translate:2px -4px;scale:.97;rotate:-3deg}100%{translate:0 0;scale:1;rotate:0deg;opacity:1}}
+@media(max-width:720px){.dice-tray{right:9px;bottom:48px;width:70px;height:67px}.dice-tray-mark{width:42px;height:40px}.stage-dice{right:9px;bottom:37px;width:56px;height:56px}.stage-dice .dice-perspective{transform:none}.stage-dice.throwing{animation-name:dice-travel-mobile}@keyframes dice-travel-mobile{0%{translate:-37vw 25vh;scale:.55;rotate:-35deg;opacity:0}14%{opacity:1}40%{translate:-30vw 20vh;scale:.78;rotate:25deg}68%{translate:-17vw 12vh;scale:.95;rotate:-12deg}87%{translate:-5vw 4vh;scale:1.04;rotate:7deg}100%{translate:0 0;scale:1;rotate:0deg;opacity:1}}}
+@media(prefers-reduced-motion:reduce){.stage-dice.throwing{animation:none!important;opacity:1;translate:0 0;scale:1;rotate:0deg}}
