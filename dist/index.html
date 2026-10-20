@@ -8,23 +8,23 @@
   <title>Cyber Rota — Defenda a Rede</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="board.css">
-  <link rel="stylesheet" href="light-theme.css?v=8">
+  <link rel="stylesheet" href="light-theme.css?v=9">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegação principal">
       <a class="brand" href="#inicio" data-page="home" aria-label="Cyber Rota, início">
-        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></span>
-        <span><strong>cyber<span>rota</span></strong><small>DEFENDA A REDE</small></span>
+        <span class="brand-mark" aria-hidden="true"><b>CR</b></span>
+        <span><strong>Cyber Rota</strong><small>Jogo de redes</small></span>
       </a>
-      <div class="side-label">CENTRAL</div>
+      <div class="side-label">Menu</div>
       <nav class="main-nav">
         <button class="nav-item active" data-page="home"><span class="nav-icon">⌂</span> Painel</button>
         <button class="nav-item" data-page="play"><span class="nav-icon">▷</span> Nova partida</button>
         <button class="nav-item" data-page="stats"><span class="nav-icon">◫</span> Meu progresso</button>
         <button class="nav-item" data-page="errors"><span class="nav-icon">↻</span> Caderno de erros <span class="nav-count" id="error-count">0</span></button>
       </nav>
-      <div class="side-label side-label-lower">FERRAMENTAS</div>
+      <div class="side-label side-label-lower">Recursos</div>
       <nav class="main-nav">
         <button class="nav-item" data-page="decks"><span class="nav-icon">▤</span> Baralhos & salas</button>
         <button class="nav-item" data-page="print"><span class="nav-icon">▧</span> Versão impressa</button>
@@ -36,16 +36,16 @@
     </aside>
     <div class="main-column">
       <header class="topbar">
-        <div class="breadcrumb"><span>ÁREA DE TREINAMENTO</span><b>/</b><strong id="page-crumb">Painel</strong></div>
-        <div class="top-actions"><span class="online-pill"><i></i> SISTEMAS OPERACIONAIS</span><button class="icon-button" id="help-button" aria-label="Ajuda" title="Ajuda">?</button><button class="avatar mini-avatar" id="profile-shortcut" aria-label="Perfil">CR</button></div>
+        <div class="breadcrumb"><strong id="page-crumb">Painel</strong></div>
+        <div class="top-actions"><button class="icon-button" id="help-button" aria-label="Ajuda" title="Ajuda">?</button><button class="avatar mini-avatar" id="profile-shortcut" aria-label="Perfil">CR</button></div>
       </header>
       <main id="app" tabindex="-1"></main>
-      <footer class="app-footer"><span>CYBER ROTA <b>•</b> UM JOGO PARA APRENDER REDES</span><span>v0.1 · MODO CONVIDADO</span></footer>
+      <footer class="app-footer"><span>Cyber Rota · Aprenda redes jogando</span><span>Progresso salvo neste dispositivo</span></footer>
     </div>
   </div>
   <div id="modal-root"></div>
   <div id="toast-root" aria-live="polite" aria-atomic="true"></div>
   <script src="game-core.js"></script>
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>
