@@ -260,6 +260,19 @@ body{font-size:15px;-webkit-font-smoothing:antialiased}
 .nav-item{min-height:42px;color:#4e555c;font-size:13px;font-weight:600}
 .nav-item.active{background:#f0f1f2;color:#202428;font-weight:700}
 .nav-icon,.nav-item.active .nav-icon{color:#555c63}
+.icon-library{position:absolute;width:0;height:0;overflow:hidden}
+.ui-icon{display:inline-block;width:18px;height:18px;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+.nav-icon{display:grid;place-items:center;width:20px;height:20px;flex:none;font-size:0}
+.nav-icon .ui-icon{width:18px;height:18px}
+.metric-icon,.mode-icon,.empty-icon,.action-die{display:grid;place-items:center}
+.metric-icon .ui-icon{width:18px;height:18px}
+.mode-icon .ui-icon{width:20px;height:20px}
+.empty-icon .ui-icon{width:23px;height:23px}
+.action-die .ui-icon{width:18px;height:18px}
+.hud-sound .ui-icon{width:16px;height:16px}
+.icon-button .ui-icon{width:17px;height:17px}
+.mission-meta .ui-icon{width:14px;height:14px;margin-right:4px}
+.mode-arrow{display:none!important}
 .breadcrumb{font:650 15px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#30353a;letter-spacing:0!important}
 .breadcrumb strong{font:700 15px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#25292d}
 .topbar{height:64px;box-shadow:none}
