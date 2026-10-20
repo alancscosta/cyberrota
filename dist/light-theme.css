@@ -224,3 +224,22 @@ html{scroll-behavior:auto}
 @keyframes dice-travel{0%{translate:-46vw 45vh;scale:.56;rotate:-35deg;opacity:0}14%{opacity:1}37%{translate:-38vw 35vh;scale:.78;rotate:20deg}62%{translate:-23vw 22vh;scale:.94;rotate:-9deg}82%{translate:-8vw 8vh;scale:1.04;rotate:6deg}94%{translate:2px -4px;scale:.97;rotate:-3deg}100%{translate:0 0;scale:1;rotate:0deg;opacity:1}}
 @media(max-width:720px){.dice-tray{right:9px;bottom:48px;width:70px;height:67px}.dice-tray-mark{width:42px;height:40px}.stage-dice{right:9px;bottom:37px;width:56px;height:56px}.stage-dice .dice-perspective{transform:none}.stage-dice.throwing{animation-name:dice-travel-mobile}@keyframes dice-travel-mobile{0%{translate:-37vw 25vh;scale:.55;rotate:-35deg;opacity:0}14%{opacity:1}40%{translate:-30vw 20vh;scale:.78;rotate:25deg}68%{translate:-17vw 12vh;scale:.95;rotate:-12deg}87%{translate:-5vw 4vh;scale:1.04;rotate:7deg}100%{translate:0 0;scale:1;rotate:0deg;opacity:1}}}
 @media(prefers-reduced-motion:reduce){.stage-dice.throwing{animation:none!important;opacity:1;translate:0 0;scale:1;rotate:0deg}}
+
+/* Five network disciplines are illustrated with equipment and interface motifs instead of generic buildings. */
+.network-landmarks{pointer-events:none}
+.theme-zone{filter:drop-shadow(0 3px 2px rgba(40,48,53,.18))}
+.zone-platform{stroke-width:1.5;stroke-linejoin:round}
+.zone-side{stroke:#ffffff55;stroke-width:1;stroke-linejoin:round}
+.zone-wifi .zone-platform{fill:#e1f0eb;stroke:#83aaa0}.zone-wifi .zone-side{fill:#b7d4cc}
+.zone-ip .zone-platform{fill:#e3eaf4;stroke:#8299b7}.zone-ip .zone-side{fill:#b8c7dc}
+.zone-transport .zone-platform{fill:#f4ecdc;stroke:#b99c6b}.zone-transport .zone-side{fill:#dfcba5}
+.zone-app .zone-platform{fill:#eee9f2;stroke:#9b8ca5}.zone-app .zone-side{fill:#d2c7d8}
+.zone-security .zone-platform{fill:#f4e5e2;stroke:#b98279}.zone-security .zone-side{fill:#e0beb8}
+.zone-signal{fill:none;stroke:#388c7e;stroke-width:2.5;stroke-linecap:round}
+.zone-cable,.zone-wire{fill:none;stroke:#364f56;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.zone-wire{stroke:#6581a2;stroke-width:2;stroke-dasharray:3 3}
+.zone-caption{fill:#303940;text-anchor:middle;font:700 7px Arial,sans-serif;letter-spacing:.45px}
+.zone-mini{fill:#546982;text-anchor:middle;font:600 5px Arial,sans-serif}
+.packet-arrow{fill:none;stroke:#7d6542;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.protocol-tag{fill:#e8d4a5;stroke:#a98854;stroke-width:1}.protocol-tag.udp{fill:#e0e8f2;stroke:#8195ad}
+.protocol-text{fill:#514831;text-anchor:middle;font:700 7px Arial,sans-serif}.zone-transport .protocol-text:nth-of-type(2){fill:#42556d}
