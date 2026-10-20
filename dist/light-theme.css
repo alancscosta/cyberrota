@@ -164,3 +164,44 @@ html{scroll-behavior:auto}
 .game-control-dock .question-explain{background:#f1f2f3;color:#3d4349;border-color:#dfe1e3}
 .game-control-dock .question-explain strong{color:#25292d}
 .game-control-dock .hacker-health{color:#934b49}
+/* Tabletop action effects: one-shot motion, no ambient animation loops. */
+.game-hud{gap:10px}
+.hud-sound{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 11px;border:1px solid #dfe1e3;border-radius:9px;background:#fff;color:#454b51;font-size:11px;font-weight:600}
+.hud-sound:hover{background:#f2f3f4}
+.hud-sound span{font-size:16px}
+.hud-exit{flex:none}
+.turn-action{gap:11px}
+.turn-action-copy{display:grid;gap:4px;min-width:0;flex:1}
+.turn-action-copy b{font-size:11px;color:#2c3136}
+.turn-action-copy small{font-size:9px;line-height:1.35;color:#60676d}
+.dice-widget{display:grid;justify-items:center;gap:5px;flex:none;width:58px}
+.dice-perspective{width:46px;height:46px;perspective:210px}
+.dice-cube{position:relative;width:40px;height:40px;margin:3px;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-27deg);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.dice-face{position:absolute;inset:0;display:block;width:40px;height:40px;border:1px solid #c9cdd1;border-radius:8px;background:linear-gradient(145deg,#fff,#e9ebed);box-shadow:inset 0 1px 1px #fff,0 2px 3px #25292d18;backface-visibility:hidden}
+.face-front{transform:translateZ(20px)}.face-back{transform:rotateY(180deg) translateZ(20px)}.face-right{transform:rotateY(90deg) translateZ(20px)}.face-left{transform:rotateY(-90deg) translateZ(20px)}.face-top{transform:rotateX(90deg) translateZ(20px)}.face-bottom{transform:rotateX(-90deg) translateZ(20px)}
+.dice-pips{display:grid;width:100%;height:100%;padding:6px;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center}
+.dice-pips i{width:5px;height:5px;border-radius:50%;background:transparent}.dice-pips i.pip{background:#33383d;box-shadow:inset 0 1px 1px #0003}
+.dice-widget>small{font-size:8px;font-weight:650;letter-spacing:.05em;color:#646b71}
+.dice-cube.is-rolling{animation:cube-tumble 1.12s cubic-bezier(.2,.72,.2,1) both}
+.dice-cube.result-1{transform:rotateX(-20deg) rotateY(-27deg)}.dice-cube.result-2{transform:rotateX(68deg) rotateY(-27deg)}.dice-cube.result-3{transform:rotateX(-20deg) rotateY(-117deg)}
+@keyframes cube-tumble{0%{transform:translateY(0) rotateX(-20deg) rotateY(-27deg) rotateZ(0)}24%{transform:translateY(-28px) rotateX(260deg) rotateY(210deg) rotateZ(100deg)}57%{transform:translateY(0) rotateX(590deg) rotateY(510deg) rotateZ(240deg)}78%{transform:translateY(-9px) rotateX(755deg) rotateY(690deg) rotateZ(330deg)}100%{transform:translateY(0) rotateX(1080deg) rotateY(1053deg) rotateZ(720deg)}}
+.round-start{animation:round-arrive .48s ease-out}
+@keyframes round-arrive{0%{transform:scale(.88);background:#25292d;color:#fff}65%{transform:scale(1.06)}100%{transform:scale(1)}}
+.isometric-scene{animation:none}
+.pawn-move{animation:pawn-travel .55s cubic-bezier(.16,.82,.24,1)}
+@keyframes pawn-travel{0%{translate:0 -15px;scale:.72;opacity:.35}62%{translate:0 2px;scale:1.12;opacity:1}100%{translate:0 0;scale:1}}
+.feedback-card{transform-origin:top center}
+.feedback-correct{border-color:#8ba994!important;animation:feedback-correct-in .36s cubic-bezier(.18,.78,.28,1)}
+.feedback-wrong{border-color:#cb9b96!important;animation:feedback-wrong-in .32s ease-out}
+.feedback-correct .result-mark{animation:success-stamp .38s cubic-bezier(.18,.8,.25,1)}
+.feedback-wrong .result-mark{animation:error-nudge .32s ease-out}
+@keyframes feedback-correct-in{0%{opacity:.55;transform:translateY(10px) scale(.97)}70%{transform:translateY(-2px) scale(1.01)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes feedback-wrong-in{0%{transform:translateX(-7px);opacity:.7}35%{transform:translateX(6px)}70%{transform:translateX(-3px)}100%{transform:translateX(0);opacity:1}}
+@keyframes success-stamp{0%{transform:scale(.55) rotate(-10deg)}75%{transform:scale(1.12) rotate(2deg)}100%{transform:scale(1)}}
+@keyframes error-nudge{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg)}70%{transform:rotate(6deg)}}
+.server-hit{animation:server-damage .42s ease-out}
+@keyframes server-damage{0%,100%{transform:translateX(0);background:#f6f7f8}25%{transform:translateX(-3px);background:#f4dfdd}55%{transform:translateX(3px)}80%{transform:translateX(-1px)}}
+@media(max-width:720px){.hud-sound{width:36px;justify-content:center;padding:0;font-size:0}.hud-sound span{font-size:17px}.turn-action{gap:7px}.dice-widget{width:48px}.dice-perspective{transform:scale(.88)}.turn-action .btn{padding:9px 8px;font-size:9px}}
+@media(prefers-reduced-motion:reduce){.dice-cube.is-rolling,.round-start,.pawn-move,.feedback-card,.result-mark,.server-hit{animation:none!important}}
+
+.turn-action>.dice-widget{flex:0 0 58px}
