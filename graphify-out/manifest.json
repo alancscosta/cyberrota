@@ -1,0 +1,56 @@
+{
+  ".openai/hosting.json": {
+    "mtime": 1792510117.6368172,
+    "seen": 1792510226.7446425,
+    "ast_hash": "c9940816ef600414b0db73e009be2856",
+    "semantic_hash": ""
+  },
+  "tests/game-core.test.cjs": {
+    "mtime": 1792509712.3601832,
+    "seen": 1792510226.7446425,
+    "ast_hash": "c6cc62540d5e541c9defdf03a1380f06",
+    "semantic_hash": ""
+  },
+  "PLANO_DESENVOLVIMENTO.md": {
+    "mtime": 1792509642.2338884,
+    "seen": 1792510226.7446425,
+    "ast_hash": "56ea96b32bb81e8cbeaf95a3f69f51ab",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1792509706.19678,
+    "seen": 1792510226.7446425,
+    "ast_hash": "a4bf6a55ed69ec6d8975691e081d2009",
+    "semantic_hash": ""
+  },
+  "docs/print-and-play.md": {
+    "mtime": 1792509642.2290082,
+    "seen": 1792510226.7446425,
+    "ast_hash": "ad86c32ec8a74aaadfc3a167b7d9f4e3",
+    "semantic_hash": ""
+  },
+  "specs/acceptance.md": {
+    "mtime": 1792509642.2280307,
+    "seen": 1792510226.7446425,
+    "ast_hash": "c965d5c27b136cff3e8db693dd48f557",
+    "semantic_hash": ""
+  },
+  "specs/content.md": {
+    "mtime": 1792508706.9698849,
+    "seen": 1792510226.7446425,
+    "ast_hash": "73bd81cc6f45c1b0eef61c98a1727280",
+    "semantic_hash": ""
+  },
+  "specs/game-rules.md": {
+    "mtime": 1792509642.2221756,
+    "seen": 1792510226.7446425,
+    "ast_hash": "63a834c3eda9cf917fecd0c91f6d31bf",
+    "semantic_hash": ""
+  },
+  "specs/rooms-and-decks.md": {
+    "mtime": 1792508706.9698849,
+    "seen": 1792510226.7446425,
+    "ast_hash": "8e02ef6694c85a7c5b028ec9ed7cdec0",
+    "semantic_hash": ""
+  }
+}

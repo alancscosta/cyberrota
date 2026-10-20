@@ -1,6 +1,6 @@
 # Cyber Rota: Defenda a Rede — plano de desenvolvimento
 
-> **Estado:** protótipo web implementado em HTML/CSS/JavaScript sem framework, com três modos locais, 30 cartas padrão, editor e importação/exportação de baralhos, progresso local e prévia Print & Play. Este documento registra decisões e próximos passos do produto; o protótipo não implementa salas online, conta ou sincronização entre dispositivos.
+> **Estado:** protótipo web implementado em HTML/CSS/JavaScript sem framework, com três modos locais, 30 cartas padrão, editor e importação/exportação de baralhos, progresso local e prévia Print & Play. A partida usa uma cena de tabuleiro isométrica em SVG, em tela cheia, com peças e um Hacker animado no modo cooperativo. Este documento registra decisões e próximos passos do produto; o protótipo não implementa salas online, conta ou sincronização entre dispositivos.
 
 **Status:** plano revisado com as decisões fornecidas. As regras abaixo que não vieram da pessoa responsável são propostas de design para validar durante o primeiro protótipo.
 
@@ -97,7 +97,9 @@ Estes valores dão um ponto de partida completo e ajustável após partidas de t
 
 - Definir TypeScript e aplicação web responsiva; escolher framework e serviços após uma prova curta de persistência, acessibilidade e publicação.
 - Separar domínio/regras, baralhos, persistência, interface e autenticação. A UI não duplica lógica do jogo.
-- Criar protótipo visual do mapa, cinco servidores/temas, tela de carta, feedback de resposta e configuração de partida; verificar leitura em celular e pass-and-play.
+- Criar a partida como um tabuleiro virtual em tela cheia: mapa isométrico com relevo e construções de rede, rota de casas destacadas, peças animadas, destino, HUD e painel de ações integrado. A cena deve ocupar a maior área da tela; evitar que a partida pareça um painel de site.
+- No cooperativo, representar o Hacker como personagem em cena com silhueta volumétrica, animação ociosa e reação visível a cada acerto/dano, além de barra de vida sincronizada. Os cinco servidores mantêm indicadores de integridade legíveis no painel.
+- Verificar a escala do tabuleiro, leitura da carta e controles em desktop e celular, incluindo pass-and-play.
 - Usar IndexedDB/local storage para visitante, com migração clara para conta autenticada e sincronização quando disponível.
 - Planejar interface do criador para seleção de baralho padrão/personalizado, pré-visualização e revisão antes da partida.
 
