@@ -25,6 +25,7 @@
 - A interface usa IBM Plex Sans localmente, inclusive no painel Hacker e nos rótulos do SVG; texto de pergunta fica entre 22–26 px conforme o espaço disponível e alternativas têm pelo menos 17 px.
 - Física, Rede, Transporte, Aplicação e Segurança mantêm, respectivamente, verde-água, azul, âmbar, lilás e coral nos racks, casas de checkpoint e indicadores. Piso e percurso permanecem em azul tecnológico.
 - O núcleo da base de defesa, o centro do Hacker e o relé ficam no mesmo eixo vertical do tabuleiro; o marco da base e a casa de início também compartilham o eixo central. A pose e os efeitos de impacto não podem deslocar o Hacker para fora do pedestal.
+- Depois da casa 18, o jogo não oferece outro dado nem anuncia casas inexistentes; cada resposta seguinte é um ataque final direto ao Hacker até ele ser derrotado.
 - Os cinco racks mantêm caixas visuais separadas entre si, sem cobrir os checkpoints da rota, a casa inicial ou a base.
 - O peão e as duas camadas da trilha usam os mesmos 19 pontos, na mesma ordem; nenhum traço atravessa o centro das casas fora do caminho.
 - Nenhuma peça, contorno ou detalhe do Hacker usa azul: corpo em grafite/bordô, placas em vinho escuro e visor vermelho, separado das cores tecnológicas do tabuleiro.

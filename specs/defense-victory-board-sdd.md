@@ -18,6 +18,7 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 - `coop.outcome === 'win'` é a fonte de verdade da derrota do boss e ativa a cena terminal. A animação não altera PV, rounds nem histórico.
 - Os fragmentos são parte da renderização final, não um estado de combate temporário; navegar ou atualizar a tela de resultado não ressuscita o Hacker.
 - O botão de retorno conserva a ação existente `finish-session`.
+- Depois de o peão alcançar a casa 18, a equipe ainda responde às perguntas para concluir o combate, sem rolar novamente nem exibir uma casa 19.
 
 ## Direção visual
 
@@ -35,4 +36,5 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 | Explosão, ejeção e destroços persistentes | `tests/visual-contract.test.cjs` |
 | Pegada compacta e quadrado isométrico | `tests/visual-contract.test.cjs` |
 | Cinco racks e impactos reposicionados em conjunto | `tests/visual-contract.test.cjs` |
+| Sem dado ou casa excedente após a chegada | `tests/visual-contract.test.cjs` |
 | Regras de PV e vitória só no relé | `tests/game-core.test.cjs` |

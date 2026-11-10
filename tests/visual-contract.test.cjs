@@ -87,3 +87,10 @@ test('the Defense table is smaller and its racks and laser impacts share separat
   assert.ok(app.includes('fisica:[190,175],rede:[315,195],transporte:[700,185],aplicacao:[805,220],seguranca:[440,205]'), 'the five server racks have distinct interior positions');
   assert.ok(app.includes('fisica:[232,230],rede:[357,250],transporte:[742,240],aplicacao:[847,275],seguranca:[482,260]'), 'laser impacts match the repositioned rack faces');
 });
+
+test('the final Hacker attacks do not roll beyond the destination', () => {
+  assert.ok(app.includes('atFinish=game.coop.position>=Core.DESTINATION'), 'the final route state is explicit in the co-op turn');
+  assert.ok(app.includes("data-action=\"${roll||atFinish?'coop-ready':'roll'}\""), 'the arrived team answers directly instead of rolling again');
+  assert.ok(app.includes("if(!game.coopRoll&&game.coop.position<Core.DESTINATION)break"), 'the final attack does not require a die value');
+  assert.ok(app.includes('Atacar Hacker'), 'the action tells players they are resolving the final attack');
+});
