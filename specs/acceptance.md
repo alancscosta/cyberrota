@@ -33,6 +33,7 @@
 - Cada parte perdida sai da posição correta do corpo, gira, bate na plataforma e permanece ao redor do pedestal. A explosão dá lugar a fogo e fumaça breves; nada fica animando ou preso depois do efeito.
 - Quando o Hacker recupera vida no Desafio, uma peça que está no chão retorna voando até seu encaixe no corpo, com brilho de reparo; não duplica a placa nem deixa destroços sobrepostos.
 - Salas locais de 1 a 6 participantes avançam uma vez por participante, na ordem configurada, e retornam ao primeiro sem perder jogadores ou duplicar turnos.
+- Em Defenda a Rede, até seis jogadores aparecem visualmente no peão compartilhado e em uma lista de equipe sempre visível, com a pessoa da vez destacada.
 
 ## Derrota final do Hacker e tabuleiro de Defesa — SDD
 
@@ -42,6 +43,8 @@
 - Uma faixa de vitória verde, legível e acessível aparece sobre o tabuleiro com ação para voltar aos modos. A tela final mantém acesso ao resumo e às cartas para revisar.
 - O tabuleiro de Defesa é menor no espaço de jogo e conserva a projeção isométrica de um quadrado, com a rota de 19 casas, circuitos discretos e entrada/chegada alinhadas.
 - Os cinco racks ficam totalmente dentro da plataforma, sem cobrir a rota, a base, casas de cura ou uns aos outros; pontos de impacto do laser correspondem às posições visuais dos racks.
+- A estrada segue a rota de casas no perímetro; os servidores ficam em baias centrais separadas da estrada e da base.
+- Em cada ataque ao Hacker, a armadura cai à frente do corpo em etapas e continua visível no piso depois da animação.
 - Respeitar `prefers-reduced-motion`: nesse caso, mostrar o resultado final e os fragmentos no estado final sem movimentos contínuos.
 
 ### Verificação TDD

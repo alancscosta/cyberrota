@@ -113,6 +113,8 @@ body.in-game .board-coop .boss-model.repairing.armor-stage-3 .armor-forearm-righ
 body.in-game .board-coop .boss-model.repairing.armor-stage-4 .armor-chest { opacity: 0 !important; }
 body.in-game .board-coop .armor-debris-part { opacity: 1; transform-box: fill-box; transform-origin: center; }
 body.in-game .board-coop .armor-fragment { fill: url(#bossMetal); stroke: #ff8590; stroke-width: 4; stroke-linejoin: round; filter: drop-shadow(0 4px 4px #05070fcc); }
+body.in-game .board-coop .armor-debris-part.landed { opacity: 1 !important; animation: none !important; filter: drop-shadow(0 5px 5px #05070fcc); }
+body.in-game .board-coop .armor-debris-part.landed .armor-fragment { filter: drop-shadow(0 5px 5px #05070fcc) drop-shadow(0 0 2px #ff7485); }
 body.in-game .board-coop .antenna-left .armor-fragment,
 body.in-game .board-coop .antenna-right .armor-fragment { fill: none; stroke: #ff5367; stroke-width: 8; }
 body.in-game .board-coop .armor-debris-part.drop-now { animation: armor-fall-from-body 1.05s cubic-bezier(.16,.74,.25,1) both; }
@@ -142,6 +144,22 @@ body.in-game .board-coop .boss-aftermath .fire-flame { fill: #ff4d35; stroke: #f
 body.in-game .board-coop .boss-hit .boss-aftermath .fire-flame { animation: hacker-fire-fade 1.2s ease-out .55s both; }
 @keyframes hacker-smoke-rise { 0% { opacity: 0; transform: translateY(0) scale(.55); } 18% { opacity: .78; } 100% { opacity: 0; transform: translateY(-52px) scale(1.3); } }
 @keyframes hacker-fire-fade { 0% { opacity: 0; transform: translateY(7px) scale(.45); } 20% { opacity: 1; } 62% { opacity: .9; transform: translateY(-7px) scale(1); } 100% { opacity: 0; transform: translateY(-17px) scale(.72); } }
+
+/* The shared route pawn contains all six teammates; the turn chip and roster agree. */
+body.in-game .board-coop .coop-player-token { pointer-events: none; }
+body.in-game .board-coop .coop-player-ring { fill: #071827; fill-opacity: .78; stroke: var(--player-color, #55d8ff); stroke-width: 2.5; opacity: 0; }
+body.in-game .board-coop .coop-player-token.is-current .coop-player-ring { opacity: 1; filter: drop-shadow(0 0 6px var(--player-color, #55d8ff)); }
+body.in-game .board-coop .coop-mini-robot text { fill: #f0fbff; stroke: #102436; stroke-width: 5px; paint-order: stroke; font: 700 22px/1 "IBM Plex Sans", sans-serif; }
+body.in-game .coop-player-roster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 10px; margin: 8px 0 12px; padding: 7px 0; border-block: 1px solid #244158; }
+body.in-game .coop-player-chip { display: flex; min-width: 0; align-items: center; gap: 7px; color: #b4c7d6; font: 500 12px/1.2 "IBM Plex Sans", sans-serif; }
+body.in-game .coop-player-chip-avatar { display: grid; width: 23px; height: 23px; flex: 0 0 23px; place-items: center; border: 1px solid var(--player-color); border-radius: 50%; color: #effaff; background: #0b2032; font: 700 10px/1 "IBM Plex Sans", sans-serif; }
+body.in-game .coop-player-chip.is-current { color: #fff; font-weight: 700; }
+body.in-game .coop-player-chip.is-current .coop-player-chip-avatar { color: #06131f; background: var(--player-color); box-shadow: 0 0 0 3px #102b40; }
+@media (max-width: 760px) {
+  body.in-game .coop-player-roster { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px 6px; margin: 6px 0 8px; }
+  body.in-game .coop-player-chip { gap: 4px; font-size: 10px; }
+  body.in-game .coop-player-chip-avatar { width: 20px; height: 20px; flex-basis: 20px; font-size: 9px; }
+}
 @media (prefers-reduced-motion: reduce) {
   body.in-game .board-coop .armor-debris-part.drop-now { animation: none; opacity: 1; }
   body.in-game .board-coop .armor-debris-part.return-now { animation: none; opacity: 0; }

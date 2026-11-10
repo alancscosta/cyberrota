@@ -20,6 +20,9 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 - O botão de retorno conserva a ação existente `finish-session`.
 - Depois de o peão alcançar a casa 18, a equipe ainda responde às perguntas para concluir o combate, sem rolar novamente nem exibir uma casa 19.
 - Cada acerto avança uma etapa visível de avaria; fumaça começa a persistir após o primeiro golpe e fogo aparece após golpes seguintes, permanecendo até a derrota.
+- Em cada ataque, as partes destacadas da armadura ficam acima do corpo durante a queda e continuam visíveis no piso do relé depois que a animação termina.
+- Em Defenda a Rede, os seis participantes aparecem como robôs individuais agrupados no peão compartilhado e em uma lista visível com destaque para a pessoa da vez.
+- A pista ocupa o perímetro da rota; os cinco servidores ficam em baias centrais separadas da estrada e da base, e os alvos laser coincidem com as faces dos racks.
 - No fim, o Hacker se desmonta em peças grandes e reconhecíveis do próprio robô (cabeça, tronco, braços e pernas), que caem com gravidade e ficam perto do relé. Não usar estilhaços genéricos em forma de cubo ou uma dispersão radial de confetes.
 
 ## Direção visual
@@ -37,7 +40,9 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 | Vitória mantém o mapa e apresenta resultado verde | `tests/visual-contract.test.cjs` |
 | Explosão, ejeção e destroços persistentes | `tests/visual-contract.test.cjs` |
 | Dano progressivo mantém fumaça, fogo e desmonte acumulado | `tests/visual-contract.test.cjs` |
+| Placas caem na frente do Hacker e continuam no piso | `tests/visual-contract.test.cjs` |
+| Seis avatares e lista de participantes permanecem visíveis | `tests/visual-contract.test.cjs` |
 | Pegada compacta e quadrado isométrico | `tests/visual-contract.test.cjs` |
-| Cinco racks e impactos reposicionados em conjunto | `tests/visual-contract.test.cjs` |
+| Cinco racks fora da pista e impactos reposicionados em conjunto | `tests/visual-contract.test.cjs` |
 | Sem dado ou casa excedente após a chegada | `tests/visual-contract.test.cjs` |
 | Regras de PV e vitória só no relé | `tests/game-core.test.cjs` |

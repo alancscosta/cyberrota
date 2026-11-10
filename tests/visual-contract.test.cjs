@@ -40,6 +40,25 @@ test('Hacker damage accumulates persistent smoke, fire, and structural cracks', 
   assert.ok(hackerCss.includes('.boss-structural-crack'), 'the chassis gains persistent visible fractures');
 });
 
+test('each armor stage renders its fragments in front of the Hacker until they land', () => {
+  const robot = app.indexOf('${renderBossModel()}');
+  const fragments = app.indexOf('${renderArmorDebris(bossDefeated?5:armorStage');
+  assert.ok(robot >= 0 && fragments > robot, 'detached armor is layered in front of the robot instead of being hidden behind it');
+  assert.ok(app.includes("group:1,name:'back-left'") && app.includes("group:2,name:'antenna-left'") && app.includes("group:3,name:'shoulder-left'") && app.includes("group:4,name:'forearm-left'") && app.includes("group:5,name:'chest'"), 'five distinct hits detach armor in visible stages');
+  assert.ok(hackerCss.includes('.armor-debris-part.landed'), 'fallen armor remains visible on the relay deck after its animation');
+});
+
+test('the co-op board shows every player token and a persistent turn roster', () => {
+  assert.ok(app.includes('function renderCoopPlayerRoster()'), 'the full team has a dedicated always-visible roster');
+  assert.ok(app.includes("class=\"coop-player-chip '+(index===game.coop.currentPlayer?'is-current':'')+'\""), 'the active player is highlighted among all names');
+  assert.ok(app.includes("class=\"coop-player-token '+(active?'is-current':'')+'\""), 'all six players are individually represented on the shared route pawn');
+  assert.ok(app.includes('game.coop.players.map((player,index)=>'), 'the roster and board tokens derive from the full room roster');
+});
+
+test('restored co-op saves derive armor damage stages from their recorded hits', () => {
+  assert.ok(app.includes("restored.coop.armorStage=Math.max(Number(restored.coop.armorStage)||0,restored.coop.log.filter((event)=>event.outcome==='correct').length)"), 'older saved games restore missing armor stages from the combat log');
+});
+
 test('damage visor uses two separated eye slits rather than a connecting line', () => {
   assert.ok(app.includes('<path class="boss-eye" d="M-14-30v7m28-7v7"'), 'the eyes are two separate vertical slits');
   assert.ok(app.includes('class="evil-brow"'), 'the visor has inward slanted villain brows');
@@ -67,7 +86,7 @@ test('the five sector checkpoints retain their own palette accents', () => {
 });
 
 test('the Defense board keeps a clear square footprint, classic traces, and aligned base', () => {
-  assert.ok(app.includes('fisica:[190,175],rede:[315,195],transporte:[700,185],aplicacao:[805,220],seguranca:[440,205]'), 'all racks sit inside the board away from the robot and base');
+  assert.ok(app.includes('fisica:[270,190],rede:[475,190],transporte:[335,270],aplicacao:[650,190],seguranca:[615,270]'), 'all racks sit in separated interior bays away from the route and base');
   assert.ok(app.includes('const coopPath=[[95,280],[160,318],[225,356],[290,394],[355,432],[428,478],[500,515],[572,478],[645,432],[710,394],[775,356],[840,318],[905,280],[840,242],[775,204],[710,166],[645,128],[575,90],[500,128]];'), 'the 19 walkable spaces follow the board perimeter');
   assert.equal((app.match(/d="M\$\{coopPathD\}"/g) || []).length, 2, 'the road edge and dashes use the same route points');
   assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the isometric square keeps a clear gap below the external robot platform');
@@ -99,12 +118,13 @@ test('the co-op victory keeps the board and presents a green finish state', () =
 test('the Defense table is smaller and its racks and laser impacts share separated positions', () => {
   assert.ok(app.includes('class="coop-board-layout" transform="translate(500 280) scale(.86) translate(-500 -280)"'), 'the square board is reduced as a single aligned composition');
   assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the floor is a clean isometric square');
-  assert.ok(app.includes('fisica:[190,175],rede:[315,195],transporte:[700,185],aplicacao:[805,220],seguranca:[440,205]'), 'the five server racks have distinct interior positions');
-  assert.ok(app.includes('fisica:[232,230],rede:[357,250],transporte:[742,240],aplicacao:[847,275],seguranca:[482,260]'), 'laser impacts match the repositioned rack faces');
+  assert.ok(app.includes('fisica:[270,190],rede:[475,190],transporte:[335,270],aplicacao:[650,190],seguranca:[615,270]'), 'the five server racks occupy distinct interior bays away from the road');
+  assert.ok(app.includes('fisica:[313,252],rede:[518,252],transporte:[378,332],aplicacao:[693,252],seguranca:[658,332]'), 'laser impacts align with the repositioned racks');
+  assert.ok(app.includes('function coopPosition()'), 'route rendering clamps missing or invalid positions instead of showing NaN');
 });
 
 test('the final Hacker attacks do not roll beyond the destination', () => {
-  assert.ok(app.includes('atFinish=game.coop.position>=Core.DESTINATION'), 'the final route state is explicit in the co-op turn');
+  assert.ok(app.includes('atFinish=position>=Core.DESTINATION'), 'the final route state is explicit in the co-op turn');
   assert.ok(app.includes("data-action=\"${roll||atFinish?'coop-ready':'roll'}\""), 'the arrived team answers directly instead of rolling again');
   assert.ok(app.includes("if(!game.coopRoll&&game.coop.position<Core.DESTINATION)break"), 'the final attack does not require a die value');
   assert.ok(app.includes('Atacar Hacker'), 'the action tells players they are resolving the final attack');
