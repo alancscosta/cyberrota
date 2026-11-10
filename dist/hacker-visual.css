@@ -193,13 +193,11 @@ body.in-game .boss-final-explosion { transform-box: fill-box; transform-origin: 
 body.in-game .final-blast-core { fill: #fff2bd; filter: drop-shadow(0 0 18px #ff7b37); }
 body.in-game .final-blast-ring { fill: none; stroke: #ff6242; stroke-width: 13; filter: drop-shadow(0 0 12px #ff5c35); }
 body.in-game .final-blast-burst { fill: #ffb049; stroke: #fff0b0; stroke-width: 5; stroke-linejoin: round; filter: drop-shadow(0 0 17px #ff6338); }
-body.in-game .boss-rubble { pointer-events: none; }
-body.in-game .boss-rubble-part { opacity: 0; transform-box: fill-box; transform-origin: center; animation: boss-rubble-land 1.18s cubic-bezier(.15,.7,.28,1) var(--rubble-delay) both; }
-body.in-game .boss-rubble-part > path:first-child { fill: url(#bossMetal); stroke: #ed6878; stroke-width: 4; stroke-linejoin: round; filter: drop-shadow(0 4px 4px #05070fcc); }
-body.in-game .boss-rubble-part .rubble-edge { fill: none; stroke: #ffb486; stroke-width: 3; stroke-linecap: round; }
-@keyframes boss-final-fade { 0% { opacity: 1; filter: brightness(1); } 18% { opacity: 1; filter: brightness(2.4); } 100% { opacity: 0; filter: brightness(2.4); } }
-@keyframes final-blast-pop { 0% { opacity: 0; transform: scale(.12); } 16% { opacity: 1; transform: scale(1.25); } 56% { opacity: .92; transform: scale(1); } 100% { opacity: 0; transform: scale(1.55); } }
-@keyframes boss-rubble-land { 0% { opacity: 0; transform: translate(0,-15px) rotate(0) scale(.25); } 12% { opacity: 1; } 54% { transform: translate(var(--rubble-x),calc(var(--rubble-y) - 20px)) rotate(var(--rubble-r)) scale(1.08); } 68% { transform: translate(var(--rubble-x),calc(var(--rubble-y) + 4px)) rotate(var(--rubble-r)) scale(.96); } 82%,100% { opacity: 1; transform: translate(var(--rubble-x),var(--rubble-y)) rotate(var(--rubble-r)) scale(1); } }
+body.in-game .boss-final-pieces { pointer-events: none; }
+body.in-game .boss-final-part { opacity: 0; transform-box: fill-box; transform-origin: center; animation: boss-final-part-fall .95s cubic-bezier(.22,.72,.3,1) var(--part-delay) both; }
+body.in-game .boss-final-part-shape { filter: drop-shadow(0 5px 5px #05070fcc); }
+body.in-game .boss-final-part-shape path { stroke-linejoin: round; }
+@keyframes boss-final-part-fall { 0% { opacity: 0; transform: translate(var(--part-sx),var(--part-sy)) rotate(0); } 14% { opacity: 1; } 54% { transform: translate(var(--part-x),calc(var(--part-y) - 24px)) rotate(calc(var(--part-angle) * .65)); } 69% { transform: translate(var(--part-x),calc(var(--part-y) + 4px)) rotate(var(--part-angle)); } 82%,100% { opacity: 1; transform: translate(var(--part-x),var(--part-y)) rotate(var(--part-angle)); } }
 @keyframes victory-arrive { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 @media (max-width: 760px) {
   body.in-game .victory-layout { min-height: 0; display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding: 8px; }
@@ -212,8 +210,26 @@ body.in-game .boss-rubble-part .rubble-edge { fill: none; stroke: #ffb486; strok
   body.in-game .victory-summary { width: 100%; max-height: none; padding: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  body.in-game .cooperative-victory *, body.in-game .boss-rubble-part, body.in-game .boss-final-explosion { animation: none !important; }
-  body.in-game .boss-rubble-part { opacity: 1; transform: translate(var(--rubble-x),var(--rubble-y)) rotate(var(--rubble-r)) scale(1); }
+  body.in-game .cooperative-victory *, body.in-game .boss-final-part, body.in-game .boss-final-explosion { animation: none !important; }
+  body.in-game .boss-final-part { opacity: 1; transform: translate(var(--part-x),var(--part-y)) rotate(var(--part-angle)); }
   body.in-game .boss-final-explosion { opacity: 0 !important; }
   body.in-game .boss-model.boss-defeated { opacity: 0 !important; }
+}
+
+/* Damage carries between rounds: the Hacker keeps smoking, burning and cracked. */
+body.in-game .boss-damage-fx { pointer-events: none; }
+body.in-game .boss-damage-smoke .smoke-wisp { fill: none; stroke: #727881; stroke-width: 9; stroke-linecap: round; opacity: .62; filter: drop-shadow(0 0 7px #22252c); animation: boss-smolder 2.8s ease-in-out infinite; }
+body.in-game .boss-damage-smoke .smoke-two { stroke: #a0a2a1; stroke-width: 5; animation-delay: .55s; }
+body.in-game .boss-damage-fire .damage-flame { fill: #ff542e; stroke: #ffc064; stroke-width: 2.5; opacity: .85; filter: drop-shadow(0 0 10px #ff4c2f); transform-box: fill-box; transform-origin: center bottom; animation: boss-fire-stutter .24s steps(2,end) infinite alternate; }
+body.in-game .boss-damage-fire .flame-right { animation-delay: .11s; }
+body.in-game .boss-structural-crack path { fill: none; stroke: #ffb34e; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 5px #f45442); }
+body.in-game .boss-structural-crack .crack-spark { stroke: #fff0ae; stroke-width: 3; }
+body.in-game .boss-core-leak { fill: #ff7640; stroke: #ffe19b; stroke-width: 3; filter: drop-shadow(0 0 12px #ff3a26); animation: boss-core-leak 1.05s ease-in-out infinite alternate; }
+@keyframes boss-smolder { 0%,100% { opacity: .28; transform: translateY(3px) scale(.86); } 48% { opacity: .92; transform: translateY(-11px) scale(1.12); } }
+@keyframes boss-fire-stutter { from { opacity: .66; transform: scale(.88, .82); } to { opacity: 1; transform: scale(1.08, 1.16); } }
+@keyframes boss-core-leak { from { opacity: .5; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  body.in-game .boss-damage-smoke .smoke-wisp, body.in-game .boss-damage-fire .damage-flame, body.in-game .boss-core-leak { animation: none !important; }
+  body.in-game .boss-damage-smoke .smoke-wisp { opacity: .75; }
+  body.in-game .boss-damage-fire .damage-flame, body.in-game .boss-core-leak { opacity: .9; }
 }

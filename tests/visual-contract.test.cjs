@@ -31,6 +31,15 @@ test('a player hit renders short lived smoke and flame after the blast', () => {
   assert.ok(hackerCss.includes('hacker-fire-fade 1.2s ease-out .55s both'));
 });
 
+test('Hacker damage accumulates persistent smoke, fire, and structural cracks', () => {
+  assert.ok(app.includes('bossDamageCount>=1?renderBossDamageFX(bossDamageCount):\'\''), 'the damaged state is derived from cumulative hits');
+  assert.ok(app.includes('function renderBossDamageFX(count)'), 'persistent damage effects have a dedicated renderer');
+  assert.ok(app.includes('damage-level-${level}') && app.includes('level>=2?'), 'smoke persists after the first hit and fire unlocks on a later damage stage');
+  assert.ok(hackerCss.includes('.boss-damage-smoke .smoke-wisp'), 'smoke remains attached to the damaged robot');
+  assert.ok(hackerCss.includes('.boss-damage-fire .damage-flame'), 'fire keeps burning on the damaged robot');
+  assert.ok(hackerCss.includes('.boss-structural-crack'), 'the chassis gains persistent visible fractures');
+});
+
 test('damage visor uses two separated eye slits rather than a connecting line', () => {
   assert.ok(app.includes('<path class="boss-eye" d="M-14-30v7m28-7v7"'), 'the eyes are two separate vertical slits');
   assert.ok(app.includes('class="evil-brow"'), 'the visor has inward slanted villain brows');
@@ -74,11 +83,17 @@ test('the co-op victory keeps the board and presents a green finish state', () =
   assert.ok(app.includes('data-action="finish-session"'), 'the victory view can return to the game modes');
   assert.ok(app.includes("${bossDefeated?'boss-defeated ':''}"), 'the Hacker is hidden after the final explosion');
   assert.ok(app.includes('class="boss-final-explosion"'), 'the final blast is rendered on the Hacker');
-  assert.ok(app.includes('class="boss-rubble-part'), 'detached armor remains on the ground after defeat');
+  assert.ok(app.includes('class="boss-final-part ${part.name}"'), 'the final wreck uses recognizable robot assemblies');
+  assert.ok(app.includes("name:'head'"), 'the head is one of the falling parts');
+  assert.ok(app.includes("name:'torso'"), 'the torso is one of the falling parts');
+  assert.ok(app.includes("name:'left-arm'"), 'the arms are separated into falling parts');
+  assert.ok(app.includes("name:'left-leg'"), 'the legs are separated into falling parts');
+  assert.ok(!app.includes('boss-rubble-part'), 'generic small cube shrapnel is not used for the boss');
   assert.ok(hackerCss.includes('.victory-overlay'), 'the victory state uses the game visual system');
   assert.ok(hackerCss.includes('#67e69a'), 'victory uses the established green success color');
   assert.ok(hackerCss.includes('animation: boss-final-fade .72s ease-out both !important'), 'the final destruction overrides legacy robot idle styles');
   assert.ok(hackerCss.includes('body.in-game .boss-model.boss-defeated { opacity: 0 !important; }'), 'reduced motion still leaves the final defeated pose');
+  assert.ok(hackerCss.includes('boss-final-part-fall'), 'large robot parts fall and settle instead of bursting radially');
 });
 
 test('the Defense table is smaller and its racks and laser impacts share separated positions', () => {

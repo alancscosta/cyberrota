@@ -19,6 +19,8 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 - Os fragmentos são parte da renderização final, não um estado de combate temporário; navegar ou atualizar a tela de resultado não ressuscita o Hacker.
 - O botão de retorno conserva a ação existente `finish-session`.
 - Depois de o peão alcançar a casa 18, a equipe ainda responde às perguntas para concluir o combate, sem rolar novamente nem exibir uma casa 19.
+- Cada acerto avança uma etapa visível de avaria; fumaça começa a persistir após o primeiro golpe e fogo aparece após golpes seguintes, permanecendo até a derrota.
+- No fim, o Hacker se desmonta em peças grandes e reconhecíveis do próprio robô (cabeça, tronco, braços e pernas), que caem com gravidade e ficam perto do relé. Não usar estilhaços genéricos em forma de cubo ou uma dispersão radial de confetes.
 
 ## Direção visual
 
@@ -34,6 +36,7 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 |---|---|
 | Vitória mantém o mapa e apresenta resultado verde | `tests/visual-contract.test.cjs` |
 | Explosão, ejeção e destroços persistentes | `tests/visual-contract.test.cjs` |
+| Dano progressivo mantém fumaça, fogo e desmonte acumulado | `tests/visual-contract.test.cjs` |
 | Pegada compacta e quadrado isométrico | `tests/visual-contract.test.cjs` |
 | Cinco racks e impactos reposicionados em conjunto | `tests/visual-contract.test.cjs` |
 | Sem dado ou casa excedente após a chegada | `tests/visual-contract.test.cjs` |
