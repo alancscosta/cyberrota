@@ -32,3 +32,18 @@
 - Cada parte perdida sai da posição correta do corpo, gira, bate na plataforma e permanece ao redor do pedestal. A explosão dá lugar a fogo e fumaça breves; nada fica animando ou preso depois do efeito.
 - Quando o Hacker recupera vida no Desafio, uma peça que está no chão retorna voando até seu encaixe no corpo, com brilho de reparo; não duplica a placa nem deixa destroços sobrepostos.
 - Salas locais de 1 a 6 participantes avançam uma vez por participante, na ordem configurada, e retornam ao primeiro sem perder jogadores ou duplicar turnos.
+
+## Derrota final do Hacker e tabuleiro de Defesa — SDD
+
+- Ao zerar os PV do Hacker na chegada, a partida mantém o tabuleiro visível e inicia uma explosão final localizada no corpo do boss.
+- A animação final ejeta placas e antenas; os fragmentos caem e ficam ao redor do sinal externo. O corpo não permanece sobre a plataforma nem volta a aparecer após a animação.
+- Uma faixa de vitória verde, legível e acessível aparece sobre o tabuleiro com ação para voltar aos modos. A tela final mantém acesso ao resumo e às cartas para revisar.
+- O tabuleiro de Defesa é menor no espaço de jogo e conserva a projeção isométrica de um quadrado, com a rota de 19 casas, circuitos discretos e entrada/chegada alinhadas.
+- Os cinco racks ficam totalmente dentro da plataforma, sem cobrir a rota, a base, casas de cura ou uns aos outros; pontos de impacto do laser correspondem às posições visuais dos racks.
+- Respeitar `prefers-reduced-motion`: nesse caso, mostrar o resultado final e os fragmentos no estado final sem movimentos contínuos.
+
+### Verificação TDD
+
+- Teste de contrato da UI verifica estado final do Hacker, explosão e fragmentos persistentes, vitória verde e ação de retorno.
+- Teste de contrato do tabuleiro verifica a pegada menor em forma de quadrado isométrico, separação dos cinco racks e alinhamento dos alvos de impacto.
+- Testes existentes de regra preservam a condição de derrota somente após a chegada e a transição de PV para zero.

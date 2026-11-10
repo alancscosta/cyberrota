@@ -58,12 +58,32 @@ test('the five sector checkpoints retain their own palette accents', () => {
 });
 
 test('the Defense board keeps a clear square footprint, classic traces, and aligned base', () => {
-  assert.ok(app.includes('fisica:[260,175],rede:[345,100],transporte:[515,200],aplicacao:[600,285],seguranca:[350,235]'), 'all racks sit inside the board away from the robot and base');
+  assert.ok(app.includes('fisica:[190,175],rede:[315,195],transporte:[700,185],aplicacao:[805,220],seguranca:[440,205]'), 'all racks sit inside the board away from the robot and base');
   assert.ok(app.includes('const coopPath=[[95,280],[160,318],[225,356],[290,394],[355,432],[428,478],[500,515],[572,478],[645,432],[710,394],[775,356],[840,318],[905,280],[840,242],[775,204],[710,166],[645,128],[575,90],[500,128]];'), 'the 19 walkable spaces follow the board perimeter');
   assert.equal((app.match(/d="M\$\{coopPathD\}"/g) || []).length, 2, 'the road edge and dashes use the same route points');
-  assert.ok(app.includes('M420 42 580 42 940 280 500 560 60 280Z'), 'the board edge leaves a clear gap below the external robot platform');
+  assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the isometric square keeps a clear gap below the external robot platform');
   assert.ok(app.includes('M500 75 850 280 500 485 150 280Z') && app.includes('M500 108 786 280 500 451 214 280Z'), 'the earlier subtle circuit traces are restored');
   assert.ok(app.includes('class="defense-hub" transform="translate(500 370)"'), 'the base remains centered on the board');
   assert.ok(app.includes('class="hub-totem" transform="translate(0 -14)"'), 'the defense totem sits higher on its platform');
   assert.ok(app.includes('class="hub-entry-link" d="M500 457V500"'), 'the centered link joins the base to the starting space');
+});
+
+test('the co-op victory keeps the board and presents a green finish state', () => {
+  assert.ok(app.includes('function renderCoopVictory()'), 'co-op victory has a dedicated board-preserving scene');
+  assert.ok(app.includes('class="victory-overlay"'), 'the final win state has a visible overlay');
+  assert.ok(app.includes('data-action="finish-session"'), 'the victory view can return to the game modes');
+  assert.ok(app.includes("${bossDefeated?'boss-defeated ':''}"), 'the Hacker is hidden after the final explosion');
+  assert.ok(app.includes('class="boss-final-explosion"'), 'the final blast is rendered on the Hacker');
+  assert.ok(app.includes('class="boss-rubble-part'), 'detached armor remains on the ground after defeat');
+  assert.ok(hackerCss.includes('.victory-overlay'), 'the victory state uses the game visual system');
+  assert.ok(hackerCss.includes('#67e69a'), 'victory uses the established green success color');
+  assert.ok(hackerCss.includes('animation: boss-final-fade .72s ease-out both !important'), 'the final destruction overrides legacy robot idle styles');
+  assert.ok(hackerCss.includes('body.in-game .boss-model.boss-defeated { opacity: 0 !important; }'), 'reduced motion still leaves the final defeated pose');
+});
+
+test('the Defense table is smaller and its racks and laser impacts share separated positions', () => {
+  assert.ok(app.includes('class="coop-board-layout" transform="translate(500 280) scale(.86) translate(-500 -280)"'), 'the square board is reduced as a single aligned composition');
+  assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the floor is a clean isometric square');
+  assert.ok(app.includes('fisica:[190,175],rede:[315,195],transporte:[700,185],aplicacao:[805,220],seguranca:[440,205]'), 'the five server racks have distinct interior positions');
+  assert.ok(app.includes('fisica:[232,230],rede:[357,250],transporte:[742,240],aplicacao:[847,275],seguranca:[482,260]'), 'laser impacts match the repositioned rack faces');
 });

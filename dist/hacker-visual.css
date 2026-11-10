@@ -149,3 +149,71 @@ body.in-game .board-coop .boss-hit .boss-aftermath .fire-flame { animation: hack
   body.in-game .board-coop .boss-aftermath .fire-flame { animation: none; opacity: .55; }
   body.in-game .board-coop .armor-repair-vfx { animation: none; }
 }
+
+/* Co-op end state: the battlefield stays visible while the final blast resolves. */
+body.in-game .game-world.cooperative-victory {
+  height: 100dvh;
+  overflow: auto;
+  background: radial-gradient(ellipse at 34% 48%, #172d32 0, #0d1b23 52%, #081118 100%);
+}
+body.in-game .cooperative-victory .game-hud { position: sticky; top: 0; z-index: 5; }
+body.in-game .victory-layout {
+  min-height: calc(100dvh - 64px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 310px);
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px 20px;
+}
+body.in-game .victory-stage { position: relative; min-width: 0; min-height: 0; height: min(76svh, 760px); display: grid; place-items: center; overflow: hidden; }
+body.in-game .victory-stage .datacenter-scene { width: 100%; height: 100%; aspect-ratio: auto; }
+body.in-game .victory-stage .board-coop { width: 100%; height: 100%; }
+body.in-game .victory-overlay {
+  position: absolute; left: 16px; top: 16px; z-index: 3;
+  display: flex; align-items: center; gap: 12px;
+  width: min(420px, calc(100% - 32px)); padding: 12px 14px;
+  border: 1px solid rgba(103,230,154,.7); border-radius: 14px;
+  color: #eaffef; background: rgba(9,34,24,.94);
+  box-shadow: 0 10px 32px rgba(0,0,0,.3), 0 0 24px rgba(103,230,154,.16);
+  animation: victory-arrive .42s cubic-bezier(.2,.8,.2,1) both;
+}
+body.in-game .victory-mark { flex: 0 0 34px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: #67e69a; color: #082117; font-size: 21px; font-weight: 800; }
+body.in-game .victory-overlay small { color: #83f0ae; font: 700 9px "IBM Plex Sans",sans-serif; letter-spacing: .12em; }
+body.in-game .victory-overlay h1 { margin: 2px 0 0; color: #f0fff4; font: 700 19px "IBM Plex Sans",sans-serif; }
+body.in-game .victory-return { margin-left: auto; min-height: 38px; padding: 0 12px; border: 1px solid rgba(103,230,154,.45); border-radius: 9px; color: #eaffef; background: #16472e; font: 600 12px "IBM Plex Sans",sans-serif; cursor: pointer; }
+body.in-game .victory-return:hover { background: #1c603b; }
+body.in-game .victory-summary { align-self: center; max-height: min(70svh, 680px); overflow: auto; padding: 16px; border: 1px solid rgba(190,224,215,.16); border-radius: 14px; background: rgba(9,20,27,.86); }
+body.in-game .victory-stats { display: grid; gap: 10px; color: #a9beb4; font: 13px "IBM Plex Sans",sans-serif; }
+body.in-game .victory-stats b { color: #7feaa5; font-size: 17px; }
+body.in-game .victory-errors { margin-top: 18px; }
+body.in-game .victory-errors h2 { margin: 0 0 10px; color: #e7f0ec; font: 600 15px "IBM Plex Sans",sans-serif; }
+body.in-game .victory-clean { color: #a9beb4; font: 13px/1.5 "IBM Plex Sans",sans-serif; }
+body.in-game .boss-model.boss-defeated { animation: boss-final-fade .72s ease-out both !important; }
+body.in-game .boss-final-explosion { transform-box: fill-box; transform-origin: center; animation: final-blast-pop .78s cubic-bezier(.15,.68,.3,1) both; }
+body.in-game .final-blast-core { fill: #fff2bd; filter: drop-shadow(0 0 18px #ff7b37); }
+body.in-game .final-blast-ring { fill: none; stroke: #ff6242; stroke-width: 13; filter: drop-shadow(0 0 12px #ff5c35); }
+body.in-game .final-blast-burst { fill: #ffb049; stroke: #fff0b0; stroke-width: 5; stroke-linejoin: round; filter: drop-shadow(0 0 17px #ff6338); }
+body.in-game .boss-rubble { pointer-events: none; }
+body.in-game .boss-rubble-part { opacity: 0; transform-box: fill-box; transform-origin: center; animation: boss-rubble-land 1.18s cubic-bezier(.15,.7,.28,1) var(--rubble-delay) both; }
+body.in-game .boss-rubble-part > path:first-child { fill: url(#bossMetal); stroke: #ed6878; stroke-width: 4; stroke-linejoin: round; filter: drop-shadow(0 4px 4px #05070fcc); }
+body.in-game .boss-rubble-part .rubble-edge { fill: none; stroke: #ffb486; stroke-width: 3; stroke-linecap: round; }
+@keyframes boss-final-fade { 0% { opacity: 1; filter: brightness(1); } 18% { opacity: 1; filter: brightness(2.4); } 100% { opacity: 0; filter: brightness(2.4); } }
+@keyframes final-blast-pop { 0% { opacity: 0; transform: scale(.12); } 16% { opacity: 1; transform: scale(1.25); } 56% { opacity: .92; transform: scale(1); } 100% { opacity: 0; transform: scale(1.55); } }
+@keyframes boss-rubble-land { 0% { opacity: 0; transform: translate(0,-15px) rotate(0) scale(.25); } 12% { opacity: 1; } 54% { transform: translate(var(--rubble-x),calc(var(--rubble-y) - 20px)) rotate(var(--rubble-r)) scale(1.08); } 68% { transform: translate(var(--rubble-x),calc(var(--rubble-y) + 4px)) rotate(var(--rubble-r)) scale(.96); } 82%,100% { opacity: 1; transform: translate(var(--rubble-x),var(--rubble-y)) rotate(var(--rubble-r)) scale(1); } }
+@keyframes victory-arrive { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 760px) {
+  body.in-game .victory-layout { min-height: 0; display: flex; flex-direction: column; align-items: stretch; gap: 8px; padding: 8px; }
+  body.in-game .victory-stage { height: 55svh; min-height: 300px; flex: 0 0 auto; }
+  body.in-game .victory-overlay { left: 8px; top: 8px; width: calc(100% - 16px); gap: 8px; padding: 9px; }
+  body.in-game .victory-mark { width: 29px; height: 29px; flex-basis: 29px; font-size: 18px; }
+  body.in-game .victory-overlay h1 { font-size: 15px; }
+  body.in-game .victory-overlay small { font-size: 8px; }
+  body.in-game .victory-return { min-height: 34px; padding: 0 9px; font-size: 11px; }
+  body.in-game .victory-summary { width: 100%; max-height: none; padding: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.in-game .cooperative-victory *, body.in-game .boss-rubble-part, body.in-game .boss-final-explosion { animation: none !important; }
+  body.in-game .boss-rubble-part { opacity: 1; transform: translate(var(--rubble-x),var(--rubble-y)) rotate(var(--rubble-r)) scale(1); }
+  body.in-game .boss-final-explosion { opacity: 0 !important; }
+  body.in-game .boss-model.boss-defeated { opacity: 0 !important; }
+}
