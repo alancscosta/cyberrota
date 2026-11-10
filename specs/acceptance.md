@@ -57,3 +57,7 @@
 - Teste de contrato da UI verifica estado final do Hacker, explosão e fragmentos persistentes, vitória verde e ação de retorno.
 - Teste de contrato do tabuleiro verifica a pegada menor em forma de quadrado isométrico, separação dos cinco racks e alinhamento dos alvos de impacto.
 - Testes existentes de regra preservam a condição de derrota somente após a chegada e a transição de PV para zero.
+
+- A equipe pode identificar visualmente cada participante: os seis pinos têm silhuetas de peça distintas e a mesma cor do seletor aparece na lista da equipe e nos peões do tabuleiro.
+- Os cinco servidores ocupam baias internas, fora das 19 casas da trilha; a base não cobre casas e nenhum cabo atravessa a rota até o início.
+- “SUA VEZ” e a vitória aparecem em avisos grandes no centro da jogatina, com contraste alto, fade breve e sem cobrir os controles depois de desaparecerem.

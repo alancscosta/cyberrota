@@ -51,3 +51,19 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 | Cinco racks fora da pista e impactos reposicionados em conjunto | `tests/visual-contract.test.cjs` |
 | Sem dado ou casa excedente após a chegada | `tests/visual-contract.test.cjs` |
 | Regras de PV e vitória só no relé | `tests/game-core.test.cjs` |
+
+
+## Avatares e leitura imediata da partida — SDD
+
+- A seleção de sala apresenta seis peças de tabuleiro, cada qual ligada a uma cor única. A peça conserva a mesma silhueta e cor no seletor, no elenco lateral e no tabuleiro.
+- Cores já atribuídas ficam desabilitadas para outros participantes. A validação do início também rejeita cor repetida ou índice inválido.
+- A equipe aparece como pinos individuais agrupados dentro da casa atual; o nome fica na lista lateral para evitar etiquetas minúsculas amontoadas sobre as peças.
+- Os servidores são organizados em baias interiores separadas da trilha. A base e qualquer cabo não cruzam a estrada nem cobrem a casa de início.
+- “SUA VEZ” e vitória usam cartões grandes, centrais e com alto contraste. O turno desaparece em fade; a vitória mantém o botão de retorno acessível.
+
+### Testes TDD
+
+- Contrato visual cobre seis silhuetas, correspondência de cor, retratos da equipe e pinos dimensionados dentro da casa.
+- Contrato da sala cobre bloqueio das cores ocupadas e validação de unicidade no início.
+- Contrato do tabuleiro cobre baias dos servidores e ausência de cabo atravessando a trilha.
+- Contrato de leitura cobre os avisos grandes de turno e vitória.

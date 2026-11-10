@@ -289,3 +289,86 @@ body.in-game .victory-overlay > :not(.victory-return) { animation: victory-messa
 @media (prefers-reduced-motion: reduce) {
   body.in-game .turn-announcement, body.in-game .board-coop .hub-floating-cap, body.in-game .victory-overlay > :not(.victory-return) { animation: none !important; opacity: 1 !important; transform: none !important; translate: none !important; }
 }
+
+
+/* Room setup: robot color badges are clear, unique, and usable on touch screens. */
+.player-setup-modal { width: min(900px, calc(100vw - 28px)); max-height: min(92dvh, 980px); overflow: auto; overscroll-behavior: contain; }
+.player-setup-modal .form-grid { align-items: start; }
+.player-setup-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; color: #d7e9f5; font-size: 12px; letter-spacing: .055em; }
+.player-setup-heading span { color: #a8c0d0; font-size: 12px; letter-spacing: 0; }
+.player-setup-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+.player-setup-card { min-width: 0; padding: 10px; border: 1px solid #34516a; border-radius: 12px; background: linear-gradient(145deg,#13283a,#0e1c2a); }
+.player-setup-identity { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+.player-setup-identity input { min-width: 0; flex: 1; }
+.player-team-tag { flex: none; padding: 4px 6px; border-radius: 5px; font-size: 10px; font-weight: 750; letter-spacing: .04em; }
+.player-team-tag.team-azul { color: #cceaff; background: #214568; }
+.player-team-tag.team-vermelho { color: #ffe0e1; background: #60333e; }
+.player-color-options { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 5px; }
+.player-color-choice { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 4px 1px 3px; border: 1px solid #314b60; border-radius: 8px; color: #d4e6f1; background: #0d1a27; cursor: pointer; transition: border-color .14s ease,background .14s ease,transform .14s ease,opacity .14s ease; }
+.player-color-choice span { overflow: hidden; max-width: 100%; color: #b5c9d7; font-size: 9px; line-height: 1.1; text-overflow: ellipsis; }
+.player-color-choice:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--player-color); }
+.player-color-choice.is-selected { border: 2px solid var(--player-color); background: color-mix(in srgb,var(--player-color) 18%,#102031); box-shadow: 0 0 0 1px color-mix(in srgb,var(--player-color) 30%,transparent); }
+.player-color-choice.is-selected span { color: #f3fbff; font-weight: 700; }
+.player-color-choice:disabled { cursor: not-allowed; opacity: .32; filter: grayscale(.8); }
+.player-color-choice:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.player-color-robot { display: block; width: 30px; height: 34px; }
+.player-setup-modal .field-hint { display: block; margin-top: 8px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; clip-path: inset(50%); }
+@media (max-width: 640px) { .player-setup-modal { width: calc(100vw - 18px); max-height: 94dvh; padding: 16px; } .player-setup-list { grid-template-columns: 1fr; gap: 7px; } .player-setup-card { padding: 8px; } .player-color-options { gap: 4px; } .player-color-choice { padding-inline: 0; } .player-color-robot { width: 27px; height: 31px; } }
+@media (prefers-reduced-motion: reduce) { .player-color-choice { transition: none; } }
+
+
+/* Make the six participants legible as characters in both the roster and shared pawn. */
+body.in-game .coop-player-chip-avatar { width: 35px; height: 38px; flex-basis: 35px; overflow: visible; border: 0; border-radius: 0; color: inherit; background: transparent !important; box-shadow: none !important; }
+body.in-game .coop-player-chip-avatar .player-color-robot { width: 34px; height: 38px; filter: drop-shadow(0 2px 2px #020b14); }
+body.in-game .coop-player-chip.is-current .coop-player-chip-avatar { background: transparent !important; }
+body.in-game .coop-player-chip.is-current .coop-player-chip-avatar .player-color-robot { filter: drop-shadow(0 0 5px var(--player-color)) drop-shadow(0 2px 2px #020b14); }
+body.in-game .board-coop .coop-mini-robot .player-color-robot { width: 36px; height: 46px; overflow: visible; filter: drop-shadow(0 2px 2px #020b14); }
+body.in-game .board-coop .coop-player-token.is-current .coop-mini-robot .player-color-robot { filter: drop-shadow(0 0 6px var(--player-color)) drop-shadow(0 2px 2px #020b14); }
+body.in-game .board-coop .coop-player-ring { fill: #081a2b; fill-opacity: .94; stroke-width: 2; }
+body.in-game .board-coop .coop-mini-robot text { font-size: 17px; }
+
+/* A short, high-contrast turn callout sits over the center of the play area. */
+body.in-game .coop-turn-card .turn-announcement { position: fixed; z-index: 1000; top: 50%; left: 50%; translate: -50% -50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: min(620px,calc(100vw - 40px)); max-width: none; margin: 0; padding: 24px 32px; border: 2px solid var(--turn-color,#43d6ff); border-radius: 22px; color: #f3faff; background: linear-gradient(140deg,rgba(8,24,40,.97),rgba(13,43,67,.95)); box-shadow: 0 24px 85px #020914bb, 0 0 45px color-mix(in srgb,var(--turn-color,#43d6ff) 48%,transparent); backdrop-filter: blur(8px); pointer-events: none; animation: turn-announcement-fade 3.2s ease both; }
+body.in-game .coop-turn-card .turn-announcement strong { color: var(--turn-color,#43d6ff); font: 900 clamp(36px,7vw,78px)/.98 "IBM Plex Sans",Arial,sans-serif; letter-spacing: .035em; text-shadow: 0 3px 22px color-mix(in srgb,var(--turn-color,#43d6ff) 48%,transparent); }
+body.in-game .coop-turn-card .turn-announcement span { color: #f5faff; font: 650 clamp(19px,3vw,30px)/1.1 "IBM Plex Sans",Arial,sans-serif; }
+
+/* Victory takes the visual center of the battlefield and remains readable at small sizes. */
+body.in-game .victory-overlay { left: 50%; top: 50%; translate: -50% -50%; display: flex; flex-direction: column; gap: 14px; width: min(720px,calc(100% - 40px)); padding: clamp(22px,4vw,42px); border-width: 2px; border-radius: 24px; text-align: center; background: rgba(5,29,20,.96); box-shadow: 0 30px 110px #02080dcc,0 0 55px #56e8873d; }
+body.in-game .victory-mark { width: 64px; height: 64px; flex-basis: 64px; font-size: 42px; }
+body.in-game .victory-overlay small { font-size: clamp(13px,2vw,19px); }
+body.in-game .victory-overlay h1 { margin-top: 6px; font: 850 clamp(38px,6.4vw,76px)/1 "IBM Plex Sans",sans-serif; text-wrap: balance; }
+body.in-game .victory-return { margin: 4px 0 0; min-height: 52px; padding: 0 24px; font-size: 18px; }
+@media (max-width: 760px) {
+  body.in-game .coop-player-chip-avatar { width: 31px; height: 34px; flex-basis: 31px; }
+  body.in-game .coop-player-chip-avatar .player-color-robot { width: 31px; height: 34px; }
+  body.in-game .coop-turn-card .turn-announcement { width: min(560px,calc(100vw - 24px)); padding: 18px 16px; border-radius: 18px; }
+  body.in-game .coop-turn-card .turn-announcement strong { font-size: clamp(34px,10vw,58px); }
+  body.in-game .coop-turn-card .turn-announcement span { font-size: clamp(18px,5vw,25px); }
+  body.in-game .victory-overlay { left: 50%; top: 50%; width: calc(100% - 24px); gap: 11px; padding: 20px 14px; }
+  body.in-game .victory-mark { width: 50px; height: 50px; flex-basis: 50px; font-size: 34px; }
+  body.in-game .victory-overlay h1 { font-size: clamp(34px,9vw,56px); }
+  body.in-game .victory-return { min-height: 48px; font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.in-game .coop-turn-card .turn-announcement { animation: none !important; opacity: 1 !important; }
+}
+
+/* Full-size game-piece portraits: sculpted pions replace the too-small robot pictograms. */
+.player-color-robot { width: 44px; height: 54px; overflow: visible; filter: drop-shadow(0 3px 3px #030b14); }
+.player-color-choice { min-height: 78px; gap: 1px; padding-top: 2px; }
+.player-color-choice span { font-size: 10px; }
+body.in-game .coop-player-chip-avatar { width: 46px; height: 54px; flex-basis: 46px; }
+body.in-game .coop-player-chip-avatar .player-color-robot { width: 46px; height: 54px; }
+body.in-game .coop-player-chip { gap: 9px; font-size: 14px; }
+body.in-game .board-coop .coop-mini-robot .player-color-robot { width: 54px; height: 64px; filter: drop-shadow(0 3px 3px #020914); }
+body.in-game .board-coop .coop-player-token.is-current .coop-mini-robot .player-color-robot { filter: drop-shadow(0 0 7px var(--player-color)) drop-shadow(0 3px 3px #020914); }
+@media(max-width:760px) { .player-color-robot { width: 42px; height: 51px; } .player-color-choice { min-height: 72px; } body.in-game .coop-player-chip-avatar { width: 40px; height: 48px; flex-basis: 40px; } body.in-game .coop-player-chip-avatar .player-color-robot { width: 40px; height: 48px; } }
+
+/* Board pions are drawn in the board's own SVG units so no token can inflate past a tile. */
+body.in-game .board-coop .coop-mini-robot { overflow: visible; }
+body.in-game .board-coop .coop-player-initial { fill: #f6fbff; stroke: #0b1928; stroke-width: 4px; paint-order: stroke; font: 800 11px "IBM Plex Sans",sans-serif; }
+body.in-game .board-coop .coop-player-ring { fill: #091b2a; fill-opacity: .92; stroke-width: 2.8; }
+body.in-game .board-coop .coop-player-token.is-current .coop-player-ring { opacity: 1; }
+body.in-game .board-coop .coop-mini-robot path { vector-effect: non-scaling-stroke; }
+@media(prefers-reduced-motion:reduce) { body.in-game .coop-player-chip-avatar .player-color-robot, body.in-game .board-coop .coop-mini-robot { filter: none !important; } }

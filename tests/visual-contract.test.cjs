@@ -22,7 +22,7 @@ test('the Hacker stays on the centerline of the external relay', () => {
   assert.match(hackerCss, /datacenter-scene \.boss-model\s*\{[^}]*transform-origin:\s*0 0;[^}]*translate:\s*none !important;[^}]*scale:\s*none !important;/s);
   assert.ok(app.includes('class="defense-hub" transform="translate(500 322)"'), 'the defense hub remains centered and clear of the route');
   assert.ok(app.includes('class="boss-model boss-scene-figure'), 'the external Hacker uses the centered SVG mount');
-  assert.ok(app.includes('class="hub-entry-link" d="M500 409V488"'), 'a centered cable visibly joins the base to the starting space');
+  assert.ok(!app.includes('M500 409V488'), 'the hub cable does not cross the starting space');
 });
 
 test('a player hit renders short lived smoke and flame after the blast', () => {
@@ -57,6 +57,35 @@ test('the co-op board shows every player token and a persistent turn roster', ()
   assert.ok(app.includes('game.coop.players.map((player,index)=>'), 'the roster and board tokens derive from the full room roster');
 });
 
+test('each player chooses a unique color and sees its matching robot avatar before joining', () => {
+  assert.ok(app.includes('const PLAYER_COLOR_LABELS = ['), 'the six player colors have visible names');
+  assert.ok(app.includes('function renderPlayerAvatar(index,color)'), 'every color has a rendered robot avatar');
+  assert.ok(app.includes("data-color-index=\"'+colorIndex+'\""), 'color choices expose their palette index to the setup form');
+  assert.ok(app.includes('takenByOther=selectedColors.some((value,other)=>other!==index&&value===colorIndex)'), 'a color used by another player is disabled');
+  assert.ok(app.includes('new Set(selectedColorIndexes).size!==names.length'), 'starting a game rejects duplicate colors even if form state is tampered');
+  assert.ok(app.includes('color:PLAYER_COLORS[selectedColorIndexes[index]]'), 'the selected color follows each player into the game state');
+  assert.ok(app.includes("player.color||playerColors[index%playerColors.length]"), 'the selected color drives in-game player avatars and tokens');
+});
+
+test('co-op player avatars have six silhouettes and appear in the roster and on the pawn', () => {
+  assert.ok(app.includes('PLAYER_AVATAR_SHAPES'), 'the six participant colors map to distinct board-piece silhouettes');
+  assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the piece portrait uses the selected color');
+  assert.ok(app.includes("renderPlayerAvatar(avatarIndex,color)+'</span><span>'+esc(player.name)"), 'each roster entry displays its matching piece portrait');
+  assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the board pawns reuse the distinct piece silhouettes');
+  assert.ok(app.includes('transform=\"scale(.5) translate(-32 -38)\"'), 'the six pions are scaled to read clearly without overflowing their tile');
+});
+
+test('the defense route stays clear of server bays and the defense hub', () => {
+  assert.ok(app.includes('fisica:[320,180],rede:[500,180],transporte:[680,180],aplicacao:[350,278],seguranca:[650,278]'), 'server racks sit in interior bays away from route tiles');
+  assert.ok(!app.includes('M500 409V488'), 'no hub cable crosses the route or start tile');
+});
+
+test('turn and victory notices are large centered overlays over the gameplay', () => {
+  assert.ok(hackerCss.includes('body.in-game .coop-turn-card .turn-announcement { position: fixed;'), 'turn announcement overlays the middle of gameplay');
+  assert.ok(hackerCss.includes('font: 900 clamp(36px,7vw,78px)'), 'turn announcement is readable at a glance');
+  assert.ok(hackerCss.includes('body.in-game .victory-overlay h1 { margin-top: 6px; font: 850 clamp(38px,6.4vw,76px)'), 'victory is presented large and centered on the board');
+});
+
 test('restored co-op saves derive armor damage stages from their recorded hits', () => {
   assert.ok(app.includes("restored.coop.armorStage=Math.max(Number(restored.coop.armorStage)||0,restored.coop.log.filter((event)=>event.outcome==='correct').length)"), 'older saved games restore missing armor stages from the combat log');
   assert.ok(html.includes('game-core.js?v=13'), 'the browser reloads the current damage logic instead of using a cached combat engine');
@@ -89,7 +118,7 @@ test('the five sector checkpoints retain their own palette accents', () => {
 });
 
 test('the Defense board keeps a clear square footprint, classic traces, and aligned base', () => {
-  assert.ok(app.includes('fisica:[270,190],rede:[475,190],transporte:[335,270],aplicacao:[650,190],seguranca:[615,270]'), 'all racks sit in separated interior bays away from the route and base');
+  assert.ok(app.includes('fisica:[320,180],rede:[500,180],transporte:[680,180],aplicacao:[350,278],seguranca:[650,278]'), 'all racks sit in separated interior bays away from the route and base');
   assert.ok(app.includes('const coopPath=[[120,280],[175,310],[240,340],[305,370],[370,400],[435,430],[500,470],[565,430],[630,400],[695,370],[760,340],[825,310],[880,280],[825,250],[760,220],[695,190],[630,160],[560,125],[500,128]];'), 'the 19 walkable spaces follow the board perimeter with room for their larger platforms');
   const route = JSON.parse(app.match(/const coopPath=(\[\[[^;]+\]\]);/)?.[1] || '[]');
   assert.equal(route.length, 19, 'the route contains 19 distinct walkable spaces');
@@ -100,7 +129,7 @@ test('the Defense board keeps a clear square footprint, classic traces, and alig
   assert.ok(app.includes('class="defense-hub" transform="translate(500 322)"'), 'the base remains centered away from the road');
   assert.ok(app.includes('class="hub-floating-cap" transform="translate(0 -28)"'), 'the base cap floats clearly above the support walls');
   assert.ok(app.includes('class="hub-totem" transform="translate(0 -52)"'), 'the defense totem sits clear of the lower base');
-  assert.ok(app.includes('class="hub-entry-link" d="M500 409V488"'), 'the centered link joins the base toward the route without crossing its tiles');
+  assert.ok(!app.includes('M500 409V488'), 'no centered link overlays the route tiles');
   assert.ok(app.includes('class="hub-lift-beams"'), 'light beams make the floating base cap visibly separate from its foundation');
 });
 
@@ -139,8 +168,8 @@ test('the co-op victory keeps the board and presents a green finish state', () =
 test('the Defense table is smaller and its racks and laser impacts share separated positions', () => {
   assert.ok(app.includes('class="coop-board-layout" transform="translate(500 280) scale(.86) translate(-500 -280)"'), 'the square board is reduced as a single aligned composition');
   assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the floor is a clean isometric square');
-  assert.ok(app.includes('fisica:[270,190],rede:[475,190],transporte:[335,270],aplicacao:[650,190],seguranca:[615,270]'), 'the five server racks occupy distinct interior bays away from the road');
-  assert.ok(app.includes('fisica:[313,252],rede:[518,252],transporte:[378,332],aplicacao:[693,252],seguranca:[658,332]'), 'laser impacts align with the repositioned racks');
+  assert.ok(app.includes('fisica:[320,180],rede:[500,180],transporte:[680,180],aplicacao:[350,278],seguranca:[650,278]'), 'the five server racks occupy distinct interior bays away from the road');
+  assert.ok(app.includes('fisica:[363,242],rede:[543,242],transporte:[723,242],aplicacao:[393,340],seguranca:[693,340]'), 'laser impacts align with the repositioned racks');
   assert.ok(app.includes('function coopPosition()'), 'route rendering clamps missing or invalid positions instead of showing NaN');
 });
 
