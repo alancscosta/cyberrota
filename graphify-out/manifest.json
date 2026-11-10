@@ -1,56 +1,86 @@
 {
-  ".openai/hosting.json": {
-    "mtime": 1792510117.6368172,
-    "seen": 1792510226.7446425,
-    "ast_hash": "c9940816ef600414b0db73e009be2856",
-    "semantic_hash": ""
-  },
   "tests/game-core.test.cjs": {
-    "mtime": 1792509712.3601832,
-    "seen": 1792510226.7446425,
-    "ast_hash": "c6cc62540d5e541c9defdf03a1380f06",
+    "mtime": 1794184043.1003366,
+    "seen": 1794184621.463594,
+    "ast_hash": "3b3149a2ceb867daa29b03c0953b5c91",
     "semantic_hash": ""
   },
   "PLANO_DESENVOLVIMENTO.md": {
-    "mtime": 1792510962.2235372,
-    "seen": 1792511095.1736214,
-    "ast_hash": "82439dec652fe6c8dd39e9665048c147",
+    "mtime": 1794184610.232166,
+    "seen": 1794184621.463594,
+    "ast_hash": "22333eb461c55f5e62ea1f9b520ce290",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1792509706.19678,
-    "seen": 1792510226.7446425,
-    "ast_hash": "a4bf6a55ed69ec6d8975691e081d2009",
+    "mtime": 1794184398.7515895,
+    "seen": 1794184621.463594,
+    "ast_hash": "51bdeb981f40db36f4d3a1931b64cee3",
     "semantic_hash": ""
   },
   "docs/print-and-play.md": {
-    "mtime": 1792509642.2290082,
-    "seen": 1792510226.7446425,
-    "ast_hash": "ad86c32ec8a74aaadfc3a167b7d9f4e3",
+    "mtime": 1794177257.4352403,
+    "seen": 1794182111.653569,
+    "ast_hash": "e06d0d3d3f5aa1abd0c610401c353da6",
     "semantic_hash": ""
   },
   "specs/acceptance.md": {
-    "mtime": 1792509642.2280307,
-    "seen": 1792510226.7446425,
-    "ast_hash": "c965d5c27b136cff3e8db693dd48f557",
+    "mtime": 1794184398.7525904,
+    "seen": 1794184621.463594,
+    "ast_hash": "1ef47cb2202bef9e0b65109a291fd456",
     "semantic_hash": ""
   },
   "specs/content.md": {
-    "mtime": 1792508706.9698849,
-    "seen": 1792510226.7446425,
-    "ast_hash": "73bd81cc6f45c1b0eef61c98a1727280",
+    "mtime": 1794177257.4512544,
+    "seen": 1794182111.653569,
+    "ast_hash": "9af2c67aa8f91ffcbfc52097efc670e1",
     "semantic_hash": ""
   },
   "specs/game-rules.md": {
-    "mtime": 1792509642.2221756,
-    "seen": 1792510226.7446425,
-    "ast_hash": "63a834c3eda9cf917fecd0c91f6d31bf",
+    "mtime": 1794184610.2341676,
+    "seen": 1794184621.463594,
+    "ast_hash": "986ed6862cf3bfd4ba8f7fae91b80b60",
     "semantic_hash": ""
   },
   "specs/rooms-and-decks.md": {
-    "mtime": 1792508706.9698849,
-    "seen": 1792510226.7446425,
-    "ast_hash": "8e02ef6694c85a7c5b028ec9ed7cdec0",
+    "mtime": 1794177257.4522552,
+    "seen": 1794182111.653569,
+    "ast_hash": "ffc5f71921bef62ffb81d7c7626fa5f8",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1794182086.7276888,
+    "seen": 1794182111.653569,
+    "ast_hash": "a6c143f471e65c0007a66813e2836d49",
+    "semantic_hash": ""
+  },
+  "vite.config.js": {
+    "mtime": 1794180254.9067078,
+    "seen": 1794182111.653569,
+    "ast_hash": "8c320a4aaf7e8964f54eed8574d60bce",
+    "semantic_hash": ""
+  },
+  "PLANO_IMPLEMENTACAO_MODOS_COMBATE.md": {
+    "mtime": 1794184610.233167,
+    "seen": 1794184621.463594,
+    "ast_hash": "76bd5fae497a82f45f1f68c5971ccce9",
+    "semantic_hash": ""
+  },
+  "docs/adr-3d-engine.md": {
+    "mtime": 1794183561.2845218,
+    "seen": 1794183630.3847435,
+    "ast_hash": "7879e22ebbe2995d13470033aa1f0a04",
+    "semantic_hash": ""
+  },
+  "docs/research-ai-game-tools.md": {
+    "mtime": 1794184450.052233,
+    "seen": 1794184621.463594,
+    "ast_hash": "74bf12e26edaf42589e9a51d2a5a6831",
+    "semantic_hash": ""
+  },
+  "package-lock.json": {
+    "mtime": 1794181735.660503,
+    "seen": 1794182111.653569,
+    "ast_hash": "2f71352d916879ec75925dd10b4c4c56",
     "semantic_hash": ""
   }
 }

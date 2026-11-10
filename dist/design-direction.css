@@ -1,0 +1,124 @@
+:root{--paper:#f3efe4;--paper-raised:#fbf8f0;--ink:#232a26;--muted:#66716a;--line:#d8d1c1;--forest:#23483e;--forest-deep:#183a32;--ochre:#d89a3d}
+body:not(.in-game){background:var(--paper);color:var(--ink)}
+body:not(.in-game) .sidebar{background:var(--forest-deep);color:#f3efe4;border:0;box-shadow:4px 0 0 #183a3212}
+body:not(.in-game) .brand strong,body:not(.in-game) .brand small,body:not(.in-game) .nav-item{color:#e9e7d9}
+body:not(.in-game) .brand-mark{background:var(--ochre);color:#1d322c;border:0;border-radius:7px;box-shadow:2px 2px 0 #a96e29}
+body:not(.in-game) .nav-item{border-radius:6px;font-size:13px;letter-spacing:0}
+body:not(.in-game) .nav-item.active{background:#31584d;color:#fff4d9;box-shadow:inset 3px 0 var(--ochre)}
+body:not(.in-game) .side-label{color:#a9bcae;font-size:10px;letter-spacing:.08em}
+body:not(.in-game) .sidebar .nav-count{background:#d89a3d;color:#232a26}
+body:not(.in-game) .topbar{background:var(--paper);border-color:var(--line);box-shadow:none}
+body:not(.in-game) .breadcrumb,body:not(.in-game) .breadcrumb strong{color:#59645d}
+body:not(.in-game) #app{background:var(--paper);padding-top:28px}
+body:not(.in-game) .hero{position:relative;overflow:hidden;min-height:265px;padding:35px 38px;background:var(--forest);border:0;border-radius:4px;color:#f5f0e4;box-shadow:5px 5px 0 #d7cdb9}
+body:not(.in-game) .hero:after{content:"";display:block;position:absolute;right:5%;top:12%;width:36%;height:76%;opacity:.52;background:repeating-linear-gradient(30deg,transparent 0 34px,#e8c67e95 35px 38px,transparent 39px 74px);clip-path:polygon(0 28%,33% 6%,100% 44%,68% 94%,23% 72%);pointer-events:none}
+body:not(.in-game) .hero-copy{position:relative;z-index:1;max-width:570px}
+body:not(.in-game) .hero-kicker{color:#e7c883;text-transform:uppercase;letter-spacing:.1em!important;font-size:11px}
+body:not(.in-game) .hero h1{max-width:480px;color:#fff8e8;font:600 clamp(36px,4.4vw,55px)/1.02 Georgia,"Times New Roman",serif;letter-spacing:-.035em!important}
+body:not(.in-game) .hero p{color:#d7e0d6;font-size:15px;max-width:390px}
+body:not(.in-game) .hero-art{display:none!important}
+body:not(.in-game) .hero .btn-primary{background:var(--ochre);color:#202b25;border:0;border-radius:4px;box-shadow:0 3px 0 #a96e29}
+body:not(.in-game) .hero .btn-secondary{background:transparent;border:1px solid #9cb6a5;color:#f3efe4;border-radius:4px}
+body:not(.in-game) .metric-strip{margin-top:20px;background:transparent;border:0;border-block:1px solid var(--line);border-radius:0;box-shadow:none}
+body:not(.in-game) .metric{background:transparent;border-color:var(--line)}
+body:not(.in-game) .metric-copy small{color:var(--muted);font-size:11px}
+body:not(.in-game) .metric-copy strong{color:var(--forest);font:25px Georgia,"Times New Roman",serif}
+body:not(.in-game) .mode-card,body:not(.in-game) .panel,body:not(.in-game) .topic-panel,body:not(.in-game) .mission-panel{background:var(--paper-raised);border:1px solid var(--line);border-radius:4px;box-shadow:2px 3px 0 #e2dbc9}
+body:not(.in-game) .mode-card{min-height:150px;padding:19px 20px 17px;border-top:3px solid var(--topic,var(--forest));transition:transform .18s,box-shadow .18s}
+body:not(.in-game) .mode-card:hover{transform:translateY(-3px);box-shadow:3px 6px 0 #d8cfbd}
+body:not(.in-game) .mode-card h3,body:not(.in-game) .section-title h2,body:not(.in-game) .page-head h1{font:600 1.2em Georgia,"Times New Roman",serif;letter-spacing:-.02em!important;color:var(--forest-deep)}
+body:not(.in-game) .mode-card p,body:not(.in-game) .page-head p,body:not(.in-game) .section-title p{color:#5c655e}
+body:not(.in-game) .btn{border-radius:4px}
+body:not(.in-game) .btn-primary{background:var(--forest);border-color:var(--forest);color:#fff8e8}
+body:not(.in-game) .btn-primary:hover{background:#183a32}
+body:not(.in-game) .btn-secondary,body:not(.in-game) .btn-quiet{background:var(--paper-raised);border-color:#bcb5a6;color:var(--ink)}
+body.in-game .game-world{background:#c8bea6;color:#26372d}
+body.in-game .world-stage{background:radial-gradient(ellipse at 52% 47%,#e0d6bd 0,#c8bea6 72%)}
+body.in-game .game-hud{background:#294b3d;border-color:#56735d;color:#f3ead4}
+body.in-game .game-hud .hud-brand b,body.in-game .game-hud .hud-center{color:#f3ead4}
+body.in-game .game-hud .hud-brand small,body.in-game .game-hud .round-badge{color:#d5dfc8}
+body.in-game .world-title,body.in-game .world-footer{color:#435f4a}
+body.in-game .world-title>b{color:#304a39}
+body.in-game .board-coop .coop-route-line{stroke:#3a563e;opacity:.72}
+body.in-game .board-coop .coop-route-dashes{stroke:#f2e4bd;opacity:.78}
+body.in-game .coop-route-tile{filter:drop-shadow(0 4px 2px #33473566)}
+body.in-game .coop-route-tile .route-tile-side{fill:#8c7752;stroke:#675b43}
+body.in-game .coop-route-tile .route-tile-face{fill:#efe2c3;stroke:#7a8e64}
+body.in-game .coop-route-tile text{fill:#304936;stroke:#f8efd9;stroke-width:2px}
+body.in-game .coop-route-tile.checkpoint .route-tile-face{fill:color-mix(in srgb,var(--tile) 38%,#f2e5c7);stroke:color-mix(in srgb,var(--tile) 70%,#6b714f)}
+body.in-game .coop-route-tile.current .route-tile-face{fill:#f2c36e;stroke:#fff0c5}
+body.in-game .rack-label{fill:#334a38;stroke:#e5dcc5}
+body.in-game .rack-health{fill:#4d654f;stroke:#e5dcc5}
+body.in-game .threat-gate{fill:#465f45;stroke:#d7aa59;filter:drop-shadow(0 2px 3px #5f624288)}
+body.in-game .threat-gate-label{fill:#314935;stroke:#e4d9bd;stroke-width:3px;font-size:12px}
+body.in-game .hub-top{fill:#7f936d;stroke:#e0c27a}
+body.in-game .hub-side{fill:#657e60;stroke:#ddc27e}
+body.in-game .hub-shell{fill:#475e4a;stroke:#e2cb89}
+body.in-game .hub-core{fill:#e7bf65;stroke:#fff0b5;filter:drop-shadow(0 0 5px #e7bf65)}
+body.in-game .hub-light{fill:#fff0b5;filter:drop-shadow(0 0 4px #e7bf65)}
+body.in-game .defense-hub text{fill:#f3e7c8;stroke:#334a39}
+body.in-game .coop-route-tile.healing-space .route-tile-side{fill:#527c46;stroke:#405f3d}
+body.in-game .coop-route-tile.healing-space .route-tile-face{fill:#a8c77c;stroke:#e6ce82;stroke-width:2.5;filter:drop-shadow(0 0 4px #8baf6488)}
+body.in-game .coop-route-tile.healing-space text{fill:#294a31;font-weight:900;font-size:12px;stroke:#d6e3b6;stroke-width:1px}
+body.in-game .coop-route-tile.heal-used .route-tile-face{fill:#b9b7a0;stroke:#898c73}
+body.in-game .coop-route-tile.heal-used text{fill:#757763}
+body.in-game .heal-tile-glint{fill:#fff0ad;stroke:#4d6e42;stroke-width:1.5}
+body.in-game .game-control-dock{background:#eee7d8;color:#26342c;border-color:#c8bdab;box-shadow:-4px 0 0 #0000001f}
+body.in-game .game-control-dock .dock-top h1,body.in-game .game-control-dock h2,body.in-game .game-control-dock h3{color:#23483e;font-family:Georgia,"Times New Roman",serif}
+body.in-game .game-control-dock .eyebrow,body.in-game .game-control-dock .inline-help,body.in-game .game-control-dock p,body.in-game .game-control-dock small{color:#626b62}
+body.in-game .game-control-dock .game-card,body.in-game .game-control-dock .side-game-card,body.in-game .game-control-dock .route-console,body.in-game .game-control-dock .hacker-combat-card{background:#faf6ed;color:#26342c;border:1px solid #d3c9b8;border-radius:4px;box-shadow:2px 3px 0 #dcd3c3}
+body.in-game .game-control-dock .turn-banner{background:#e9e2d4;border-color:#d0c6b5}
+body.in-game .game-control-dock .turn-copy strong,body.in-game .game-control-dock .side-game-card h3,body.in-game .game-control-dock .hacker-head h3{color:#263b31}
+body.in-game .game-control-dock .question-explain{background:#e8eee4;color:#3c5144;border-color:#ccd8c9}
+body.in-game .game-control-dock .btn-primary{background:#285344;border-color:#285344;color:#fff8e8}
+body.in-game .game-control-dock .btn-secondary,body.in-game .game-control-dock .btn-quiet{background:#f8f3e9;border-color:#bdb3a2;color:#333d35}
+body.in-game .game-control-dock .round-badge{background:#e1eadf;color:#345442;border-color:#c7d7c4}
+body.in-game .game-control-dock .server-health{background:#fffaf1;border-color:#d3c9b8}
+body.in-game .game-control-dock .server-health small,body.in-game .game-control-dock .server-health b{color:#33473b}
+body.in-game .game-control-dock .game-progress span{background:#dbd3c5}
+body.in-game .game-control-dock .game-progress span.done{background:#688c68}
+body.in-game .game-control-dock .game-progress span.current{background:#d89a3d}
+body.in-game .portal-exit-shot .laser-beam{stroke:#ff674d;stroke-width:17;filter:drop-shadow(0 0 12px #ff684a)}
+body.in-game .threat-gate-label{font:700 12px system-ui,sans-serif;fill:#314935;stroke:#e4d9bd;stroke-width:3px}
+@media(max-width:620px){body:not(.in-game) .hero{min-height:280px;padding:27px 23px}body:not(.in-game) .hero:after{right:-15%;width:57%;opacity:.26}body:not(.in-game) .hero h1{font-size:39px}}
+body.in-game .game-control-dock .heal-node-button{background:#e1ead8;color:#38543a;border:1px solid #8eac74;backdrop-filter:none;box-shadow:0 2px 0 #c7d3b9}
+body.in-game .game-control-dock .heal-node-button i{background:#78a951;box-shadow:none}
+body.in-game .game-control-dock .heal-node-button:disabled{opacity:.58}
+/* Responsive contract: size the map by its board proportions, then flow the controls below it. */
+@media(max-width:850px){
+ body.in-game{overflow:auto!important}
+ body.in-game #app{height:auto;min-height:100dvh;overflow:visible}
+ body.in-game .game-world{height:auto;min-height:100dvh;overflow:visible}
+ body.in-game .game-layout{height:auto;display:flex;flex-direction:column}
+ body.in-game .world-stage{height:auto;min-height:0;padding:12px 8px 8px;gap:4px}
+ body.in-game .isometric-scene{flex:0 0 auto;width:100%;aspect-ratio:1000/610;min-height:0}
+ body.in-game .datacenter-scene{aspect-ratio:880/560}
+ body.in-game .board-svg{width:100%;height:auto;max-height:none;transform:none}
+ body.in-game .world-title{flex:none;min-height:24px;gap:8px}
+ body.in-game .world-footer{flex:none;padding:3px 7px 4px}
+ body.in-game .game-control-dock{overflow:visible;padding:16px clamp(14px,3vw,24px) 28px;border-left:0;border-top:1px solid #bcb29f}
+}
+@media(max-width:520px){
+ body.in-game .game-hud{display:flex;gap:6px;padding:0 8px}
+ body.in-game .hud-brand{gap:6px;min-width:0}
+ body.in-game .hud-brand small{display:none}
+ body.in-game .hud-brand b{font-size:10px;letter-spacing:-.2px}
+ body.in-game .hud-center{gap:3px;min-width:0;flex:1;justify-content:center}
+ body.in-game .hud-center .round-badge{padding:5px 5px;font-size:6px;white-space:nowrap}
+ body.in-game .hud-center .hacker-hud{gap:2px;font-size:0;white-space:nowrap}
+ body.in-game .hud-center .hacker-hud b{font-size:8px}
+ body.in-game .hud-sound{width:30px;height:32px;flex:none}
+ body.in-game .hud-exit{padding:6px 8px;flex:none}
+ body.in-game .world-stage{padding:9px 5px 7px}
+ body.in-game .world-title{font-size:7px;line-height:1.2}
+ body.in-game .world-title>b{font-size:8px;text-align:right}
+ body.in-game .game-control-dock{padding-inline:12px}
+ body.in-game .healing-node-actions{display:flex;flex-wrap:wrap;justify-content:flex-start}
+}
+@media(max-width:360px){
+ body.in-game .hud-brand b{font-size:9px}
+ body.in-game .hud-center .round-badge:nth-child(2){display:none}
+ body.in-game .hud-exit{padding-inline:6px}
+ body.in-game .world-footer{font-size:6px}
+}
+@media(max-width:850px){body.in-game .datacenter-scene{aspect-ratio:880/698}}

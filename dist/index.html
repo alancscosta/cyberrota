@@ -9,13 +9,17 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="board.css">
   <link rel="stylesheet" href="light-theme.css?v=11">
+  <link rel="stylesheet" href="tabletop.css?v=12">
+  <link rel="stylesheet" href="hacker-combat.css?v=17">
+  <link rel="stylesheet" href="design-direction.css?v=9">
+  <link rel="stylesheet" href="play-redesign.css?v=15">
+  <link rel="stylesheet" href="hacker-visual.css?v=7">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navegação principal">
       <a class="brand" href="#inicio" data-page="home" aria-label="Cyber Rota, início">
-        <span class="brand-mark" aria-hidden="true"><b>CR</b></span>
-        <span><strong>Cyber Rota</strong><small>Jogo de redes</small></span>
+        <img class="brand-logo" src="assets/cyberrota-logo.svg" alt="Cyber Rota">
       </a>
       <div class="side-label">Menu</div>
       <nav class="main-nav">
@@ -64,7 +68,7 @@
     <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
     <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   </svg>
-  <script src="game-core.js"></script>
-  <script src="app.js?v=10"></script>
+  <script type="module" src="game-core.js?v=12"></script>
+  <script type="module" src="app.js?v=21"></script>
 </body>
 </html>

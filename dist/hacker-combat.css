@@ -1,0 +1,78 @@
+/* The Hacker is a target panel beside the board, never a token on its map. */
+.datacenter-rack{filter:drop-shadow(0 9px 5px #020a10aa)}
+.rack-tile-side{fill:#243b44;stroke:#0a1920;stroke-width:2}
+.rack-tile-top{fill:#1a2d37;stroke-width:3}
+.rack-tile-grid{fill:none;stroke:#a8e6d3;stroke-width:1;stroke-dasharray:3 6;opacity:.32}
+.rack-tile-node{filter:drop-shadow(0 0 7px currentColor)}
+.datacenter-rack.under-attack .rack-tile-top{fill:#294347;filter:drop-shadow(0 0 10px #80f2d2);animation:tile-pulse 1.2s ease-in-out infinite}
+.datacenter-rack.server-hit .rack-tile-top{stroke:#fff0a0;filter:drop-shadow(0 0 18px #ff8650)}
+.coop-cable{stroke-dasharray:none;animation:none}.coop-cable-flow{fill:none;stroke:#c5f6ff;stroke-width:2;stroke-dasharray:7 27;stroke-linecap:round;opacity:.88;animation:signal-flow 2.4s linear infinite;pointer-events:none}
+.threat-gate{fill:#351e30;stroke:#ff7483;stroke-width:3;filter:drop-shadow(0 0 10px #ff536c)}
+.threat-gate-label{fill:#ffbdc2;text-anchor:middle;font:700 7px "DM Mono",monospace;letter-spacing:1px;paint-order:stroke;stroke:#182730;stroke-width:4px}
+.defense-hub{filter:drop-shadow(0 12px 7px #061118aa)}
+.hub-shadow{fill:#07141a;opacity:.75}.hub-side{fill:#17675e;stroke:#72d5bd;stroke-width:2}.hub-top{fill:#205c57;stroke:#9ef1d4;stroke-width:2}.hub-shell{fill:#1c3542;stroke:#88cbbd;stroke-width:3}.hub-core{fill:#8cf9d0;stroke:#e0ffda;stroke-width:2;filter:drop-shadow(0 0 9px #7affce)}.hub-light{fill:#f6f9b6;filter:drop-shadow(0 0 7px #adff8f)}
+.defense-hub text{fill:#c5ebde;text-anchor:middle;font:700 8px "DM Mono",monospace;letter-spacing:.8px;paint-order:stroke;stroke:#10232a;stroke-width:4px}
+.impact-boss .defense-hub{animation:hub-hit .55s ease-out 2;filter:brightness(1.5) drop-shadow(0 0 20px #afffe5)}
+.uplink-flare circle{fill:#d9fff0;opacity:.8;filter:drop-shadow(0 0 14px #75ffe0);animation:flare-ring .58s ease-out both}.uplink-flare path{stroke:#fff7bb;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 7px #9cffe4);animation:flare-ray .55s ease-out both}
+.hacker-combat-card{position:relative;overflow:hidden;border-color:rgba(238,115,142,.26);background:radial-gradient(ellipse at 78% 40%,rgba(158,58,91,.17),transparent 58%),linear-gradient(125deg,#172632,#111c27)}
+.hacker-showcase{min-height:138px;display:grid;grid-template-columns:minmax(0,1fr) 132px;gap:10px;align-items:center}
+.hacker-status-copy{position:relative;z-index:1}.hacker-location{display:block;margin:0 0 8px;color:#f09ca8;font:700 7px "DM Mono",monospace;letter-spacing:.8px}
+.hacker-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}.hacker-head h3{margin:0;color:#f2d8db;font:700 12px "Space Grotesk",sans-serif}.hacker-health{color:#ffacaa;font:700 12px "DM Mono",monospace}.hacker-health small{font-size:8px;color:#c78e9c}
+.hacker-caption{display:flex;justify-content:space-between;gap:5px;margin-top:6px;color:#ad939c;font:6px "DM Mono",monospace;letter-spacing:.4px}
+.hacker-portrait{height:138px;position:relative;overflow:hidden;border-radius:10px;background:radial-gradient(ellipse at 50% 68%,#5a294651,transparent 66%),linear-gradient(155deg,#1a2934,#111a27 70%);border:1px solid rgba(236,134,159,.2)}
+.hacker-portrait svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1}.cooperative .hacker-portrait .boss-model{translate:0 0!important;scale:1!important;animation:boss-idle 3.4s ease-in-out infinite}.hacker-portrait .boss-aura{opacity:.5}
+.hacker-target-ring{position:absolute;left:50%;top:59%;width:82px;height:82px;transform:translate(-50%,-50%);border:1px solid rgba(255,130,156,.26);border-radius:50%;box-shadow:0 0 0 9px rgba(255,130,156,.035),0 0 25px rgba(255,80,120,.13)}
+.hacker-hit-spark{position:absolute;z-index:2;left:50%;top:61%;width:56px;height:56px;transform:translate(-50%,-50%) scale(.2);border:2px solid #fff0aa;border-radius:50%;opacity:0;pointer-events:none}
+.boss-panel-hit .hacker-hit-spark{animation:target-hit .68s ease-out both;box-shadow:0 0 22px #ff9e63}.boss-panel-hit .hacker-portrait{animation:portrait-recoil .42s ease-in-out 2}.boss-panel-hit .hacker-portrait{border-color:#ffe7a1}.boss-panel-hit .boss-eye{stroke:#fff0a0;filter:drop-shadow(0 0 14px #fff29b)}.boss-panel-hit .armor-chest{filter:brightness(1.9) drop-shadow(0 0 13px #ffb06e)}
+.coop-shot.player-shot .uplink-flare{color:#b6ffec}
+@keyframes signal-flow{to{stroke-dashoffset:-30}}@keyframes hub-hit{0%,100%{translate:0 0}25%{translate:-4px 2px}60%{translate:4px -1px}}
+@keyframes flare-ring{0%{opacity:.95;scale:.3}100%{opacity:0;scale:1.5}}@keyframes flare-ray{0%{opacity:1;translate:0 0}100%{opacity:0;translate:0 -13px}}
+@keyframes portrait-recoil{0%,100%{translate:0 0}25%{translate:-3px 1px}70%{translate:3px 0}}@keyframes target-hit{0%{opacity:0;scale:.25}18%{opacity:1;scale:.45}100%{opacity:0;scale:1.7}}
+@media(max-width:720px){.hacker-showcase{grid-template-columns:minmax(0,1fr) 96px;min-height:118px}.hacker-portrait{height:118px}.hacker-location{font-size:6px}.hacker-target-ring{width:68px;height:68px}}
+@media(prefers-reduced-motion:reduce){.datacenter-scene,.datacenter-rack,.rack-cracks,.blast-ring,.spark-shards,.coop-cable,.coop-cable-flow,.boss-model,.hacker-portrait,.hacker-hit-spark{animation:none!important}}
+
+/* Shared route: co-op uses the same numbered spaces as training. */
+.coop-route-line{fill:none;stroke:#091c23;stroke-width:13;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+.coop-route-dashes{fill:none;stroke:#b9f6df;stroke-width:2;stroke-linecap:round;stroke-dasharray:2 12;opacity:.48}
+.coop-route-tile{filter:drop-shadow(0 4px 2px #02090d99)}
+.route-tile-side{fill:#11252c;stroke:#51736e;stroke-width:1.5}
+.route-tile-face{fill:#24434a;stroke:#83cbb4;stroke-width:1.5}
+.coop-route-tile text{fill:#e8fff5;text-anchor:middle;font:700 9px "DM Mono",monospace;paint-order:stroke;stroke:#14262c;stroke-width:2px}
+.coop-route-tile.checkpoint .route-tile-face{fill:color-mix(in srgb,var(--tile) 48%,#223c45);stroke:var(--tile);stroke-width:2.5}
+.coop-route-tile.current{filter:drop-shadow(0 0 9px #fff2a0)}
+.coop-route-tile.current .route-tile-face{fill:#fff0a2;stroke:#fff8d2}
+.coop-route-tile.current text{fill:#1b2730;stroke:none}
+.coop-pawn{filter:drop-shadow(0 7px 5px #02090dbb);animation:pawn-bob 1.7s ease-in-out infinite}
+.coop-pawn text{fill:#fff;text-anchor:middle;font:700 8px "DM Mono",monospace;paint-order:stroke;stroke:#10252b;stroke-width:3px}
+.hacker-combat-card{padding:12px 14px!important}
+.boss-scene-figure.hacker-attack{animation:boss-charge .78s cubic-bezier(.2,.7,.2,1) both!important;transform-origin:500px -35px}
+.hacker-attack .armor-chest{animation:charge-core .78s ease-in-out both}
+.boss-hit-explosion{opacity:0;pointer-events:none}
+.boss-hit .boss-hit-explosion{opacity:1}
+.boss-hit-explosion .hit-core{fill:#fff5bd;stroke:#fff;stroke-width:4;filter:drop-shadow(0 0 17px #fff3a0);transform-box:fill-box;transform-origin:center}
+.boss-hit-explosion .hit-ring{fill:none;stroke:#ffac68;stroke-width:5;filter:drop-shadow(0 0 11px #ff794f);transform-box:fill-box;transform-origin:center}
+.boss-hit-explosion path{fill:#ffbe66;stroke:#fff1a2;stroke-width:2;filter:drop-shadow(0 0 8px #ff724d);transform-box:fill-box;transform-origin:center}
+.boss-hit .boss-hit-explosion .hit-core{animation:boss-blast-core .58s cubic-bezier(.1,.75,.2,1) both}
+.boss-hit .boss-hit-explosion .hit-ring{animation:boss-blast-ring .62s ease-out both}
+.boss-hit .boss-hit-explosion path{animation:boss-blast-shards .55s ease-out both}
+.boss-debris .debris-piece{fill:#d97772;stroke:#ffd39c;stroke-width:2;filter:drop-shadow(0 0 7px #ff778166);opacity:0}
+.boss-debris.phase-damaged .debris-one,.boss-debris.phase-broken .debris-one,.boss-debris.phase-critical .debris-one{opacity:1;animation:debris-land .55s cubic-bezier(.18,.75,.3,1) both}
+.boss-debris.phase-broken .debris-two,.boss-debris.phase-critical .debris-two{opacity:1;animation:debris-land .62s .08s cubic-bezier(.18,.75,.3,1) both}
+.boss-debris.phase-critical .debris-three{opacity:1;animation:debris-land .7s .16s cubic-bezier(.18,.75,.3,1) both}
+.boss-debris .debris-piece{animation-fill-mode:forwards}
+.impact-rack .coop-shot.hacker-shot .laser-core,.impact-rack .coop-shot.hacker-shot .laser-beam,.impact-rack .coop-shot.hacker-shot .laser-trail{animation-delay:.48s}
+.impact-rack .impact-burst path,.impact-rack .impact-burst .blast-ring{animation-delay:.76s}
+.impact-rack .datacenter-rack.server-hit{animation-delay:.74s}
+@keyframes boss-charge{0%,100%{translate:0 0;filter:brightness(1)}25%{translate:0 5px;filter:brightness(1.15) saturate(1.2)}48%{translate:0 -2px;filter:brightness(1.6) drop-shadow(0 0 14px #ff604c)}68%{translate:0 1px;filter:brightness(1.2)}}
+@keyframes charge-core{0%,100%{filter:none}35%,58%{filter:brightness(2.4) drop-shadow(0 0 13px #ff563e)}}
+@keyframes boss-blast-core{0%{opacity:0;scale:.15}25%{opacity:1;scale:1.2}100%{opacity:0;scale:1.8}}
+@keyframes boss-blast-ring{0%{opacity:0;scale:.4}25%{opacity:1}100%{opacity:0;scale:1.9}}
+@keyframes boss-blast-shards{0%{opacity:0;scale:.15}25%{opacity:1;scale:1}100%{opacity:0;scale:1.5}}
+@keyframes debris-land{0%{opacity:0;translate:0 -22px;rotate:-35deg}72%{opacity:1;translate:0 5px;rotate:10deg}100%{opacity:1;translate:0 0;rotate:0}}
+@media(prefers-reduced-motion:reduce){.coop-pawn,.boss-scene-figure,.boss-hit-explosion,.debris-piece{animation:none!important}}
+
+.boss-debris.hits-1 .debris-one,.boss-debris.hits-2 .debris-one,.boss-debris.hits-3 .debris-one,.boss-debris.hits-4 .debris-one,.boss-debris.hits-5 .debris-one{opacity:1;animation:debris-land .55s cubic-bezier(.18,.75,.3,1) both}
+.boss-debris.hits-2 .debris-two,.boss-debris.hits-3 .debris-two,.boss-debris.hits-4 .debris-two,.boss-debris.hits-5 .debris-two{opacity:1;animation:debris-land .62s .08s cubic-bezier(.18,.75,.3,1) both}
+.boss-debris.hits-3 .debris-three,.boss-debris.hits-4 .debris-three,.boss-debris.hits-5 .debris-three{opacity:1;animation:debris-land .7s .16s cubic-bezier(.18,.75,.3,1) both}
+.boss-debris.hits-4 .debris-four,.boss-debris.hits-5 .debris-four{opacity:1;animation:debris-land .74s .22s cubic-bezier(.18,.75,.3,1) both}
+.boss-debris.hits-5 .debris-five{opacity:1;animation:debris-land .8s .28s cubic-bezier(.18,.75,.3,1) both}

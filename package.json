@@ -1,0 +1,30 @@
+{
+  "name": "cyberrota",
+  "version": "1.0.0",
+  "description": "Jogo educativo de redes em tabuleiro 2D com arte e efeitos de volume 3D",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --test tests/game-core.test.cjs tests/visual-contract.test.cjs",
+    "dev": "vite --config vite.config.js",
+    "build": "vite build --config vite.config.js",
+    "preview": "vite preview --config vite.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alancscosta/cyberrota.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alancscosta/cyberrota/issues"
+  },
+  "homepage": "https://github.com/alancscosta/cyberrota#readme",
+  "devDependencies": {
+    "vite": "^8.3.6"
+  }
+}

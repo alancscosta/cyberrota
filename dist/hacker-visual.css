@@ -1,0 +1,151 @@
+/* Cyber Rota character direction: a readable board UI and a hostile signal boss. */
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("assets/IBMPlexSans-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("assets/IBMPlexSans-latin-ext.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+body, body *, body.in-game, body.in-game *, body.in-game .hacker-head h3, body.in-game .hacker-health { font-family: "IBM Plex Sans", Arial, sans-serif !important; font-synthesis: none; }
+body.in-game .game-control-dock .question-area h2 { font-family: "IBM Plex Sans", Arial, sans-serif !important; font-size: clamp(23px, 1.55vw, 28px); line-height: 1.35; letter-spacing: -.02em; font-weight: 600; }
+body.in-game .game-control-dock h2 { font-family: "IBM Plex Sans", Arial, sans-serif !important; font-size: clamp(22px, 1.3vw, 26px) !important; line-height: 1.35; font-weight: 600; }
+body.in-game .game-control-dock .option-button { min-height: 48px; font-size: 17px; line-height: 1.45; font-weight: 500; }
+body.in-game .game-control-dock .question-meta .pill { min-height: 28px; font-size: 13px; font-weight: 600; }
+body.in-game .world-title { font: 600 13px/1.25 "IBM Plex Sans", Arial, sans-serif; letter-spacing: .01em; }
+body.in-game .rack-label { font: 600 12px "IBM Plex Sans", Arial, sans-serif; letter-spacing: .01em; }
+body.in-game .rack-health { font: 500 10px "IBM Plex Sans", Arial, sans-serif; }
+body.in-game .coop-route-tile text { font: 600 13px "IBM Plex Sans", Arial, sans-serif; }
+body.in-game .threat-gate-label { font: 600 14px "IBM Plex Sans", Arial, sans-serif; }
+body.in-game .hacker-head h3 { font: 600 18px/1.25 "IBM Plex Sans", Arial, sans-serif !important; }
+body.in-game .hacker-health { font: 600 18px/1.2 "IBM Plex Sans", Arial, sans-serif !important; }
+body.in-game .world-title, body.in-game .rack-label, body.in-game .rack-health { paint-order: stroke; stroke: #07192a; stroke-width: 2px; stroke-linejoin: round; }
+
+/* Keep the robot centered on its own pedestal, relay, and the board's centerline. */
+body.in-game .cooperative .datacenter-scene .boss-model {
+  transform-box: view-box;
+  transform-origin: 0 0;
+  translate: none !important;
+  scale: none !important;
+}
+body.in-game .board-coop .boss-external-perch path:first-of-type { fill: #27101d; stroke: #b6425c; }
+body.in-game .board-coop .boss-external-perch path:nth-of-type(2) { fill: #170d18; stroke: #f05a68; }
+body.in-game .board-coop .boss-external-perch path:nth-of-type(3) { fill: #73233c; }
+body.in-game .board-coop .boss-external-perch circle { fill: #ff5269; stroke: #ffd5dc; }
+body.in-game .board-coop #bossMetal stop:first-child { stop-color: #76273c; }
+body.in-game .board-coop #bossMetal stop:nth-child(2) { stop-color: #391525; }
+body.in-game .board-coop #bossMetal stop:last-child { stop-color: #100e17; }
+body.in-game .board-coop .boss-model .boss-aura { fill: #4a10272e; stroke: #f3476180; }
+body.in-game .board-coop .boss-model .boss-eye { stroke: #ff3d55 !important; stroke-width: 7; filter: drop-shadow(0 0 7px #ff1d3d); }
+body.in-game .board-coop .boss-model .helmet-shell { stroke: #461a2c; }
+body.in-game .board-coop .boss-model .helmet-shell { fill: #25121d; }
+body.in-game .board-coop .boss-model .boss-cape { fill: #1a0b14 !important; stroke: #4c1727 !important; }
+body.in-game .board-coop .boss-model .armor-back path[fill="none"] { fill: none !important; }
+body.in-game .board-coop .boss-model .armor-back path:not([fill="none"]) { fill: #341420 !important; stroke: #70203b !important; }
+body.in-game .board-coop .boss-model .armor-antenna circle { fill: #bd2443 !important; stroke: #ff6178 !important; }
+body.in-game .board-coop .boss-model .armor-antenna circle[r="2"] { fill: #ffd8df !important; stroke: none !important; }
+body.in-game .board-coop .boss-model path[fill="#102946"],
+body.in-game .board-coop .boss-model circle[fill="#102640"] { fill: #241018 !important; stroke: #76223a !important; }
+body.in-game .board-coop .boss-model path[fill="#07182c"] { fill: #100a12 !important; stroke: #942842 !important; }
+body.in-game .board-coop .boss-model circle[stroke="#69dcff"] { stroke: #bc3150 !important; }
+body.in-game .board-coop .boss-model path:not(.boss-eye):not(.boss-impact):not(.boss-hit-explosion):not(.boss-core-housing):not(.boss-core-ring):not(.armor-chest) { stroke: #5b1830 !important; }
+body.in-game .board-coop .boss-model path[fill="#12314f"] { fill: #24101a !important; stroke: #4b1528 !important; }
+body.in-game .board-coop .boss-model path[stroke="#48bce9"] { stroke: #be2949 !important; }
+body.in-game .board-coop .boss-model path[stroke="#55caff"],
+body.in-game .board-coop .boss-model path[stroke="#82e2ff"],
+body.in-game .board-coop .boss-model path[stroke="#8ce7ff"],
+body.in-game .board-coop .boss-model path[stroke="#9cecff"] { stroke: #bb3451 !important; }
+body.in-game .board-coop .boss-model .armor-shoulder-left > path:first-child,
+body.in-game .board-coop .boss-model .armor-shoulder-right > path:first-child { stroke: #47192a; }
+body.in-game .board-coop .boss-model .armor-chest { stroke: #ef6874; }
+body.in-game .board-coop .boss-model .armor-chest > path:first-child { fill: #351321; stroke: #85243f; }
+body.in-game .board-coop .boss-model .boss-scowl { stroke: #ff344f; stroke-width: 3.5; }
+body.in-game .board-coop .boss-model .evil-brow { stroke: #71182f; stroke-width: 6; filter: drop-shadow(0 0 2px #e42c4f); }
+body.in-game .board-coop .boss-model .boss-core-housing { fill: #401526; stroke: #ff4c61; }
+body.in-game .board-coop .boss-model .boss-core-ring { fill: #a62843; stroke: #ffc0c7; }
+body.in-game .board-coop .boss-model .boss-reactor-core { fill: #fff1da; filter: drop-shadow(0 0 8px #ff4a55); }
+body.in-game .board-coop .defense-hub { text-anchor: middle; }
+body.in-game .board-coop .defense-hub .hub-top { fill: #112940; stroke: #42d4ff; stroke-width: 4; }
+body.in-game .board-coop .defense-hub .hub-side { fill: #0a1c2d; stroke: #1b82b5; stroke-width: 3; }
+body.in-game .board-coop .defense-hub .hub-shell { fill: #103859; stroke: #78e8ff; stroke-width: 3; }
+body.in-game .board-coop .defense-hub .hub-core { fill: #42cfff; stroke: #e0fbff; stroke-width: 2; }
+body.in-game .board-coop .defense-hub text { font: 600 13px/1 "IBM Plex Sans", Arial, sans-serif; text-anchor: middle; }
+body.in-game .board-coop .hub-entry-link { fill: none; stroke: #42d4ff; stroke-width: 3; stroke-dasharray: 4 7; stroke-linecap: round; opacity: .82; filter: drop-shadow(0 0 4px #37cfff); }
+body.in-game .board-coop .boss-model .boss-hit-explosion { transform-box: fill-box; }
+body.in-game .board-coop .boss-model .boss-eye { animation: villain-eye-glow 2.2s ease-in-out infinite; }
+@keyframes villain-eye-glow { 0%,100% { filter: drop-shadow(0 0 5px #ff2848); } 50% { filter: drop-shadow(0 0 10px #ff6570); } }
+
+/* Actual armor fragments begin on the body, fall, rotate, bounce once, and stay on the deck. */
+body.in-game .board-coop .boss-model.armor-stage-1 .armor-back,
+body.in-game .board-coop .boss-model.armor-stage-2 .armor-back,
+body.in-game .board-coop .boss-model.armor-stage-3 .armor-back,
+body.in-game .board-coop .boss-model.armor-stage-4 .armor-back,
+body.in-game .board-coop .boss-model.armor-stage-5 .armor-back { opacity: 0 !important; }
+body.in-game .board-coop .boss-model.armor-stage-2 .armor-antenna,
+body.in-game .board-coop .boss-model.armor-stage-3 .armor-antenna,
+body.in-game .board-coop .boss-model.armor-stage-4 .armor-antenna,
+body.in-game .board-coop .boss-model.armor-stage-5 .armor-antenna { opacity: 0 !important; }
+body.in-game .board-coop .boss-model.armor-stage-3 .armor-shoulder-left,
+body.in-game .board-coop .boss-model.armor-stage-3 .armor-shoulder-right,
+body.in-game .board-coop .boss-model.armor-stage-4 .armor-shoulder-left,
+body.in-game .board-coop .boss-model.armor-stage-4 .armor-shoulder-right,
+body.in-game .board-coop .boss-model.armor-stage-5 .armor-shoulder-left,
+body.in-game .board-coop .boss-model.armor-stage-5 .armor-shoulder-right { opacity: 0 !important; }
+body.in-game .board-coop .boss-model.armor-stage-4 .armor-forearm-left,
+body.in-game .board-coop .boss-model.armor-stage-4 .armor-forearm-right,
+body.in-game .board-coop .boss-model.armor-stage-5 .armor-forearm-left,
+body.in-game .board-coop .boss-model.armor-stage-5 .armor-forearm-right { opacity: 0 !important; }
+body.in-game .board-coop .boss-model.armor-stage-5 .armor-chest { opacity: 0 !important; }
+body.in-game .board-coop .boss-model.repairing.armor-stage-0 .armor-back,
+body.in-game .board-coop .boss-model.repairing.armor-stage-1 .armor-antenna,
+body.in-game .board-coop .boss-model.repairing.armor-stage-2 .armor-shoulder-left,
+body.in-game .board-coop .boss-model.repairing.armor-stage-2 .armor-shoulder-right,
+body.in-game .board-coop .boss-model.repairing.armor-stage-3 .armor-forearm-left,
+body.in-game .board-coop .boss-model.repairing.armor-stage-3 .armor-forearm-right,
+body.in-game .board-coop .boss-model.repairing.armor-stage-4 .armor-chest { opacity: 0 !important; }
+body.in-game .board-coop .armor-debris-part { opacity: 1; transform-box: fill-box; transform-origin: center; }
+body.in-game .board-coop .armor-fragment { fill: url(#bossMetal); stroke: #ff8590; stroke-width: 4; stroke-linejoin: round; filter: drop-shadow(0 4px 4px #05070fcc); }
+body.in-game .board-coop .antenna-left .armor-fragment,
+body.in-game .board-coop .antenna-right .armor-fragment { fill: none; stroke: #ff5367; stroke-width: 8; }
+body.in-game .board-coop .armor-debris-part.drop-now { animation: armor-fall-from-body 1.05s cubic-bezier(.16,.74,.25,1) both; }
+body.in-game .board-coop .armor-debris-part.return-now { animation: armor-return-to-body 1.05s cubic-bezier(.16,.74,.25,1) both; filter: drop-shadow(0 0 9px #ff6978); }
+@keyframes armor-fall-from-body {
+  0% { opacity: 0; transform: translate(0,0) rotate(0); }
+  12% { opacity: 1; }
+  69% { transform: translate(var(--fall-x),var(--fall-y)) rotate(var(--fall-angle)); }
+  83% { transform: translate(var(--fall-x),calc(var(--fall-y) - 10px)) rotate(var(--fall-angle)); }
+  100% { opacity: 1; transform: translate(var(--fall-x),var(--fall-y)) rotate(var(--fall-angle)); }
+}
+@keyframes armor-return-to-body {
+  0% { opacity: 1; transform: translate(var(--fall-x),var(--fall-y)) rotate(var(--fall-angle)); }
+  18% { opacity: 1; }
+  100% { opacity: .1; transform: translate(0,0) rotate(0); }
+}
+body.in-game .board-coop .armor-repair-vfx { fill: none; stroke: #ff6978; stroke-width: 4; stroke-dasharray: 7 10; filter: drop-shadow(0 0 8px #fb3556); animation: armor-repair-pulse .7s ease-in-out 2; }
+body.in-game .board-coop .armor-repair-vfx circle { fill: #ffb95f; stroke: #fff0c2; stroke-width: 2; }
+@keyframes armor-repair-pulse { 0%,100% { opacity: .15; stroke-dashoffset: 30; } 50% { opacity: .95; stroke-dashoffset: 0; } }
+
+/* Smoke and fire follow the hit flash, then clear before the next turn. */
+body.in-game .board-coop .boss-aftermath { pointer-events: none; }
+body.in-game .board-coop .boss-aftermath .smoke-wisp { fill: none; stroke: #98a4ad; stroke-width: 8; stroke-linecap: round; opacity: 0; filter: drop-shadow(0 0 5px #3b4650); }
+body.in-game .board-coop .boss-aftermath .wisp-two { stroke: #6c7681; stroke-width: 5; }
+body.in-game .board-coop .boss-hit .boss-aftermath .smoke-wisp { animation: hacker-smoke-rise 1.45s ease-out .78s both; }
+body.in-game .board-coop .boss-aftermath .fire-flame { fill: #ff4d35; stroke: #ffc36c; stroke-width: 2; opacity: 0; filter: drop-shadow(0 0 9px #ff4d35); transform-box: fill-box; transform-origin: center bottom; }
+body.in-game .board-coop .boss-hit .boss-aftermath .fire-flame { animation: hacker-fire-fade 1.2s ease-out .55s both; }
+@keyframes hacker-smoke-rise { 0% { opacity: 0; transform: translateY(0) scale(.55); } 18% { opacity: .78; } 100% { opacity: 0; transform: translateY(-52px) scale(1.3); } }
+@keyframes hacker-fire-fade { 0% { opacity: 0; transform: translateY(7px) scale(.45); } 20% { opacity: 1; } 62% { opacity: .9; transform: translateY(-7px) scale(1); } 100% { opacity: 0; transform: translateY(-17px) scale(.72); } }
+@media (prefers-reduced-motion: reduce) {
+  body.in-game .board-coop .armor-debris-part.drop-now { animation: none; opacity: 1; }
+  body.in-game .board-coop .armor-debris-part.return-now { animation: none; opacity: 0; }
+  body.in-game .board-coop .boss-aftermath .smoke-wisp,
+  body.in-game .board-coop .boss-aftermath .fire-flame { animation: none; opacity: .55; }
+  body.in-game .board-coop .armor-repair-vfx { animation: none; }
+}

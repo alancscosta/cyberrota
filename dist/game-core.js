@@ -12,6 +12,7 @@
   ];
   const CHECKPOINTS = [3, 6, 9, 12, 15];
   const DESTINATION = 18;
+  const HEALING_SPACES = [2, 10, 14];
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -65,12 +66,18 @@
     return {
       players: names.map((name) => ({ name, usedRoles: [] })),
       currentPlayer: 0,
+      position: 0,
       round: 1,
-      maxRounds: options.maxRounds || 12,
+      maxRounds: options.maxRounds || 24,
       hackerHp: options.hackerHp || 20,
+      startingHp: options.hackerHp || 20,
+      armorStage: 0,
+      difficultyMode: options.difficultyMode || 'normal',
       servers: Object.fromEntries(THEMES.map(({ id }) => [id, 100])),
+      healingNodes: [0, 1, 2].map((id) => ({ id, used: false })),
       alerts: 0,
       outcome: null,
+      bossStaggered: false,
       log: [],
     };
   }
@@ -82,13 +89,30 @@
     const difficulty = Math.max(1, Math.min(3, Number(result.difficulty) || 1));
     if (result.correct) {
       next.servers[theme] = Math.min(100, next.servers[theme] + 25);
+      const hackerHpBeforeHit = next.hackerHp;
       next.hackerHp = Math.max(0, next.hackerHp - difficulty - 1);
-      next.log.unshift({ outcome: 'correct', theme, round: next.round, difficulty });
-      if (next.hackerHp === 0) next.outcome = 'win';
+      if (next.hackerHp < hackerHpBeforeHit) next.armorStage = Math.min(5, (Number(next.armorStage) || 0) + 1);
+      const roll = Math.max(1, Math.min(3, Math.floor(Number(result.roll) || 1)));
+      next.position = Math.min(DESTINATION, (next.position || 0) + roll);
+      next.log.unshift({ outcome: 'correct', theme, round: next.round, difficulty, roll, position: next.position });
+      if (next.hackerHp === 0 && next.position < DESTINATION) {
+        next.hackerHp = 1;
+        next.bossStaggered = true;
+      } else if (next.hackerHp === 0) {
+        next.outcome = 'win';
+      }
+      if (next.position >= DESTINATION && next.hackerHp === 0) next.outcome = 'win';
     } else {
-      next.servers[theme] = Math.max(0, next.servers[theme] - 25);
+      const challenge = next.difficultyMode === 'challenge';
+      const serverDamage = challenge ? 50 : 25;
+      next.servers[theme] = Math.max(0, next.servers[theme] - serverDamage);
+      if (challenge) {
+        const hackerHpBeforeRepair = next.hackerHp;
+        next.hackerHp = Math.min(next.startingHp, next.hackerHp + 2);
+        if (next.hackerHp > hackerHpBeforeRepair) next.armorStage = Math.max(0, (Number(next.armorStage) || 0) - 1);
+      }
       next.alerts += 1;
-      next.log.unshift({ outcome: 'incorrect', theme, round: next.round, difficulty });
+      next.log.unshift({ outcome: 'incorrect', theme, round: next.round, difficulty, serverDamage, hackerHealed: challenge ? 2 : 0 });
       if (next.alerts >= 3) {
         const active = THEMES.map(({ id }) => id).filter((id) => next.servers[id] > 0);
         if (active.length) {
@@ -108,6 +132,101 @@
     return next;
   }
 
+  function useCoopHealingNode(state, nodeId) {
+    if (!state || state.outcome || !Array.isArray(state.healingNodes)) return state;
+    const index = state.healingNodes.findIndex((node) => node.id === Number(nodeId) && !node.used);
+    if (index < 0 || state.position !== HEALING_SPACES[index]) return state;
+    const target = THEMES.map(({ id }) => id).find((id) => state.servers[id] < 100);
+    if (!target) return state;
+    const next = clone(state);
+    const weakest = THEMES.map(({ id }, order) => ({ id, order, health: next.servers[id] }))
+      .filter((server) => server.health < 100)
+      .sort((a, b) => a.health - b.health || a.order - b.order)[0];
+    next.servers[weakest.id] = Math.min(100, next.servers[weakest.id] + 25);
+    next.healingNodes[index].used = true;
+    next.log.unshift({ outcome: 'healed', theme: weakest.id, amount: 25, nodeId: Number(nodeId), round: next.round });
+    return next;
+  }
+
+  function newRaceState(bluePlayers, redPlayers, options = {}) {
+    const normalizeTeam = (players) => Array.isArray(players) ? players.map((player) => String(player?.name ?? player).trim()) : [];
+    const blue = normalizeTeam(bluePlayers);
+    const red = normalizeTeam(redPlayers);
+    if (blue.length !== 3 || red.length !== 3 || [...blue, ...red].some((name) => !name)) {
+      throw new RangeError('A Corrida de Pacotes exige três jogadores por equipe.');
+    }
+    const startingHp = Math.max(1, Math.floor(Number(options.startingHp) || 10));
+    const maxDuels = Math.max(1, Math.floor(Number(options.maxDuels) || 30));
+    return {
+      teams: {
+        blue: { players: blue, hp: startingHp, correct: 0, position: 0, seals: [] },
+        red: { players: red, hp: startingHp, correct: 0, position: 0, seals: [] },
+      },
+      startingHp,
+      maxDuels,
+      duel: 0,
+      outcome: null,
+      log: [],
+    };
+  }
+
+  function racePairing(state) {
+    if (!state || state.outcome) return null;
+    return {
+      blue: state.teams.blue.players[state.duel % 3],
+      red: state.teams.red.players[state.duel % 3],
+      first: state.duel % 2 === 0 ? 'blue' : 'red',
+    };
+  }
+
+  function resolveRaceDuel(state, result) {
+    if (!state || state.outcome || state.duel >= state.maxDuels) return state;
+    const next = clone(state);
+    const blueCorrect = result.blueCorrect === true;
+    const redCorrect = result.redCorrect === true;
+    if (blueCorrect) advanceRaceTeam(next.teams.blue);
+    if (redCorrect) advanceRaceTeam(next.teams.red);
+    let damaged = null;
+    if (blueCorrect !== redCorrect) {
+      damaged = blueCorrect ? 'red' : 'blue';
+      next.teams[damaged].hp = Math.max(0, next.teams[damaged].hp - 1);
+    }
+    next.log.unshift({ duel: next.duel + 1, blueCorrect, redCorrect, damaged, bluePosition: next.teams.blue.position, redPosition: next.teams.red.position });
+    next.duel += 1;
+    const blueFinished = next.teams.blue.position >= DESTINATION && next.teams.blue.seals.length === THEMES.length;
+    const redFinished = next.teams.red.position >= DESTINATION && next.teams.red.seals.length === THEMES.length;
+    if (next.teams.blue.hp === 0 && next.teams.red.hp === 0) next.outcome = 'draw';
+    else if (next.teams.blue.hp === 0) next.outcome = 'red-win';
+    else if (next.teams.red.hp === 0) next.outcome = 'blue-win';
+    else if (blueFinished && redFinished) next.outcome = 'draw';
+    else if (blueFinished) next.outcome = 'blue-win';
+    else if (redFinished) next.outcome = 'red-win';
+    else if (next.duel >= next.maxDuels) {
+      if (next.teams.blue.position > next.teams.red.position) next.outcome = 'blue-win';
+      else if (next.teams.red.position > next.teams.blue.position) next.outcome = 'red-win';
+      else if (next.teams.blue.hp > next.teams.red.hp) next.outcome = 'blue-win';
+      else if (next.teams.red.hp > next.teams.blue.hp) next.outcome = 'red-win';
+      else next.outcome = 'draw';
+    }
+    return next;
+  }
+
+  function advanceRaceTeam(team) {
+    if (team.position >= DESTINATION) return;
+    team.correct += 1;
+    team.position += 1;
+    const checkpointIndex = CHECKPOINTS.indexOf(team.position);
+    if (checkpointIndex >= 0 && !team.seals.includes(THEMES[checkpointIndex].id)) team.seals.push(THEMES[checkpointIndex].id);
+  }
+
+  function hackerPhase(hp, maxHp) {
+    const ratio = Math.max(0, Number(hp) || 0) / Math.max(1, Number(maxHp) || 1);
+    if (ratio <= 0.25) return 'critical';
+    if (ratio <= 0.5) return 'broken';
+    if (ratio <= 0.75) return 'damaged';
+    return 'armored';
+  }
+
   function snapshotDeck(deck) {
     return clone(deck);
   }
@@ -120,5 +239,5 @@
     return leaders.length === 1 ? leaders[0] : { tie: leaders };
   }
 
-  return { THEMES, CHECKPOINTS, DESTINATION, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, snapshotDeck, winner, normalizeText };
+  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceDuel, hackerPhase, snapshotDeck, winner, normalizeText };
 });

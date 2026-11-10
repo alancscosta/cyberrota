@@ -1,0 +1,34 @@
+/* During a match, the game table uses its own dark, high-contrast palette. */
+body.in-game{overflow:hidden!important;background:#071119!important}
+body.in-game .app-shell,body.in-game .main-column{display:block;width:100%;height:100dvh;min-height:100dvh;margin:0}
+body.in-game .sidebar,body.in-game .topbar,body.in-game .app-footer{display:none!important}
+body.in-game #app{height:100dvh;min-height:100dvh;padding:0;overflow:hidden}
+body.in-game .game-world{--game-ink:#e7f0ec;--game-muted:#9aadaa;color:#e7f0ec;background:radial-gradient(ellipse at 33% 44%,#172d32 0,#0d1b23 48%,#081118 100%)}
+body.in-game .game-world:before{display:block;opacity:.12}body.in-game .game-world:after{display:block}
+body.in-game .game-hud{color:#e7f0ec;border-color:rgba(171,226,207,.14);background:rgba(8,17,23,.94)}
+body.in-game .game-hud .hud-brand b,body.in-game .game-hud .hud-center{color:#e7f0ec}
+body.in-game .game-hud .hud-brand small,body.in-game .game-hud .round-badge{color:#9fc2b7}
+body.in-game .game-hud .round-badge{background:rgba(65,115,101,.16);border-color:rgba(156,230,201,.18)}
+body.in-game .game-hud .hud-sound,body.in-game .game-hud .hud-exit{color:#c1d2cb;border-color:rgba(190,226,213,.19);background:rgba(25,41,47,.58)}
+body.in-game .game-layout{background:transparent}
+body.in-game .world-stage{background:radial-gradient(ellipse at 50% 58%,rgba(61,130,118,.11),transparent 70%)}
+body.in-game .world-title,body.in-game .world-footer{color:#94aaa3}
+body.in-game .world-title>b{color:#dae7df}
+body.in-game .game-control-dock{border-color:rgba(171,226,207,.14);background:linear-gradient(180deg,rgba(17,32,39,.97),rgba(10,20,27,.99));color:#e7f0ec}
+body.in-game .dock-top h1,body.in-game .game-card h2,body.in-game .side-game-card h3,body.in-game .route-console b{color:#e5f0e9}
+body.in-game .dock-top>div>small,body.in-game .dock-live,body.in-game .inline-help,body.in-game .question-actions small,body.in-game .turn-copy small{color:#9aada7}
+body.in-game .route-console,body.in-game .game-control-dock .game-card,body.in-game .game-control-dock .side-game-card{border-color:rgba(180,223,203,.14);background:linear-gradient(145deg,rgba(30,50,55,.96),rgba(19,32,39,.98));box-shadow:0 13px 26px rgba(1,8,11,.24)}
+body.in-game .game-control-dock .turn-banner{background:rgba(110,178,157,.08)}
+body.in-game .game-control-dock .option-button{color:#d8e5df;border-color:#3c5558;background:#172a31}
+body.in-game .game-control-dock .option-button:hover,body.in-game .game-control-dock .option-button.selected{color:#effff5;border-color:#8ad9bb;background:#25463e}
+body.in-game .game-control-dock .difficulty-button{color:#d8e5df;border-color:#415450;background:#172a31}
+body.in-game .game-control-dock .difficulty-button:hover{border-color:#8ad9bb;background:#25463e}
+body.in-game .server-health,body.in-game .turn-player{background:rgba(15,31,37,.9);color:#dce8e2}
+body.in-game .server-health small,body.in-game .turn-player{color:#a9bdb5}
+body.in-game .game-control-dock .question-explain{color:#cadbd2;background:rgba(120,190,159,.1);border-color:rgba(156,230,201,.2)}
+body.in-game .game-card .pill,body.in-game .game-control-dock .pill{color:#b3c4be;background:rgba(196,225,212,.08);border-color:rgba(196,225,212,.15)}
+body.in-game .coop-support{padding:10px 12px!important}.coop-support-head{display:flex;align-items:center;gap:8px;color:#9bb4ad;font:8px "DM Mono",monospace;letter-spacing:.6px}.coop-support-head b{margin-left:auto;color:#d6e7df}.coop-support .co-op-alerts{display:flex;gap:4px}.coop-support .co-op-alerts i{display:block;width:16px;height:4px;border-radius:4px;background:#34464b}.coop-support .co-op-alerts i.on{background:#ff747b;box-shadow:0 0 7px #ed4b59}.coop-support details{margin-top:6px}.coop-support summary{color:#aabdb5;font-size:9px;cursor:pointer}.coop-support .role-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:8px}.coop-support .role-button{padding:6px 5px;color:#b6c9c1;border-color:rgba(191,224,211,.14);background:rgba(12,27,34,.7);font-size:8px}.coop-support .role-button span{display:none}.coop-support .turn-order{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.coop-support .turn-player{padding:4px 7px;font-size:8px}
+body.in-game .result-banner,body.in-game .game-finished>.panel{background:rgba(14,28,35,.96);color:#e7f0ec;border-color:rgba(171,226,207,.16)}
+body.in-game .game-finished .panel h2,body.in-game .game-finished .panel p{color:#d4e2db}
+@media(max-width:720px){body.in-game{overflow:auto!important}body.in-game #app{height:auto;min-height:100dvh;overflow:visible}.game-world{height:auto;min-height:100dvh;overflow:visible}.game-layout{height:auto;display:flex;flex-direction:column}.world-stage{height:54svh;min-height:340px;padding:12px 8px 8px}.game-control-dock{overflow:visible;padding:15px 13px 30px;border-left:0;border-top:1px solid rgba(171,226,207,.14)}}
+@media(prefers-reduced-motion:reduce){body.in-game .player-pawn,body.in-game .boss-model,body.in-game .boss-aura,body.in-game .boss-eye{animation:none!important}}
