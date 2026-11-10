@@ -5,6 +5,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const app = fs.readFileSync(path.join(root, 'dist/app.js'), 'utf8');
+const html = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'dist/play-redesign.css'), 'utf8');
 const hackerCss = fs.readFileSync(path.join(root, 'dist/hacker-visual.css'), 'utf8');
 
@@ -52,11 +53,13 @@ test('the co-op board shows every player token and a persistent turn roster', ()
   assert.ok(app.includes('function renderCoopPlayerRoster()'), 'the full team has a dedicated always-visible roster');
   assert.ok(app.includes("class=\"coop-player-chip '+(index===game.coop.currentPlayer?'is-current':'')+'\""), 'the active player is highlighted among all names');
   assert.ok(app.includes("class=\"coop-player-token '+(active?'is-current':'')+'\""), 'all six players are individually represented on the shared route pawn');
+  assert.ok(app.includes('playerMotion=pawnSteps?') && app.includes('point[0]+dx') && app.includes('point[1]-18+dy'), 'every pawn keeps its own spacing while the shared token animates along the path');
   assert.ok(app.includes('game.coop.players.map((player,index)=>'), 'the roster and board tokens derive from the full room roster');
 });
 
 test('restored co-op saves derive armor damage stages from their recorded hits', () => {
   assert.ok(app.includes("restored.coop.armorStage=Math.max(Number(restored.coop.armorStage)||0,restored.coop.log.filter((event)=>event.outcome==='correct').length)"), 'older saved games restore missing armor stages from the combat log');
+  assert.ok(html.includes('game-core.js?v=13'), 'the browser reloads the current damage logic instead of using a cached combat engine');
 });
 
 test('damage visor uses two separated eye slits rather than a connecting line', () => {

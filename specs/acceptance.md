@@ -34,6 +34,7 @@
 - Quando o Hacker recupera vida no Desafio, uma peça que está no chão retorna voando até seu encaixe no corpo, com brilho de reparo; não duplica a placa nem deixa destroços sobrepostos.
 - Salas locais de 1 a 6 participantes avançam uma vez por participante, na ordem configurada, e retornam ao primeiro sem perder jogadores ou duplicar turnos.
 - Em Defenda a Rede, até seis jogadores aparecem visualmente no peão compartilhado e em uma lista de equipe sempre visível, com a pessoa da vez destacada.
+- Os seis peões preservam posições separadas durante a animação do movimento compartilhado.
 
 ## Derrota final do Hacker e tabuleiro de Defesa — SDD
 

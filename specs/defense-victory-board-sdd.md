@@ -22,6 +22,7 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 - Cada acerto avança uma etapa visível de avaria; fumaça começa a persistir após o primeiro golpe e fogo aparece após golpes seguintes, permanecendo até a derrota.
 - Em cada ataque, as partes destacadas da armadura ficam acima do corpo durante a queda e continuam visíveis no piso do relé depois que a animação termina.
 - Em Defenda a Rede, os seis participantes aparecem como robôs individuais agrupados no peão compartilhado e em uma lista visível com destaque para a pessoa da vez.
+- Durante o movimento do peão compartilhado, a animação mantém o espaçamento de cada robô para que os seis continuem distinguíveis.
 - A pista ocupa o perímetro da rota; os cinco servidores ficam em baias centrais separadas da estrada e da base, e os alvos laser coincidem com as faces dos racks.
 - No fim, o Hacker se desmonta em peças grandes e reconhecíveis do próprio robô (cabeça, tronco, braços e pernas), que caem com gravidade e ficam perto do relé. Não usar estilhaços genéricos em forma de cubo ou uma dispersão radial de confetes.
 
