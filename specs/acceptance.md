@@ -35,6 +35,10 @@
 - Salas locais de 1 a 6 participantes avançam uma vez por participante, na ordem configurada, e retornam ao primeiro sem perder jogadores ou duplicar turnos.
 - Em Defenda a Rede, até seis jogadores aparecem visualmente no peão compartilhado e em uma lista de equipe sempre visível, com a pessoa da vez destacada.
 - Os seis peões preservam posições separadas durante a animação do movimento compartilhado.
+- O dado e o aviso de turno usam a cor de destaque do participante ativo, com face clara e texto legível.
+- A indicação “SUA VEZ!!!” entra e sai em fade; a mensagem de vitória também desaparece suavemente sem esconder o botão de retorno.
+- As plataformas da rota ficam maiores e inteiramente dentro do piso quadrado, com uma margem visível até a borda.
+- A tampa da base de defesa flutua separada do corpo, e a estrutura não cobre as casas da rota.
 
 ## Derrota final do Hacker e tabuleiro de Defesa — SDD
 

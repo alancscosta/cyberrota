@@ -20,9 +20,9 @@ test('the interface bundles IBM Plex Sans locally and overrides legacy font rule
 
 test('the Hacker stays on the centerline of the external relay', () => {
   assert.match(hackerCss, /datacenter-scene \.boss-model\s*\{[^}]*transform-origin:\s*0 0;[^}]*translate:\s*none !important;[^}]*scale:\s*none !important;/s);
-  assert.ok(app.includes('class="defense-hub" transform="translate(500 370)"'), 'the defense hub remains on the board centerline');
+  assert.ok(app.includes('class="defense-hub" transform="translate(500 322)"'), 'the defense hub remains centered and clear of the route');
   assert.ok(app.includes('class="boss-model boss-scene-figure'), 'the external Hacker uses the centered SVG mount');
-  assert.ok(app.includes('class="hub-entry-link" d="M500 457V500"'), 'a centered cable visibly joins the base to the starting space');
+  assert.ok(app.includes('class="hub-entry-link" d="M500 409V488"'), 'a centered cable visibly joins the base to the starting space');
 });
 
 test('a player hit renders short lived smoke and flame after the blast', () => {
@@ -90,13 +90,31 @@ test('the five sector checkpoints retain their own palette accents', () => {
 
 test('the Defense board keeps a clear square footprint, classic traces, and aligned base', () => {
   assert.ok(app.includes('fisica:[270,190],rede:[475,190],transporte:[335,270],aplicacao:[650,190],seguranca:[615,270]'), 'all racks sit in separated interior bays away from the route and base');
-  assert.ok(app.includes('const coopPath=[[95,280],[160,318],[225,356],[290,394],[355,432],[428,478],[500,515],[572,478],[645,432],[710,394],[775,356],[840,318],[905,280],[840,242],[775,204],[710,166],[645,128],[575,90],[500,128]];'), 'the 19 walkable spaces follow the board perimeter');
+  assert.ok(app.includes('const coopPath=[[120,280],[175,310],[240,340],[305,370],[370,400],[435,430],[500,470],[565,430],[630,400],[695,370],[760,340],[825,310],[880,280],[825,250],[760,220],[695,190],[630,160],[560,125],[500,128]];'), 'the 19 walkable spaces follow the board perimeter with room for their larger platforms');
+  const route = JSON.parse(app.match(/const coopPath=(\[\[[^;]+\]\]);/)?.[1] || '[]');
+  assert.equal(route.length, 19, 'the route contains 19 distinct walkable spaces');
+  for (const [x,y] of route) assert.ok(Math.abs(x-500)/440 + Math.abs(y-280)/238 <= 1 - 28/238, `platform at ${x},${y} stays inside the board with a margin`);
   assert.equal((app.match(/d="M\$\{coopPathD\}"/g) || []).length, 2, 'the road edge and dashes use the same route points');
   assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the isometric square keeps a clear gap below the external robot platform');
   assert.ok(app.includes('M500 75 850 280 500 485 150 280Z') && app.includes('M500 108 786 280 500 451 214 280Z'), 'the earlier subtle circuit traces are restored');
-  assert.ok(app.includes('class="defense-hub" transform="translate(500 370)"'), 'the base remains centered on the board');
-  assert.ok(app.includes('class="hub-totem" transform="translate(0 -14)"'), 'the defense totem sits higher on its platform');
-  assert.ok(app.includes('class="hub-entry-link" d="M500 457V500"'), 'the centered link joins the base to the starting space');
+  assert.ok(app.includes('class="defense-hub" transform="translate(500 322)"'), 'the base remains centered away from the road');
+  assert.ok(app.includes('class="hub-floating-cap" transform="translate(0 -28)"'), 'the base cap floats clearly above the support walls');
+  assert.ok(app.includes('class="hub-totem" transform="translate(0 -52)"'), 'the defense totem sits clear of the lower base');
+  assert.ok(app.includes('class="hub-entry-link" d="M500 409V488"'), 'the centered link joins the base toward the route without crossing its tiles');
+  assert.ok(app.includes('class="hub-lift-beams"'), 'light beams make the floating base cap visibly separate from its foundation');
+});
+
+test('turn prompts and dice use the active player color with readable light contrast', () => {
+  assert.ok(app.includes('const PLAYER_COLORS = [') && app.includes('style="--turn-color:${turnColor}"'), 'the active player color is shared with the die');
+  assert.ok(app.includes('class="turn-announcement"') && app.includes('SUA VEZ!!!'), 'the current player gets a clear turn announcement');
+  assert.ok(hackerCss.includes('.dice-face') && hackerCss.includes('background: #f7fbff') && hackerCss.includes('color: #17324a'), 'the colored die uses a white face and dark readable pips');
+  assert.ok(hackerCss.includes('turn-announcement-fade'), 'the turn prompt fades in and out');
+});
+
+test('larger route platforms and the victory message fade in and out', () => {
+  assert.ok(app.includes('M-27 7 Q-27 4 -23 2'), 'route platforms have a larger visible footprint');
+  assert.ok(hackerCss.includes('turn-announcement-fade'), 'the turn prompt fades in and out');
+  assert.ok(hackerCss.includes('victory-message-fade'), 'the final victory message fades in and out');
 });
 
 test('the co-op victory keeps the board and presents a green finish state', () => {

@@ -23,6 +23,10 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 - Em cada ataque, as partes destacadas da armadura ficam acima do corpo durante a queda e continuam visíveis no piso do relé depois que a animação termina.
 - Em Defenda a Rede, os seis participantes aparecem como robôs individuais agrupados no peão compartilhado e em uma lista visível com destaque para a pessoa da vez.
 - Durante o movimento do peão compartilhado, a animação mantém o espaçamento de cada robô para que os seis continuem distinguíveis.
+- O dado e o aviso de turno usam a cor da pessoa ativa sobre superfícies claras de alto contraste; “SUA VEZ!!!” desaparece em fade.
+- As 19 plataformas são ampliadas, permanecem dentro do perímetro quadrado com margem e não são encobertas pela base central.
+- A tampa da base levita acima dos suportes, sem sobrepor sua própria fundação ou as casas da estrada.
+- A mensagem de vitória desaparece em fade, mantendo o botão de retorno acessível.
 - A pista ocupa o perímetro da rota; os cinco servidores ficam em baias centrais separadas da estrada e da base, e os alvos laser coincidem com as faces dos racks.
 - No fim, o Hacker se desmonta em peças grandes e reconhecíveis do próprio robô (cabeça, tronco, braços e pernas), que caem com gravidade e ficam perto do relé. Não usar estilhaços genéricos em forma de cubo ou uma dispersão radial de confetes.
 
