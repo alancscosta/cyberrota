@@ -9,6 +9,7 @@ const html = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'dist/play-redesign.css'), 'utf8');
 const hackerCss = fs.readFileSync(path.join(root, 'dist/hacker-visual.css'), 'utf8');
 const finishCss = fs.readFileSync(path.join(root, 'dist/cyberrota-finish.css'), 'utf8');
+const raceMode = fs.readFileSync(path.join(root, 'dist/race-mode.js'), 'utf8');
 
 test('the interface bundles IBM Plex Sans locally and overrides legacy font rules', () => {
   assert.ok(hackerCss.includes('font-family: "IBM Plex Sans"'), 'the interface selects IBM Plex Sans');
@@ -129,12 +130,23 @@ test('each player chooses a unique color and sees its matching robot avatar befo
 });
 
 test('the 3v3 race visibly shows both full teams on the board and in the score strip', () => {
-  assert.ok(app.includes("game.players.find((player)=>player.name===name)||{name,color:PLAYER_COLORS[(index+(team==='red'?3:0))%PLAYER_COLORS.length]}") , 'each team pawn resolves to its actual player and selected color');
-  assert.ok(app.includes("renderPlayerToken({...participant,position:game.race.teams[team].position},index,team)"), 'both teams render their individual player tokens');
-  assert.ok(app.includes("class=\"race-team-roster\" aria-label=\"Jogadores da equipe ${team==='blue'?'azul':'vermelha'}\""), 'each team score card lists its members');
-  assert.ok(app.includes('renderBoardPawnAvatar(avatarIndex,color)') && app.includes('esc(name)'), 'the score strip shows participant avatars and names');
-  assert.ok(app.includes("teamSide=team==='red'?1:team==='blue'?-1:0") && app.includes('lane=game.mode===\'competitive\'?teamSide*20:0'), 'red and blue formations occupy separate lanes instead of hiding each other');
-  assert.ok(app.includes('class="race-team-marker"') && app.includes("team==='red'?'#ff737c'"), 'opponent tokens keep a visible red team marker');
+  assert.ok(app.includes('RaceMode.render(game,'), 'the capture-the-flag screen is a dedicated, testable renderer');
+  assert.ok(raceMode.includes('race-team-roster') && raceMode.includes('aria-label="Jogadores da equipe'), 'both team score cards list all three participants');
+  assert.ok(raceMode.includes('renderBoardPawnAvatar') && raceMode.includes('CASA ${position}'), 'the score strip shows each player avatar, name, and individual house');
+  assert.ok(app.includes('game.race.teams[team].positions[index]'), 'each of six board pawns uses its own position');
+  assert.ok(raceMode.includes('renderBoardScene(game.players[0])') && raceMode.includes('BASE VERMELHA'), 'the 3v3 board shows both opposing bases');
+});
+
+test('capture-the-flag game visibly rolls a six-sided die and explains success and miss movement', () => {
+  assert.ok(raceMode.includes('data-action="race-roll"') && raceMode.includes('Rolar dado · 1–6'), 'the active player rolls before seeing the question');
+  assert.ok(html.includes('type="module" src="race-mode.js?v=1"') && raceMode.includes('renderDiePips(game.raceRoll)'), 'the selected die face appears beside the question');
+  assert.ok(raceMode.includes('Acerto avança o dado') && raceMode.includes('Erro recua seu peão'), 'the instructions explain the movement rule in the game UI');
+  assert.ok(raceMode.includes('captured ? \'BANDEIRA CAPTURADA\''), 'the turn result calls out flag captures');
+  assert.ok(raceMode.includes('event.opponentPosition ?? race.teams[event.team'), 'a miss displays the opposing pawn’s actual house number');
+  assert.ok(finishCss.includes('race-result-card:not(.damage) .race-damage') && finishCss.includes('color:#b7f0d1'), 'a correct move uses a green, readable result label');
+  assert.ok(finishCss.includes('race-result-card.damage .race-damage') && finishCss.includes('color:#ffc2c5'), 'a failed move uses a separate red result label');
+  assert.ok(app.includes('Core.resolveRaceTurn(game.race,{correct,roll:game.raceRoll})'), 'answer results update individual peons through the tested game rules');
+  assert.ok(app.includes('restored.mode===\'competitive\'&&restored.race') && app.includes('race.teams.blue.positions=Array(3)'), 'saved games from the former team-race rules migrate without a blank screen');
 });
 
 test('co-op player avatars have six silhouettes and appear in the roster and on the pawn', () => {
@@ -249,7 +261,7 @@ test('the panel uses the game board and all six available SVG avatars as its her
 });
 
 test('legacy light and recovery surfaces resolve to the same navy game palette', () => {
-  assert.ok(html.includes('cyberrota-finish.css?v=7'), 'the final palette is loaded after every legacy theme');
+  assert.ok(html.includes('cyberrota-finish.css?v=8'), 'the final palette is loaded after every legacy theme');
   assert.ok(finishCss.includes('body.in-game .game-control-dock .heal-node-button'), 'the recovery action receives the current game palette');
   assert.ok(finishCss.includes('background: linear-gradient(135deg,#103629,#123b31)'), 'healing remains green-coded without the former pale card');
   assert.ok(finishCss.includes('body:not(.in-game) .metric-strip') && finishCss.includes('body:not(.in-game) .mode-card'), 'dashboard surfaces use the same dark navy system');

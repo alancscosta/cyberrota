@@ -15,12 +15,12 @@ Os modos jogados no mesmo dispositivo são Treino Solo, Corrida de Pacotes 3v3 e
 
 ## Corrida de Pacotes — 3v3
 
-- Seis pessoas jogam localmente: três na equipe Azul e três na equipe Vermelha. A rotação percorre as três pessoas de cada equipe, em ordem.
-- Cada equipe percorre uma rota de 19 casas numeradas de 0 a 18 (18 movimentos), com cinco checkpoints nos espaços 3, 6, 9, 12 e 15. Cada acerto move a equipe uma casa e dá o selo ao alcançar um checkpoint; erro não avança.
-- Cada duelo usa a mesma pergunta e dificuldade para um jogador de cada equipe; respondem em sequência no mesmo dispositivo. A ordem alterna entre Azul e Vermelha. A pergunta e a resposta anterior ficam ocultas durante a passagem, e o resultado só é revelado depois das duas respostas.
-- Se só uma pessoa acertar, a equipe de quem errou perde 1 PV e a equipe que acertou avança. Se as duas acertarem, as duas avançam. Se as duas errarem, ninguém avança nem recebe dano.
-- Cada equipe começa com 10 PV. Zerar PV causa game over e elimina a equipe antes da chegada. Para vencer, é preciso chegar ao destino com os cinco selos; se ambas chegarem na mesma jogada, há empate. Após 30 duelos sem chegada, a equipe mais avançada vence; posição igual desempata por PV.
-- Não há bônus por velocidade. A rotação passa pelos três participantes por equipe. O tabuleiro mostra as seis peças ao longo da rota.
+- Seis pessoas jogam localmente: três na equipe Azul e três na Vermelha. Os seis peões têm posições independentes; Azul começa na casa 0 e Vermelho na casa 18, cada time voltado à base adversária.
+- Os times alternam turnos, começando por Azul, e a rotação percorre em ordem os três participantes de cada time. A pessoa ativa rola um dado de seis faces e responde uma pergunta.
+- Acerto move o peão ativo o valor do dado em direção à bandeira rival. Erro recua esse peão uma casa em direção à própria base e move o participante adversário correspondente o valor do dado em direção à bandeira da equipe ativa. As posições ficam limitadas entre 0 e 18.
+- Alcançar a base inimiga captura a bandeira e vence imediatamente para a equipe do peão. O tabuleiro mostra os seis avatares, os nomes, as casas individuais e as duas bandeiras/base.
+- A passagem do dispositivo oculta a pergunta/resposta anterior até a pessoa seguinte rolar o dado e revelar a própria pergunta. Não há dano, PV ou selos neste modo.
+- Após 60 turnos sem captura, vence o time cujo peão mais avançou em direção à bandeira inimiga; progresso igual termina em empate.
 
 ## Defenda a Rede — cooperativo contra o Hacker
 

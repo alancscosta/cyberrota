@@ -1,11 +1,10 @@
 # Critérios de aceitação
 
 - **Solo:** cinco respostas corretas em checkpoints diferentes concedem os cinco selos e permitem vencer ao alcançar o destino; no máximo 20 movimentos.
-- **Corrida 3v3:** configuração exige três pessoas por equipe, mostra seis peças robóticas com nomes e cores escolhidas no placar, e seis peões simultaneamente visíveis em formações separadas no tabuleiro. Faz a rotação 1→2→3 em cada equipe e alterna quem responde primeiro.
-- **Privacidade do duelo:** resposta e pergunta anterior não ficam visíveis ao participante seguinte; resultado e explicação só aparecem após as duas respostas.
-- **Combate 3v3:** acerto avança uma casa; acertar juntos avança os dois times; errar juntos não causa dano; se só um acerta, o outro time perde 1 PV e pode levar game over antes da chegada.
-- **Rota 3v3:** checkpoints nas casas 3, 6, 9, 12 e 15 concedem os cinco selos; a vitória exige os cinco selos e chegar à casa 18 com vida restante.
-- **Fim 3v3:** vida zero elimina o time imediatamente. Se os dois chegarem na mesma jogada, há empate. Depois de 30 duelos sem chegada, posição mais avançada vence e PV desempata.
+- **Corrida 3v3:** seis peões independentes (três por equipe) mostram nomes, avatares, cores e casas; os times começam em extremos opostos, alternam turnos e cada um percorre a rotação 1→2→3.
+- **Troca de turno 3v3:** cada participante recebe a própria pergunta somente depois de rolar seu dado; a resposta anterior fica oculta até a vez seguinte.
+- **Captura da bandeira 3v3:** acerto move o peão ativo o valor de um dado de seis faces; erro o recua uma casa e move o adversário correspondente o valor do dado. Casas ficam limitadas a 0–18.
+- **Fim 3v3:** o primeiro peão a alcançar a base inimiga captura a bandeira e vence; após 60 turnos, vence o time mais avançado ou há empate.
 - **Cooperativo acerto:** reduz PV do Hacker conforme dificuldade e recupera até 25% do servidor sob ataque, sem passar de 100%.
 - **Cooperativo erro:** reduz 25% do servidor sob ataque e aumenta alertas; terceiro alerta atinge o servidor ativo mais frágil e reinicia alerta.
 - **Desafio:** erro aplica dano total de 50% ao servidor sob ataque, cura Hacker em 2 PV até o limite inicial, resolve alerta e depois checa condições terminais.

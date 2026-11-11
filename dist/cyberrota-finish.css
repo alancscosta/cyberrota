@@ -169,3 +169,8 @@ body.in-game .feedback-card .eyebrow { color: #9ac2da !important; }
 body.in-game .feedback-stats span { color: #c5deee !important; background: #142e44 !important; border-color: #34556e !important; }
 body.in-game .feedback-card .result-mark.good { color: #b5ffd0; background: #123a2b; border-color: #55ba7a; }
 body.in-game .feedback-card .question-actions small { color: #9ab4c8; }
+body.in-game .race-result-card:not(.damage) .race-damage{border:1px solid rgba(101,218,156,.3);background:rgba(42,129,91,.16);color:#b7f0d1;font:600 13px "IBM Plex Sans",sans-serif}
+body.in-game .race-result-card.damage .race-damage{border:1px solid rgba(255,115,124,.3);background:rgba(117,42,54,.2);color:#ffc2c5;font:600 13px "IBM Plex Sans",sans-serif}
+
+body.in-game .race-result-card:not(.damage) .race-damage{border:1px solid rgba(101,218,156,.3);background:rgba(42,129,91,.16);color:#b7f0d1;font:600 13px "IBM Plex Sans",sans-serif}
+body.in-game .race-result-card.damage .race-damage{border:1px solid rgba(255,115,124,.3);background:rgba(117,42,54,.2);color:#ffc2c5;font:600 13px "IBM Plex Sans",sans-serif}

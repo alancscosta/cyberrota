@@ -148,59 +148,68 @@ test('competitive ties share the win between qualified players with the top scor
   assert.deepEqual(result.tie.map((player) => player.name), ['Ana', 'Bia']);
 });
 
-test('3v3 race requires three named players on each team and starts with equal health', () => {
+test('3v3 capture the flag requires three players per team and starts at opposite bases', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  assert.equal(state.teams.blue.hp, 10);
-  assert.equal(state.teams.red.hp, 10);
+  assert.deepEqual(state.teams.blue.positions, [0, 0, 0]);
+  assert.deepEqual(state.teams.red.positions, [18, 18, 18]);
   assert.throws(() => Core.newRaceState(['A1'], ['V1', 'V2', 'V3']), /equipe/i);
 });
 
-test('3v3 duels rotate through each roster and alternate who answers first', () => {
+test('3v3 turns alternate teams and rotate independently through each trio', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  assert.deepEqual(Core.racePairing(state), { blue: 'A1', red: 'V1', first: 'blue' });
-  const next = Core.resolveRaceDuel(state, { blueCorrect: true, redCorrect: true });
-  assert.deepEqual(Core.racePairing(next), { blue: 'A2', red: 'V2', first: 'red' });
-  assert.equal(next.teams.blue.hp, 10);
-  assert.equal(next.teams.red.hp, 10);
-  assert.equal(next.teams.blue.position, 1);
-  assert.equal(next.teams.red.position, 1);
+  assert.deepEqual(Core.racePairing(state), { team: 'blue', player: 'A1', playerIndex: 0 });
+  const afterBlue = Core.resolveRaceTurn(state, { correct: true, roll: 4 });
+  assert.deepEqual(Core.racePairing(afterBlue), { team: 'red', player: 'V1', playerIndex: 0 });
+  assert.deepEqual(afterBlue.teams.blue.positions, [4, 0, 0]);
+  assert.deepEqual(afterBlue.teams.red.positions, [18, 18, 18]);
+  const afterRed = Core.resolveRaceTurn(afterBlue, { correct: true, roll: 2 });
+  assert.deepEqual(Core.racePairing(afterRed), { team: 'blue', player: 'A2', playerIndex: 1 });
+  assert.deepEqual(afterRed.teams.red.positions, [16, 18, 18]);
 });
 
-test('3v3 race damages only the team that misses a different-result duel', () => {
+test('a wrong 3v3 answer retreats the active pawn and advances the corresponding opponent by the die', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  const next = Core.resolveRaceDuel(state, { blueCorrect: true, redCorrect: false });
-  assert.equal(next.teams.red.hp, 9);
-  assert.equal(next.teams.blue.hp, 10);
-  assert.equal(state.teams.red.hp, 10, 'input state remains unchanged');
+  state.teams.blue.positions[0] = 3;
+  const next = Core.resolveRaceTurn(state, { correct: false, roll: 4 });
+  assert.deepEqual(next.teams.blue.positions, [2, 0, 0]);
+  assert.deepEqual(next.teams.red.positions, [14, 18, 18]);
+  assert.equal(next.log[0].player, 'A1');
+  assert.equal(next.log[0].advancedOpponent, 'V1');
+  assert.equal(next.log[0].playerPosition, 2);
+  assert.equal(next.log[0].opponentPosition, 14);
+  assert.equal(state.teams.red.positions[0], 18, 'input state remains unchanged');
 });
 
-test('3v3 race awards seals while teams advance along the route', () => {
-  let match = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  for (let step = 0; step < 3; step += 1) match = Core.resolveRaceDuel(match, { blueCorrect: true, redCorrect: false });
-  assert.equal(match.teams.blue.position, 3);
-  assert.deepEqual(match.teams.blue.seals, ['fisica']);
-  assert.equal(match.teams.red.position, 0);
+test('capture the flag is the immediate win condition, including a flag captured after a miss', () => {
+  const blueCapture = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  blueCapture.teams.blue.positions[1] = 16;
+  blueCapture.turn = 2;
+  const blueWin = Core.resolveRaceTurn(blueCapture, { correct: true, roll: 5 });
+  assert.equal(blueWin.outcome, 'blue-win');
+  assert.equal(blueWin.log[0].captured, 'red-flag');
+  const redCapture = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  redCapture.turn = 1;
+  redCapture.teams.red.positions[0] = 5;
+  redCapture.teams.blue.positions[0] = 16;
+  const blueWinAfterRedMiss = Core.resolveRaceTurn(redCapture, { correct: false, roll: 3 });
+  assert.equal(blueWinAfterRedMiss.outcome, 'blue-win');
+  assert.equal(blueWinAfterRedMiss.log[0].captured, 'red-flag');
 });
 
-test('3v3 race ends on zero health before the finish or when a team completes the route', () => {
+test('3v3 movement clamps at each base and resolves a 60-turn limit by progress', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  state.teams.red.hp = 1;
-  const defeated = Core.resolveRaceDuel(state, { blueCorrect: true, redCorrect: false });
-  assert.equal(defeated.outcome, 'blue-win');
-  assert.equal(defeated.teams.blue.position, 1);
-  assert.equal(defeated.teams.red.position, 0);
-  const final = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  final.teams.blue.position = Core.DESTINATION - 1;
-  final.teams.blue.seals = ['fisica', 'rede', 'transporte', 'aplicacao', 'seguranca'];
-  const finished = Core.resolveRaceDuel(final, { blueCorrect: true, redCorrect: false });
-  assert.equal(finished.outcome, 'blue-win');
-  assert.equal(finished.teams.blue.position, Core.DESTINATION);
-  let match = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  for (let duel = 0; duel < Core.DESTINATION; duel += 1) {
-    match = Core.resolveRaceDuel(match, { blueCorrect: true, redCorrect: true });
-  }
-  assert.equal(match.outcome, 'draw');
-  assert.equal(match.duel, Core.DESTINATION);
+  state.teams.blue.positions[0] = 17;
+  const atBase = Core.resolveRaceTurn(state, { correct: true, roll: 6 });
+  assert.equal(atBase.teams.blue.positions[0], 18);
+  assert.equal(atBase.outcome, 'blue-win');
+  assert.equal(Core.resolveRaceTurn(atBase, { correct: true, roll: 6 }), atBase, 'finished match is immutable');
+  const capped = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  capped.turn = 59;
+  capped.teams.blue.positions[0] = 10;
+  capped.teams.red.positions[0] = 10;
+  const result = Core.resolveRaceTurn(capped, { correct: true, roll: 1 });
+  assert.equal(result.outcome, 'blue-win');
+  assert.equal(result.turn, 60);
 });
 
 test('challenge mode makes the hacker recover and inflict extra server damage on a miss', () => {

@@ -152,19 +152,14 @@
     const normalizeTeam = (players) => Array.isArray(players) ? players.map((player) => String(player?.name ?? player).trim()) : [];
     const blue = normalizeTeam(bluePlayers);
     const red = normalizeTeam(redPlayers);
-    if (blue.length !== 3 || red.length !== 3 || [...blue, ...red].some((name) => !name)) {
-      throw new RangeError('A Corrida de Pacotes exige três jogadores por equipe.');
-    }
-    const startingHp = Math.max(1, Math.floor(Number(options.startingHp) || 10));
-    const maxDuels = Math.max(1, Math.floor(Number(options.maxDuels) || 30));
+    if (blue.length !== 3 || red.length !== 3 || [...blue, ...red].some((name) => !name)) throw new RangeError('A Corrida de Pacotes exige três jogadores por equipe.');
     return {
       teams: {
-        blue: { players: blue, hp: startingHp, correct: 0, position: 0, seals: [] },
-        red: { players: red, hp: startingHp, correct: 0, position: 0, seals: [] },
+        blue: { players: blue, positions: [0, 0, 0] },
+        red: { players: red, positions: [DESTINATION, DESTINATION, DESTINATION] },
       },
-      startingHp,
-      maxDuels,
-      duel: 0,
+      turn: 0,
+      maxTurns: Math.max(2, Math.floor(Number(options.maxTurns) || 60)),
       outcome: null,
       log: [],
     };
@@ -172,51 +167,42 @@
 
   function racePairing(state) {
     if (!state || state.outcome) return null;
-    return {
-      blue: state.teams.blue.players[state.duel % 3],
-      red: state.teams.red.players[state.duel % 3],
-      first: state.duel % 2 === 0 ? 'blue' : 'red',
-    };
+    const team = state.turn % 2 === 0 ? 'blue' : 'red';
+    const playerIndex = Math.floor(state.turn / 2) % 3;
+    return { team, player: state.teams[team].players[playerIndex], playerIndex };
   }
 
-  function resolveRaceDuel(state, result) {
-    if (!state || state.outcome || state.duel >= state.maxDuels) return state;
+  function raceProgress(state, team) {
+    return team === 'blue' ? Math.max(...state.teams.blue.positions) : DESTINATION - Math.min(...state.teams.red.positions);
+  }
+
+  function resolveRaceTurn(state, result) {
+    if (!state || state.outcome || state.turn >= state.maxTurns) return state;
+    const { team, player, playerIndex } = racePairing(state);
     const next = clone(state);
-    const blueCorrect = result.blueCorrect === true;
-    const redCorrect = result.redCorrect === true;
-    if (blueCorrect) advanceRaceTeam(next.teams.blue);
-    if (redCorrect) advanceRaceTeam(next.teams.red);
-    let damaged = null;
-    if (blueCorrect !== redCorrect) {
-      damaged = blueCorrect ? 'red' : 'blue';
-      next.teams[damaged].hp = Math.max(0, next.teams[damaged].hp - 1);
+    const opponent = team === 'blue' ? 'red' : 'blue';
+    const opponentPlayer = next.teams[opponent].players[playerIndex];
+    const roll = Math.max(1, Math.min(6, Math.floor(Number(result.roll) || 1)));
+    const correct = result.correct === true;
+    if (team === 'blue') next.teams.blue.positions[playerIndex] = correct ? Math.min(DESTINATION, next.teams.blue.positions[playerIndex] + roll) : Math.max(0, next.teams.blue.positions[playerIndex] - 1);
+    else next.teams.red.positions[playerIndex] = correct ? Math.max(0, next.teams.red.positions[playerIndex] - roll) : Math.min(DESTINATION, next.teams.red.positions[playerIndex] + 1);
+    if (!correct) {
+      if (team === 'blue') next.teams.red.positions[playerIndex] = Math.max(0, next.teams.red.positions[playerIndex] - roll);
+      else next.teams.blue.positions[playerIndex] = Math.min(DESTINATION, next.teams.blue.positions[playerIndex] + roll);
     }
-    next.log.unshift({ duel: next.duel + 1, blueCorrect, redCorrect, damaged, bluePosition: next.teams.blue.position, redPosition: next.teams.red.position });
-    next.duel += 1;
-    const blueFinished = next.teams.blue.position >= DESTINATION && next.teams.blue.seals.length === THEMES.length;
-    const redFinished = next.teams.red.position >= DESTINATION && next.teams.red.seals.length === THEMES.length;
-    if (next.teams.blue.hp === 0 && next.teams.red.hp === 0) next.outcome = 'draw';
-    else if (next.teams.blue.hp === 0) next.outcome = 'red-win';
-    else if (next.teams.red.hp === 0) next.outcome = 'blue-win';
-    else if (blueFinished && redFinished) next.outcome = 'draw';
-    else if (blueFinished) next.outcome = 'blue-win';
-    else if (redFinished) next.outcome = 'red-win';
-    else if (next.duel >= next.maxDuels) {
-      if (next.teams.blue.position > next.teams.red.position) next.outcome = 'blue-win';
-      else if (next.teams.red.position > next.teams.blue.position) next.outcome = 'red-win';
-      else if (next.teams.blue.hp > next.teams.red.hp) next.outcome = 'blue-win';
-      else if (next.teams.red.hp > next.teams.blue.hp) next.outcome = 'red-win';
-      else next.outcome = 'draw';
+    next.turn += 1;
+    const blueCaptured = next.teams.blue.positions.some((position) => position >= DESTINATION);
+    const redCaptured = next.teams.red.positions.some((position) => position <= 0);
+    const captured = blueCaptured && redCaptured ? 'both-flags' : blueCaptured ? 'red-flag' : redCaptured ? 'blue-flag' : null;
+    next.log.unshift({ turn: next.turn, team, player, playerIndex, correct, roll, advancedOpponent: correct ? null : opponentPlayer, playerPosition: next.teams[team].positions[playerIndex], opponentPosition: correct ? null : next.teams[opponent].positions[playerIndex], bluePositions: next.teams.blue.positions.slice(), redPositions: next.teams.red.positions.slice(), captured });
+    if (blueCaptured && redCaptured) next.outcome = 'draw';
+    else if (blueCaptured) next.outcome = 'blue-win';
+    else if (redCaptured) next.outcome = 'red-win';
+    else if (next.turn >= next.maxTurns) {
+      const blueProgress = raceProgress(next, 'blue'), redProgress = raceProgress(next, 'red');
+      next.outcome = blueProgress > redProgress ? 'blue-win' : redProgress > blueProgress ? 'red-win' : 'draw';
     }
     return next;
-  }
-
-  function advanceRaceTeam(team) {
-    if (team.position >= DESTINATION) return;
-    team.correct += 1;
-    team.position += 1;
-    const checkpointIndex = CHECKPOINTS.indexOf(team.position);
-    if (checkpointIndex >= 0 && !team.seals.includes(THEMES[checkpointIndex].id)) team.seals.push(THEMES[checkpointIndex].id);
   }
 
   function hackerPhase(hp, maxHp) {
@@ -246,5 +232,5 @@
     return leaders.length === 1 ? leaders[0] : { tie: leaders };
   }
 
-  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceDuel, hackerPhase, coopVictoryStage, snapshotDeck, winner, normalizeText };
+  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceTurn, hackerPhase, coopVictoryStage, snapshotDeck, winner, normalizeText };
 });
