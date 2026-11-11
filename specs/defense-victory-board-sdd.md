@@ -9,9 +9,9 @@ Manter Defesa legível como jogo de tabuleiro. A estrada é reservada ao movimen
 ### Contrato espacial
 
 - Casas da rota usam escala 1,3× e permanecem dentro do tabuleiro quadrado.
-- Racks usam escala 0,46 e âncoras fixas nas áreas internas. Seus limites desenhados não podem cruzar casas da rota nem outros racks.
-- O impacto do laser termina na posição correspondente ao rack.
-- Os seis peões formam uma grade compacta de três colunas por duas fileiras, com animação individual. Ao se moverem, preservam o espaçamento.
+- Racks usam escala 0,54 e âncoras fixas nas baias internas laterais. Seus limites desenhados não podem cruzar casas da rota, o núcleo de defesa nem outros racks.
+- O impacto do laser termina no centro do volume do servidor correspondente, sem atingir sua plataforma.
+- Os seis peões são desenhados como peças largas de tabuleiro, com bases ovais e seis silhuetas distintas. Eles formam uma grade de três colunas por duas fileiras, com animação individual, e preservam o espaçamento ao se moverem.
 - A base mantém o eixo central. O totem fica acima da plataforma elevada e os suportes continuam visíveis.
 
 ### Estado de ataque
@@ -93,3 +93,18 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 - Contrato da sala cobre bloqueio das cores ocupadas e validação de unicidade no início.
 - Contrato do tabuleiro cobre baias dos servidores e ausência de cabo atravessando a trilha.
 - Contrato de leitura cobre os avisos grandes de turno e vitória.
+
+
+## Revisão visual de peões e pista — ciclo atual
+
+- Substituir as miniaturas robóticas finas por peças tipo pino com corpo curto, cabeça legível e base larga.
+- Manter os seis participantes visíveis na casa inicial em duas fileiras e garantir que o conjunto caiba dentro da plataforma ampliada.
+- Reposicionar racks em baias laterais, maiores e claramente fora da estrada e do núcleo central.
+- Terminar os feixes no corpo dos racks.
+- Medir cada vértice da geometria das plataformas contra o limite quadrado; a casa não pode atravessar a borda do tabuleiro.
+- Testar o dado com faces reais de um a seis e colorir apenas os pontos ocupados.
+
+### Testes TDD deste ciclo
+
+- `tests/visual-contract.test.cjs`: confirma silhueta e formação dos peões, posições dos racks, colisões contra as 19 casas e núcleo, limites do tabuleiro e alinhamento dos impactos.
+- `tests/visual-contract.test.cjs`: confirma que CSS de turno afeta somente pontos ativos do dado.

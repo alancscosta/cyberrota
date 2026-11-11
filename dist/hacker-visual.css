@@ -257,7 +257,7 @@ body.in-game .dice-tray-active { border-color: var(--turn-color, #43d6ff) !impor
 body.in-game .dice-tray-active > small { color: #17324a !important; }
 body.in-game .dice-tray-active .dice-tray-mark { border-color: var(--turn-color, #43d6ff) !important; background: #fff !important; box-shadow: 0 0 0 3px color-mix(in srgb, var(--turn-color, #43d6ff) 14%, white); }
 body.in-game .dice-tray-active .dice-face { border: 2px solid var(--turn-color, #43d6ff) !important; border-radius: 12px !important; background: #f7fbff !important; color: #17324a !important; }
-body.in-game .dice-tray-active .dice-pips i { background: var(--turn-color, #43d6ff) !important; box-shadow: 0 0 2px color-mix(in srgb, var(--turn-color, #43d6ff) 30%, transparent); }
+body.in-game .dice-tray-active .dice-pips i.pip { background: var(--turn-color, #43d6ff) !important; box-shadow: 0 0 2px color-mix(in srgb, var(--turn-color, #43d6ff) 30%, transparent); }
 body.in-game .coop-turn-card .turn-token { color: var(--turn-color) !important; background: #fff !important; border: 2px solid var(--turn-color) !important; box-shadow: 0 0 0 3px #ffffff2e; }
 
 body.in-game .turn-announcement { display: flex; align-items: center; justify-content: center; gap: 8px; width: fit-content; max-width: 100%; margin: 0 auto 8px; padding: 7px 15px; border: 1px solid var(--turn-color); border-radius: 999px; color: #17324a; background: #f7fbff; box-shadow: 0 4px 18px color-mix(in srgb, var(--turn-color) 28%, transparent); animation: turn-announcement-fade 3.2s ease both; }
@@ -376,6 +376,14 @@ body.in-game .board-coop .coop-mini-robot path { vector-effect: non-scaling-stro
 /* Clearer, larger board spaces and small player pieces with an idle tabletop motion. */
 body.in-game .board-coop .coop-mini-robot { animation: pawn-token-bob 1.9s ease-in-out infinite; animation-delay: calc(var(--pawn-index, 0) * -0.17s); }
 @keyframes pawn-token-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -2px; } }
+body.in-game .board-coop .coop-player-token .pawn-shadow { fill: #020b14; opacity: .7; }
+body.in-game .board-coop .coop-player-token .pawn-base-side { fill: color-mix(in srgb, var(--pawn-color) 53%, #071320); stroke: #06111d; stroke-width: 1.5; }
+body.in-game .board-coop .coop-player-token .pawn-base-top { fill: var(--pawn-color); stroke: #e9f8ff; stroke-width: 1.2; }
+body.in-game .board-coop .coop-player-token .pawn-stem { fill: color-mix(in srgb, var(--pawn-color) 74%, #10283d); stroke: #071521; stroke-width: 1.5; stroke-linejoin: round; }
+body.in-game .board-coop .coop-player-token .pawn-stem-highlight { fill: none; stroke: #ffffffc9; stroke-width: 1.15; stroke-linecap: round; }
+body.in-game .board-coop .coop-player-token .pawn-head { fill: var(--pawn-color); stroke: #f1fbff; stroke-width: 1.5; stroke-linejoin: round; filter: drop-shadow(0 1px 1px #020914); }
+body.in-game .board-coop .coop-player-token .pawn-head-highlight { fill: none; stroke: #ffffffd9; stroke-width: 1.1; stroke-linecap: round; }
+body.in-game .board-coop .coop-player-token.is-current .pawn-base-top { filter: drop-shadow(0 0 4px var(--pawn-color)); }
 
 /* The defense terminal reads as one floating landing with a beacon seated on top. */
 body.in-game .board-coop .hub-cap-side { fill: #0b2031; stroke: #1687b4; stroke-width: 3; }

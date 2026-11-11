@@ -63,12 +63,13 @@ test('the defense board gives every rack clear road clearance and widens the paw
   const rackPositions = Object.fromEntries([...rackConfig.matchAll(/(\w+):\[(\d+),(\d+)\]/g)].map((match) => [match[1], [Number(match[2]), Number(match[3])]]));
   const route = JSON.parse(app.match(/const coopPath=(\[\[[^;]+\]\]);/)?.[1] || '[]');
   const routeHalfX = 27 * 1.3;
-  const routeHalfY = 17 * 1.3;
-  const rackScale = 0.46;
+  const routeTop = 17 * 1.3;
+  const routeBottom = 28 * 1.3;
+  const rackScale = 0.54;
   const rackBounds = Object.entries(rackPositions).map(([name, [x, y]]) => ({ name, left: x - 17 * rackScale, right: x + 103 * rackScale, top: y - 5 * rackScale, bottom: y + 190 * rackScale }));
   for (const rack of rackBounds) {
     for (const [x,y] of route) {
-      const overlaps = rack.left < x + routeHalfX && rack.right > x - routeHalfX && rack.top < y + routeHalfY && rack.bottom > y - routeHalfY;
+      const overlaps = rack.left < x + routeHalfX && rack.right > x - routeHalfX && rack.top < y + routeBottom && rack.bottom > y - routeTop;
       assert.equal(overlaps, false, `${rack.name} rack stays clear of the platform at ${x},${y}`);
     }
   }
@@ -76,8 +77,11 @@ test('the defense board gives every rack clear road clearance and widens the paw
     const a=rackBounds[i],b=rackBounds[j];
     assert.ok(a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top, `${a.name} and ${b.name} racks do not overlap`);
   }
+  const tileVertices=[[-27,0],[-23,-4],[-2,-16],[2,-16],[23,-4],[27,7],[27,13],[2,27],[0,28],[-2,27],[-27,13]];
+  for(const [x,y] of route) for(const [dx,dy] of tileVertices){const edge=(Math.abs(x+dx*1.3-500)/440)+(Math.abs(y+dy*1.3-280)/238);assert.ok(edge<=1,`route platform at ${x},${y} stays inside the board`);}
+  for (const rack of rackBounds) { const overlapsHub=rack.left<575&&rack.right>425&&rack.top<410&&rack.bottom>215; assert.equal(overlapsHub,false,`${rack.name} rack stays clear of the defense hub`); for(const [x,y] of [[rack.left,rack.top],[rack.right,rack.top],[rack.left,rack.bottom],[rack.right,rack.bottom]]) assert.ok(Math.abs(x-500)/440+Math.abs(y-280)/238<.94,`${rack.name} rack stays inside the board`); }
   assert.ok(app.includes("transform=\"translate('+x+' '+y+') scale(1.3)\""), 'route platforms are widened to fit the compact team formation');
-  assert.ok(app.includes('scale(.46)'), 'server buildings are sized for the interior bays');
+  assert.ok(app.includes('scale(.54)'), 'server buildings are large enough to read clearly inside the bays');
 });
 
 test('the hub stack is separated, pawns bob in formation, and the Hacker signals an attack', () => {
@@ -90,6 +94,20 @@ test('the hub stack is separated, pawns bob in formation, and the Hacker signals
   assert.ok(hackerCss.includes('hacker-binary-fall'), 'binary streams animate during an attack');
   assert.ok(hackerCss.includes('pawn-token-bob'), 'each participant pawn gets a subtle idle animation');
   assert.ok(hackerCss.includes('prefers-reduced-motion: reduce'), 'reduced-motion settings disable decorative motion');
+});
+
+test('board participants look like broad game pawns, not stretched robot sprites', () => {
+  assert.ok(app.includes('function renderBoardPawn(index,color)'), 'board tokens use a dedicated pawn illustration');
+  assert.ok(app.includes('pawnOffsets=[[-18,-4],[0,-4],[18,-4],[-18,15],[0,15],[18,15]]'), 'six pawns occupy two separated rows on the start tile');
+  assert.ok(app.includes('renderBoardPawn(avatarIndex,color)'), 'every color receives a pawn-shaped figure');
+  assert.ok(app.includes('<g class=\"coop-mini-robot\"><g transform=\"scale(.82)\">'), 'the six pieces shrink together to fit within one route platform');
+  assert.ok(app.includes('pawn-head-form-') && app.includes('pawn-base-top'), 'pawn heads have six silhouettes and share a wide stable base');
+});
+
+test('the die only colors real pips and shows standard one-through-six faces', () => {
+  assert.ok(hackerCss.includes('.dice-tray-active .dice-pips i.pip'), 'turn color applies only to occupied pip cells');
+  assert.ok(!hackerCss.includes('.dice-tray-active .dice-pips i {'), 'empty pip cells remain blank');
+  for (const face of ['renderDiePips(1)', 'renderDiePips(2)', 'renderDiePips(3)', 'renderDiePips(4)', 'renderDiePips(5)', 'renderDiePips(6)']) assert.ok(app.includes(face), `the cube has a standard ${face.slice(-2,-1)} face`);
 });
 
 test('each player chooses a unique color and sees its matching robot avatar before joining', () => {
@@ -107,11 +125,11 @@ test('co-op player avatars have six silhouettes and appear in the roster and on 
   assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the piece portrait uses the selected color');
   assert.ok(app.includes("renderPlayerAvatar(avatarIndex,color)+'</span><span>'+esc(player.name)"), 'each roster entry displays its matching piece portrait');
   assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the board pawns reuse the distinct piece silhouettes');
-  assert.ok(app.includes('class=\"player-color-robot\" x=\"-11.2\" y=\"-13.3\" width=\"22.4\" height=\"26.6\" viewBox=\"0 0 64 76\"'), 'the six pions use a centered, bounded SVG viewport');
+  assert.ok(app.includes('class=\"pawn-base-top\"') && app.includes('rx=\"12\" ry=\"3\"'), 'the six board figures use a broad, stable tabletop base');
 });
 
 test('the defense route stays clear of server bays and the defense hub', () => {
-  assert.ok(app.includes('fisica:[300,190],rede:[410,150],transporte:[590,190],aplicacao:[385,260],seguranca:[604,285]'), 'server racks sit in interior bays away from route tiles');
+  assert.ok(app.includes('fisica:[365,275],rede:[365,160],transporte:[585,275],aplicacao:[290,245],seguranca:[660,245]'), 'server racks sit in interior bays away from route tiles');
   assert.ok(!app.includes('M500 409V488'), 'no hub cable crosses the route or start tile');
 });
 
@@ -153,8 +171,8 @@ test('the five sector checkpoints retain their own palette accents', () => {
 });
 
 test('the Defense board keeps a clear square footprint, classic traces, and aligned base', () => {
-  assert.ok(app.includes('fisica:[300,190],rede:[410,150],transporte:[590,190],aplicacao:[385,260],seguranca:[604,285]'), 'all racks sit in separated interior bays away from the route and base');
-  assert.ok(app.includes('const coopPath=[[120,280],[175,310],[240,340],[305,370],[370,400],[435,430],[500,470],[565,430],[630,400],[695,370],[760,340],[825,310],[880,280],[825,250],[760,220],[695,190],[630,160],[560,125],[500,128]];'), 'the 19 walkable spaces follow the board perimeter with room for their larger platforms');
+  assert.ok(app.includes('fisica:[365,275],rede:[365,160],transporte:[585,275],aplicacao:[290,245],seguranca:[660,245]'), 'all racks sit in separated interior bays away from the route and base');
+  assert.ok(app.includes('const coopPath=[[128,280],[183,310],[240,340],[305,370],[370,400],[435,430],[500,470],[565,430],[630,400],[695,370],[760,340],[817,310],[872,280],[825,250],[760,220],[695,190],[630,160],[560,125],[500,128]];'), 'the 19 walkable spaces follow the board perimeter with room for their larger platforms');
   const route = JSON.parse(app.match(/const coopPath=(\[\[[^;]+\]\]);/)?.[1] || '[]');
   assert.equal(route.length, 19, 'the route contains 19 distinct walkable spaces');
   for (const [x,y] of route) assert.ok(Math.abs(x-500)/440 + Math.abs(y-280)/238 <= 1 - 28/238, `platform at ${x},${y} stays inside the board with a margin`);
@@ -203,8 +221,8 @@ test('the co-op victory keeps the board and presents a green finish state', () =
 test('the Defense table is smaller and its racks and laser impacts share separated positions', () => {
   assert.ok(app.includes('class="coop-board-layout" transform="translate(500 280) scale(.86) translate(-500 -280)"'), 'the square board is reduced as a single aligned composition');
   assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the floor is a clean isometric square');
-  assert.ok(app.includes('fisica:[300,190],rede:[410,150],transporte:[590,190],aplicacao:[385,260],seguranca:[604,285]'), 'the five server racks occupy distinct interior bays away from the road');
-  assert.ok(app.includes('fisica:[320,242],rede:[430,202],transporte:[610,242],aplicacao:[405,312],seguranca:[624,337]'), 'laser impacts align with the repositioned racks');
+  assert.ok(app.includes('fisica:[365,275],rede:[365,160],transporte:[585,275],aplicacao:[290,245],seguranca:[660,245]'), 'the five server racks occupy distinct interior bays away from the road');
+  assert.ok(app.includes('fisica:[400,317],rede:[400,202],transporte:[620,317],aplicacao:[325,287],seguranca:[695,287]'), 'laser impacts align with the repositioned racks');
   assert.ok(app.includes('function coopPosition()'), 'route rendering clamps missing or invalid positions instead of showing NaN');
 });
 
