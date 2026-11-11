@@ -372,3 +372,29 @@ body.in-game .board-coop .coop-player-ring { fill: #091b2a; fill-opacity: .92; s
 body.in-game .board-coop .coop-player-token.is-current .coop-player-ring { opacity: 1; }
 body.in-game .board-coop .coop-mini-robot path { vector-effect: non-scaling-stroke; }
 @media(prefers-reduced-motion:reduce) { body.in-game .coop-player-chip-avatar .player-color-robot, body.in-game .board-coop .coop-mini-robot { filter: none !important; } }
+
+/* Clearer, larger board spaces and small player pieces with an idle tabletop motion. */
+body.in-game .board-coop .coop-mini-robot { animation: pawn-token-bob 1.9s ease-in-out infinite; animation-delay: calc(var(--pawn-index, 0) * -0.17s); }
+@keyframes pawn-token-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -2px; } }
+
+/* The defense terminal reads as one floating landing with a beacon seated on top. */
+body.in-game .board-coop .hub-cap-side { fill: #0b2031; stroke: #1687b4; stroke-width: 3; }
+body.in-game .board-coop .hub-totem { filter: drop-shadow(0 0 7px #45d8ff8c); }
+
+/* Red data rain stays behind the external Hacker while the team is under attack. */
+body.in-game .board-coop .hacker-binary-attack { pointer-events: none; }
+body.in-game .board-coop .binary-stream { fill: #ff3358; stroke: #410c1c; stroke-width: 3px; paint-order: stroke; font: 800 11px "IBM Plex Sans", sans-serif; letter-spacing: 2px; filter: drop-shadow(0 0 5px #ff173f); opacity: 0; animation: hacker-binary-fall 1.25s linear infinite; }
+body.in-game .board-coop .stream-b { animation-delay: -.38s; }
+body.in-game .board-coop .stream-c { animation-delay: -.72s; }
+body.in-game .board-coop .stream-d { animation-delay: -1s; }
+@keyframes hacker-binary-fall { 0% { opacity: 0; translate: 0 -18px; } 18% { opacity: .9; } 80% { opacity: .75; } 100% { opacity: 0; translate: 0 32px; } }
+body.in-game .board-coop .hacker-scream { pointer-events: none; }
+body.in-game .board-coop .hacker-scream path { fill: none; stroke: #ff5269; stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 5px #ff1c45); animation: hacker-yell 180ms ease-in-out infinite alternate; }
+body.in-game .board-coop .hacker-scream text { fill: #fff0e9; stroke: #630e25; stroke-width: 5px; paint-order: stroke; text-anchor: middle; font: 900 28px "IBM Plex Sans", sans-serif; filter: drop-shadow(0 0 6px #ff1c45); animation: hacker-yell 180ms ease-in-out infinite alternate-reverse; }
+@keyframes hacker-yell { from { opacity: .62; scale: .88; } to { opacity: 1; scale: 1.08; } }
+@media (prefers-reduced-motion: reduce) {
+  body.in-game .board-coop .coop-mini-robot,
+  body.in-game .board-coop .binary-stream,
+  body.in-game .board-coop .hacker-scream path,
+  body.in-game .board-coop .hacker-scream text { animation: none !important; translate: none !important; }
+}

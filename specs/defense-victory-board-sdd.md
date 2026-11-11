@@ -1,5 +1,31 @@
 # SDD — Vitória do Hacker e tabuleiro de Defesa
 
+## Aditivo SDD — Espaçamento dos racks, peões e ataque do Hacker
+
+### Intenção
+
+Manter Defesa legível como jogo de tabuleiro. A estrada é reservada ao movimento; racks ficam nas áreas internas. Os seis peões cabem na casa inicial em duas fileiras. A base mostra fundação, plataforma elevada e totem apoiado nela. Ao contra-atacar, o Hacker recebe código binário vermelho em movimento, marcas visuais de grito e um som sintetizado.
+
+### Contrato espacial
+
+- Casas da rota usam escala 1,3× e permanecem dentro do tabuleiro quadrado.
+- Racks usam escala 0,46 e âncoras fixas nas áreas internas. Seus limites desenhados não podem cruzar casas da rota nem outros racks.
+- O impacto do laser termina na posição correspondente ao rack.
+- Os seis peões formam uma grade compacta de três colunas por duas fileiras, com animação individual. Ao se moverem, preservam o espaçamento.
+- A base mantém o eixo central. O totem fica acima da plataforma elevada e os suportes continuam visíveis.
+
+### Estado de ataque
+
+- Fluxos binários e marcas de grito só aparecem durante o contra-ataque e ficam atrás ou junto do Hacker no relé externo.
+- O grito sintetizado respeita o controle de silêncio já existente.
+- Preferência por movimento reduzido desativa movimento dos peões, do código e das marcas.
+
+### Aceitação TDD
+
+- O contrato visual calcula os limites dos racks contra as casas da rota e uns contra os outros.
+- Testes exigem casas maiores, partes da base separadas, seis peões animados e efeitos de ataque com grito.
+- As suítes do jogo e do contrato visual passam antes da entrega.
+
 ## Contexto
 
 O golpe final hoje troca o jogo imediatamente para um painel genérico, desmontando o contexto visual da partida. O Hacker não ganha uma derrota final encenada. O tabuleiro de Defesa ocupa área demais e os racks, impactos e limites da plataforma não formam uma composição compacta e equilibrada.
