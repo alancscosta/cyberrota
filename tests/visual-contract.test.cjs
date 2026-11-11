@@ -8,6 +8,7 @@ const app = fs.readFileSync(path.join(root, 'dist/app.js'), 'utf8');
 const html = fs.readFileSync(path.join(root, 'dist/index.html'), 'utf8');
 const css = fs.readFileSync(path.join(root, 'dist/play-redesign.css'), 'utf8');
 const hackerCss = fs.readFileSync(path.join(root, 'dist/hacker-visual.css'), 'utf8');
+const finishCss = fs.readFileSync(path.join(root, 'dist/cyberrota-finish.css'), 'utf8');
 
 test('the interface bundles IBM Plex Sans locally and overrides legacy font rules', () => {
   assert.ok(hackerCss.includes('font-family: "IBM Plex Sans"'), 'the interface selects IBM Plex Sans');
@@ -150,7 +151,7 @@ test('turn and victory notices are large centered overlays over the gameplay', (
 
 test('restored co-op saves derive armor damage stages from their recorded hits', () => {
   assert.ok(app.includes("restored.coop.armorStage=Math.max(Number(restored.coop.armorStage)||0,restored.coop.log.filter((event)=>event.outcome==='correct').length)"), 'older saved games restore missing armor stages from the combat log');
-  assert.ok(html.includes('game-core.js?v=13'), 'the browser reloads the current damage logic instead of using a cached combat engine');
+  assert.ok(html.includes('game-core.js?v=14'), 'the browser reloads the current damage and victory timing logic');
 });
 
 test('damage visor uses two separated eye slits rather than a connecting line', () => {
@@ -210,8 +211,10 @@ test('larger route platforms and the victory message fade in and out', () => {
 
 test('the co-op victory keeps the board and presents a green finish state', () => {
   assert.ok(app.includes('function renderCoopVictory()'), 'co-op victory has a dedicated board-preserving scene');
-  assert.ok(app.includes('class="victory-overlay"'), 'the final win state has a visible overlay');
-  assert.ok(app.includes('data-action="finish-session"'), 'the victory view can return to the game modes');
+  assert.ok(app.includes('Core.coopVictoryStage(sequence.startedAt)'), 'the final message waits for the tested slow-motion stage progression');
+  assert.ok(app.includes("stage==='button'?'<button class=\"victory-return\" data-action=\"finish-session\">Ir ao menu</button>':''"), 'the menu button only exists in the stage revealed after the three-second victory message');
+  assert.ok(app.includes("victorySequence={stage:'explosion',startedAt:Date.now()}"), 'the explosion timing starts with the winning hit');
+  assert.ok(app.includes('class="victory-overlay"'), 'the final win state has a visible overlay after the explosion');
   assert.ok(app.includes("${bossDefeated?'boss-defeated ':''}"), 'the Hacker is hidden after the final explosion');
   assert.ok(app.includes('class="boss-final-explosion"'), 'the final blast is rendered on the Hacker');
   assert.ok(app.includes('class="boss-final-part ${part.name}"'), 'the final wreck uses recognizable robot assemblies');
@@ -225,6 +228,23 @@ test('the co-op victory keeps the board and presents a green finish state', () =
   assert.ok(hackerCss.includes('animation: boss-final-fade .72s ease-out both !important'), 'the final destruction overrides legacy robot idle styles');
   assert.ok(hackerCss.includes('body.in-game .boss-model.boss-defeated { opacity: 0 !important; }'), 'reduced motion still leaves the final defeated pose');
   assert.ok(hackerCss.includes('boss-final-part-fall'), 'large robot parts fall and settle instead of bursting radially');
+  assert.ok(finishCss.includes('animation-duration: 3.15s !important'), 'the final fall is slowed to remain visible before the win message');
+});
+
+test('the panel uses the game board and all six available SVG avatars as its hero art', () => {
+  assert.ok(app.includes('function renderHeroBoardArt()'), 'dashboard art is generated from game visuals');
+  assert.ok(app.includes('PLAYER_COLORS.map') || app.includes('colors.map((color,index)'), 'every selectable player color has a dashboard pawn');
+  assert.ok(app.includes('class="hero-board-blueprint"') && app.includes('class="hero-board-path"'), 'the low contrast board and route sit behind the pawns');
+  assert.ok(app.includes('${renderHeroBoardArt()}'), 'the dashboard renders the original board artwork');
+  assert.ok(finishCss.includes('.hero-board-art') && finishCss.includes('opacity: .22'), 'the blueprint stays subdued behind the text');
+});
+
+test('legacy light and recovery surfaces resolve to the same navy game palette', () => {
+  assert.ok(html.includes('cyberrota-finish.css?v=7'), 'the final palette is loaded after every legacy theme');
+  assert.ok(finishCss.includes('body.in-game .game-control-dock .heal-node-button'), 'the recovery action receives the current game palette');
+  assert.ok(finishCss.includes('background: linear-gradient(135deg,#103629,#123b31)'), 'healing remains green-coded without the former pale card');
+  assert.ok(finishCss.includes('body:not(.in-game) .metric-strip') && finishCss.includes('body:not(.in-game) .mode-card'), 'dashboard surfaces use the same dark navy system');
+  assert.ok(finishCss.includes('body.in-game .feedback-title') && finishCss.includes('body.in-game .feedback-answer'), 'answer feedback retains readable contrast on the dark game surface');
 });
 
 test('the Defense table is smaller and its racks and laser impacts share separated positions', () => {

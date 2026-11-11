@@ -227,6 +227,13 @@
     return 'armored';
   }
 
+  function coopVictoryStage(startedAt, now = Date.now()) {
+    const elapsed = Math.max(0, now - Number(startedAt || now));
+    if (elapsed < 4200) return { stage: 'explosion', nextAt: Number(startedAt) + 4200 };
+    if (elapsed < 7200) return { stage: 'message', nextAt: Number(startedAt) + 7200 };
+    return { stage: 'button', nextAt: null };
+  }
+
   function snapshotDeck(deck) {
     return clone(deck);
   }
@@ -239,5 +246,5 @@
     return leaders.length === 1 ? leaders[0] : { tie: leaders };
   }
 
-  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceDuel, hackerPhase, snapshotDeck, winner, normalizeText };
+  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceDuel, hackerPhase, coopVictoryStage, snapshotDeck, winner, normalizeText };
 });

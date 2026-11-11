@@ -128,3 +128,21 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 - Na jogada correta, guardar `moveAnimationPlayed` imediatamente após o primeiro render impede que o rerender de dano repita o salto. A posição final permanece estável até a próxima rodada.
 - Teste manual no navegador com seis jogadores: dado 3 moveu a equipe da casa 5 à 8; após o ataque, o Hacker passou de 16 para 14 PV. Na jogada seguinte, dado 2 moveu da casa 8 à 10 e o Hacker passou a 12 PV. O pino permaneceu na casa 10 após o rerender de combate.
 - TDD: o contrato visual agora exige os seletores que mantêm as cores nos avatares do elenco e do jogador ativo.
+
+## Sequência final e unificação visual — ciclo atual
+
+### Especificação
+
+- O acerto que reduz o Hacker a zero PV salva o instante inicial da sequência terminal. O estado da partida passa para concluído, sem esperar pela animação para registrar o resultado.
+- A tela conserva o tabuleiro durante a queda em câmera lenta por 4,2 segundos. A explosão localizada e as peças reconhecíveis usam movimento desacelerado e assentam no piso junto ao relé.
+- Depois da queda, um aviso verde central e grande “Vitória da equipe!” aparece sobre o tabuleiro. O botão “Ir ao menu” só entra no DOM 3 segundos depois.
+- As fases e o horário inicial ficam no save da partida, então atualizar a tela não reinicia nem pula a sequência. Movimento reduzido encurta os efeitos visuais, mantendo a ordem explosão → vitória → botão.
+- Uma última folha de estilo, carregada depois dos temas legados, unifica os componentes para azul-marinho/ciano. A ação de recuperar mantém o verde sem superfície branca ou bege.
+- O hero “Aprenda redes jogando” mostra o tabuleiro de rotas em opacidade baixa e os seis peões SVG disponíveis, sem encobrir título ou ações. A arte adapta a composição para celular.
+
+### Contratos TDD
+
+- `tests/visual-contract.test.cjs` exige janela de 4,2 s de explosão, revelação do botão em 7,2 s, estado inicial persistido e estilos de câmera lenta.
+- O mesmo contrato confirma que a arte do painel compõe a rota e todos os seis SVGs existentes.
+- O contrato verifica a ordem de carregamento da paleta final e a superfície verde-escura do botão de recuperação.
+- Verificação manual em desktop e celular cobre painel, tela de partida/recuperação e encerramento, inclusive visibilidade e temporização dos elementos.

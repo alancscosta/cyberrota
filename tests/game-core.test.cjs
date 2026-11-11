@@ -245,3 +245,12 @@ test('hacker visual phase follows health thresholds', () => {
   assert.equal(Core.hackerPhase(10, 20), 'broken');
   assert.equal(Core.hackerPhase(5, 20), 'critical');
 });
+
+test('co-op victory pauses for the slow-motion fall and reveals the menu three seconds later', () => {
+  const start = 10000;
+  assert.deepEqual(Core.coopVictoryStage(start, start), { stage: 'explosion', nextAt: start + 4200 });
+  assert.deepEqual(Core.coopVictoryStage(start, start + 4199), { stage: 'explosion', nextAt: start + 4200 });
+  assert.deepEqual(Core.coopVictoryStage(start, start + 4200), { stage: 'message', nextAt: start + 7200 });
+  assert.deepEqual(Core.coopVictoryStage(start, start + 7199), { stage: 'message', nextAt: start + 7200 });
+  assert.deepEqual(Core.coopVictoryStage(start, start + 7200), { stage: 'button', nextAt: null });
+});

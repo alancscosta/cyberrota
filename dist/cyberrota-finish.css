@@ -1,0 +1,171 @@
+/* Final product pass: one navy/cyan surface system after the historical themes. */
+:root {
+  --cr-bg: #091522;
+  --cr-panel: #102338;
+  --cr-panel-raised: #142b42;
+  --cr-line: #25435b;
+  --cr-ink: #edf7ff;
+  --cr-muted: #9ab2c7;
+  --cr-cyan: #51d7ff;
+  --cr-green: #67e69a;
+}
+
+body:not(.in-game) { background: var(--cr-bg); color: var(--cr-ink); }
+body:not(.in-game) .sidebar { background: #0b1b2b; color: var(--cr-ink); border-color: #183047; }
+body:not(.in-game) .brand, body:not(.in-game) .nav-item,
+body:not(.in-game) .brand strong, body:not(.in-game) .brand small { color: #dceeff; }
+body:not(.in-game) .nav-item.active { color: #ecfaff; background: #153652; box-shadow: inset 3px 0 var(--cr-cyan); }
+body:not(.in-game) .side-label { color: #7594ad; }
+body:not(.in-game) .topbar, body:not(.in-game) .app-footer { background: #0c1c2c; color: #a9c1d5; border-color: #20384d; }
+body:not(.in-game) .breadcrumb, body:not(.in-game) .breadcrumb strong { color: #d8ebfa; }
+body:not(.in-game) #app { background: var(--cr-bg); }
+body:not(.in-game) .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 280px; padding: clamp(28px,4vw,48px); border: 1px solid #24516c; border-radius: 20px; background: linear-gradient(112deg,#102b43 0%,#0c2033 55%,#10293c 100%); color: var(--cr-ink); box-shadow: inset 0 1px #ffffff0b; }
+body:not(.in-game) .hero:after { content: ""; position: absolute; z-index: -1; inset: 0 0 0 36%; background: linear-gradient(90deg,#102b43 0%,#102b43aa 21%,transparent 72%); pointer-events: none; }
+body:not(.in-game) .hero-copy { position: relative; z-index: 2; max-width: 520px; }
+body:not(.in-game) .hero-kicker { color: #8bdfff; }
+body:not(.in-game) .hero h1 { color: #f2f9ff; font-family: "IBM Plex Sans", sans-serif; font-weight: 700; letter-spacing: -.045em; }
+body:not(.in-game) .hero p, body:not(.in-game) .page-head p, body:not(.in-game) .section-title p { color: #b2c7d9; }
+body:not(.in-game) .hero-art { display: grid !important; position: absolute; right: -1%; top: 50%; width: min(58%,720px); height: 100%; transform: translateY(-50%); opacity: 1; pointer-events: none; }
+.hero-board-art { width: 100%; height: 100%; overflow: visible; }
+.hero-board-blueprint path { fill: none; stroke: #63c9f3; stroke-width: 2; }
+.hero-board-path { fill: none; stroke: #63dcff; stroke-width: 3; stroke-dasharray: 3 10; stroke-linecap: round; opacity: .55; }
+.hero-board-tiles path { fill: #173d57; stroke: #5bd4fa; stroke-width: 2; opacity: .78; }
+.hero-pawn { filter: drop-shadow(0 3px 5px #020b15aa); transform-box: fill-box; transform-origin: center; animation: hero-pawn-hover 3s ease-in-out infinite alternate; }
+.hero-pawn:nth-of-type(2n) { animation-delay: -.9s; }
+.hero-board-signal circle { fill: #143952; stroke: #7fe6ff; stroke-width: 3; }
+.hero-board-signal path { fill: none; stroke: #7fe6ff; stroke-width: 2; opacity: .75; }
+.hero-art-caption { position: absolute; right: 7%; bottom: 22px; color: #91b7cb; font: 600 10px "IBM Plex Sans",sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+@keyframes hero-pawn-hover { to { translate: 0 -5px; } }
+
+body:not(.in-game) .metric-strip, body:not(.in-game) .metric,
+body:not(.in-game) .mode-card, body:not(.in-game) .panel,
+body:not(.in-game) .topic-panel, body:not(.in-game) .mission-panel,
+body:not(.in-game) .route-console, body:not(.in-game) .game-card,
+body:not(.in-game) .side-game-card, body:not(.in-game) .stat-card,
+body:not(.in-game) .empty-state, body:not(.in-game) .deck-card, body:not(.in-game) .role-tile,
+body:not(.in-game) .error-card, body:not(.in-game) .progress-card {
+  color: var(--cr-ink); background: var(--cr-panel); border-color: var(--cr-line); box-shadow: none;
+}
+body:not(.in-game) .card-list { background: transparent; }
+body:not(.in-game) .alert-box { color: #d4c59f; background: #28291f; border-color: #62583a; }
+body:not(.in-game) .pill { color: #bcecff; background: #15344a; border: 1px solid #2b526d; }
+body:not(.in-game) table { color: #dceefa; border-color: #2a4861; }
+body:not(.in-game) thead, body:not(.in-game) th { color: #9fc6df; background: #112a3e; }
+body:not(.in-game) tbody, body:not(.in-game) tr, body:not(.in-game) td { color: #dceefa; background: #102338; border-color: #29465e; }
+body:not(.in-game) .panel h2, body:not(.in-game) .stat-card h3,
+body:not(.in-game) .role-tile strong, body:not(.in-game) .empty-state h2 { color: #e9f6ff; }
+body:not(.in-game) .role-tile p, body:not(.in-game) .card-list small { color: #a6bfd1; }
+body:not(.in-game) .mode-card { border-radius: 16px; }
+body:not(.in-game) .mode-card:hover, body:not(.in-game) .mode-card.active-recommended { background: var(--cr-panel-raised); border-color: #39749a; }
+body:not(.in-game) .mode-card h3, body:not(.in-game) .section-title h2,
+body:not(.in-game) .page-head h1, body:not(.in-game) .dock-top h1,
+body:not(.in-game) .metric-copy strong { color: #edf7ff; font-family: "IBM Plex Sans",sans-serif; }
+body:not(.in-game) .metric-copy small, body:not(.in-game) .topic-name,
+body:not(.in-game) .mode-card p, body:not(.in-game) .inline-help,
+body:not(.in-game) .field-hint, body:not(.in-game) .empty-state p { color: var(--cr-muted); }
+body:not(.in-game) .metric-icon, body:not(.in-game) .mode-icon { color: var(--cr-cyan); background: #14344c; }
+body:not(.in-game) .mode-card .mode-icon, body:not(.in-game) .mode-card .mode-tag { color: #bcecff; background: #15344a; border-color: #2b526d; }
+body:not(.in-game) .sync-card { color: #c8deed; background: #11283c; border: 1px solid #294862; }
+body:not(.in-game) .avatar, body:not(.in-game) .mini-avatar { color: #bcecff; background: #173a55; border: 1px solid #3c6b8b; }
+body:not(.in-game) .icon-button { color: #bcecff; background: #132b40; border-color: #34536c; }
+body:not(.in-game) .btn-secondary, body:not(.in-game) .small-action,
+body:not(.in-game) .btn-quiet { color: #dceeff; background: #142b40; border-color: #34536c; }
+body:not(.in-game) .filter-chip, body:not(.in-game) .field input,
+body:not(.in-game) .field select, body:not(.in-game) .field textarea,
+body:not(.in-game) .search-input, body:not(.in-game) .form-control,
+body:not(.in-game) select, body:not(.in-game) input, body:not(.in-game) textarea {
+  color: #e7f4ff; background: #0b1c2b; border-color: #34536c; color-scheme: dark;
+}
+body:not(.in-game) .modal-card { color: var(--cr-ink); background: #102338; border-color: #31516b; }
+body:not(.in-game) .modal-head h2, body:not(.in-game) .mode-card h3 { color: #eef8ff; }
+body:not(.in-game) .option-button, body:not(.in-game) .difficulty-button,
+body:not(.in-game) .role-button, body:not(.in-game) .order-item,
+body:not(.in-game) .segmented { color: #d9eaf7; background: #142b40; border-color: #34536c; }
+body:not(.in-game) .option-button.selected { color: #f1fbff; background: #173c57; border-color: var(--cr-cyan); }
+body:not(.in-game) .app-footer { color: #7f9bb1; }
+
+body.in-game .game-world { background: #091522; color: var(--cr-ink); }
+body.in-game .game-hud { background: #0d2032; border-color: #24415a; color: #eaf7ff; }
+body.in-game .game-hud .hud-brand small, body.in-game .round-badge { color: #bad5e9; }
+body.in-game .hud-center .round-badge { background: #132b40; border-color: #294963; }
+body.in-game .world-stage, body.in-game .game-layout { background: #091522; }
+body.in-game .world-title, body.in-game .world-footer { color: #87a9c2; }
+body.in-game .world-title>b { color: #e0f2ff; }
+body.in-game .game-control-dock { color: var(--cr-ink); background: #0c1d2d; border-color: #25435b; }
+body.in-game .game-control-dock .game-card, body.in-game .game-control-dock .side-game-card,
+body.in-game .game-control-dock .server-health, body.in-game .hacker-float-hud,
+body.in-game .game-control-dock .heal-node-button {
+  color: #deeffb; background: #11273a; border-color: #2c4b63; box-shadow: none;
+}
+body.in-game .game-control-dock .heal-node-button { min-height: 40px; padding: 0 15px; border-radius: 12px; color: #bfffd7; background: linear-gradient(135deg,#103629,#123b31); border-color: #3d8969; font: 650 12px "IBM Plex Sans",sans-serif; box-shadow: inset 0 1px #caffdf12; }
+body.in-game .game-control-dock .heal-node-button i { width: 10px; height: 10px; background: #72efa7; box-shadow: 0 0 12px #5bed9b; }
+body.in-game .game-control-dock .heal-node-button:hover:not(:disabled) { background: #174a37; border-color: #68d99a; }
+body.in-game .game-control-dock .heal-node-button:disabled { opacity: .48; }
+body.in-game .question-area h2, body.in-game .game-card h2 { color: #eff8ff; font-family: "IBM Plex Sans",sans-serif; }
+body.in-game .option-button, body.in-game .answer-input { color: #deeffb; background: #102438; border-color: #2b4a63; }
+body.in-game .option-button.selected { background: #17405c; border-color: var(--cr-cyan); }
+body.in-game .server-chip, body.in-game .turn-banner, body.in-game .role-button { background: #132a3e; color: #dceefa; border-color: #2b4a63; }
+
+body.in-game .victory-stage { isolation: isolate; }
+body.in-game .victory-overlay {
+  left: 50%; top: 50%; width: min(780px,calc(100% - 36px)); min-height: 170px;
+  transform: translate(-50%,-50%); flex-direction: column; justify-content: center; gap: 10px;
+  padding: clamp(24px,4vw,46px); border: 1px solid #72eda2; border-radius: 24px;
+  background: radial-gradient(ellipse at 50% 0%,#1c623d 0%,#102f27 60%,#0a201f 100%);
+  box-shadow: 0 0 0 100vmax #030a13a6,0 18px 70px #0009,0 0 55px #56e88a30;
+  text-align: center; animation: victory-big-arrive .72s cubic-bezier(.16,.8,.2,1) both;
+}
+body.in-game .victory-mark { display: none; }
+body.in-game .victory-overlay small { font: 700 13px "IBM Plex Sans",sans-serif; letter-spacing: .2em; color: #a7ffc3; }
+body.in-game .victory-overlay h1 { margin: 0; font: 800 clamp(48px,9vw,104px)/1 "IBM Plex Sans",sans-serif; letter-spacing: -.055em; color: #e7ffed; text-shadow: 0 5px 35px #75ffa780; }
+body.in-game .sequence-message .victory-overlay h1 { animation: victory-title-in-out 3s ease-in-out both; }
+body.in-game .sequence-button .victory-overlay h1 { opacity: 0; animation: none; }
+body.in-game .sequence-button .victory-overlay { min-height: 0; padding: 0; overflow: visible; border: 0; background: transparent; box-shadow: none; }
+body.in-game .sequence-button .victory-overlay small { display: none; }
+body.in-game .victory-return { position: absolute; top: calc(100% + 22px); margin: 0; min-height: 48px; padding: 0 24px; border: 1px solid #8ef8b2; border-radius: 14px; color: #062315; background: #83f0a7; font: 700 15px "IBM Plex Sans",sans-serif; box-shadow: 0 8px 24px #06190f99; animation: victory-button-arrive .45s ease-out both; cursor: pointer; }
+body.in-game .victory-return:hover { background: #b4ffca; }
+@keyframes victory-big-arrive { from { opacity: 0; transform: translate(-50%,-45%) scale(.92); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+@keyframes victory-button-arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes victory-title-in-out { 0% { opacity: 0; transform: scale(.94); } 13%,76% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.035); } }
+body.in-game .sequence-explosion .boss-model.boss-defeated { animation-duration: 3.15s !important; }
+body.in-game .sequence-explosion .boss-final-explosion { animation-duration: 2.9s !important; }
+body.in-game .sequence-explosion .boss-final-part { animation-duration: 3.15s !important; animation-delay: calc(var(--part-delay) * 2) !important; }
+body.in-game .sequence-explosion .boss-final-part-shape { filter: drop-shadow(0 8px 8px #020914); }
+@media (max-width: 760px) {
+  body:not(.in-game) .hero { min-height: 330px; padding: 24px 20px; }
+  body:not(.in-game) .hero-copy { max-width: 100%; }
+  body:not(.in-game) .hero-art { top: auto; bottom: -8px; right: -8%; width: 92%; height: 54%; transform: none; opacity: .62; }
+  body:not(.in-game) .hero:after { inset: 25% 0 0; background: linear-gradient(180deg,#102b43 0%,#102b43aa 18%,transparent 75%); }
+  .hero-art-caption { right: 10%; bottom: 12px; font-size: 8px; }
+  body.in-game .victory-overlay { width: calc(100% - 28px); min-height: 140px; padding: 22px 12px; border-radius: 18px; }
+  body.in-game .victory-overlay h1 { font-size: clamp(44px,12vw,76px); }
+  body.in-game .victory-overlay small { font-size: 10px; }
+  body.in-game .victory-return { top: calc(100% + 15px); min-height: 44px; font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-pawn { animation: none; }
+  body.in-game .sequence-explosion .boss-model.boss-defeated,
+  body.in-game .sequence-explosion .boss-final-explosion,
+  body.in-game .sequence-explosion .boss-final-part { animation-duration: .01ms !important; animation-delay: 0ms !important; }
+  body.in-game .victory-overlay, body.in-game .victory-return { animation-duration: .01ms; }
+}
+.hero-board-blueprint { opacity: .22; }
+body:not(.in-game) .sync-card *, body:not(.in-game) .profile-button *, body:not(.in-game) .profile-copy,
+body:not(.in-game) .profile-copy b, body:not(.in-game) .profile-copy small { color: #9ebbd0; }
+body:not(.in-game) .card-list .deck-card { background: #11283c; border-color: #294862; color: #deeffb; }
+body:not(.in-game) .card-list .deck-card .pill { color: #bcecff; background: #15344a; }
+body:not(.in-game) #app .panel h3, body:not(.in-game) #app .panel h4, body:not(.in-game) #app .role-tile h3 { color: #e9f6ff !important; }
+body:not(.in-game) #app table, body:not(.in-game) #app table * { color: #dceefa !important; background-color: transparent; border-color: #29465e; }
+body:not(.in-game) #app table thead th { color: #a8cbe1 !important; background-color: #112a3e !important; }
+body:not(.in-game) #app table tbody td { background-color: #102338 !important; }
+body:not(.in-game) #app table tbody tr:nth-child(even) td { background-color: #132a3f !important; }
+body:not(.in-game) #app table .pill { color: #bcecff !important; background-color: #15344a !important; }
+body:not(.in-game) .close-button { color: #bcecff; background: #132b40; border-color: #34536c; }
+body:not(.in-game) input[type="checkbox"] { width: 18px !important; min-width: 18px !important; height: 18px !important; margin: 0 9px 0 0; accent-color: #50c9f3; }
+body:not(.in-game) .check-field { display: flex; align-items: center; gap: 8px; color: #c3d8e8; }
+body.in-game .feedback-title { color: #edf7ff !important; font: 750 clamp(20px,2.4vw,28px)/1.25 "IBM Plex Sans",sans-serif !important; }
+body.in-game .feedback-answer { color: #b7cee0 !important; font-size: 14px; line-height: 1.6; }
+body.in-game .feedback-card .eyebrow { color: #9ac2da !important; }
+body.in-game .feedback-stats span { color: #c5deee !important; background: #142e44 !important; border-color: #34556e !important; }
+body.in-game .feedback-card .result-mark.good { color: #b5ffd0; background: #123a2b; border-color: #55ba7a; }
+body.in-game .feedback-card .question-actions small { color: #9ab4c8; }
