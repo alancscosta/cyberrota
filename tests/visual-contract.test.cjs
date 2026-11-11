@@ -128,6 +128,15 @@ test('each player chooses a unique color and sees its matching robot avatar befo
   assert.ok(app.includes("player.color||playerColors[index%playerColors.length]"), 'the selected color drives in-game player avatars and tokens');
 });
 
+test('the 3v3 race visibly shows both full teams on the board and in the score strip', () => {
+  assert.ok(app.includes("game.players.find((player)=>player.name===name)||{name,color:PLAYER_COLORS[(index+(team==='red'?3:0))%PLAYER_COLORS.length]}") , 'each team pawn resolves to its actual player and selected color');
+  assert.ok(app.includes("renderPlayerToken({...participant,position:game.race.teams[team].position},index,team)"), 'both teams render their individual player tokens');
+  assert.ok(app.includes("class=\"race-team-roster\" aria-label=\"Jogadores da equipe ${team==='blue'?'azul':'vermelha'}\""), 'each team score card lists its members');
+  assert.ok(app.includes('renderBoardPawnAvatar(avatarIndex,color)') && app.includes('esc(name)'), 'the score strip shows participant avatars and names');
+  assert.ok(app.includes("teamSide=team==='red'?1:team==='blue'?-1:0") && app.includes('lane=game.mode===\'competitive\'?teamSide*20:0'), 'red and blue formations occupy separate lanes instead of hiding each other');
+  assert.ok(app.includes('class="race-team-marker"') && app.includes("team==='red'?'#ff737c'"), 'opponent tokens keep a visible red team marker');
+});
+
 test('co-op player avatars have six silhouettes and appear in the roster and on the pawn', () => {
   assert.ok(app.includes('PLAYER_AVATAR_SHAPES'), 'the six participant colors map to distinct board-piece silhouettes');
   assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the piece portrait uses the selected color');

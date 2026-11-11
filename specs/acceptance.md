@@ -1,7 +1,7 @@
 # Critérios de aceitação
 
 - **Solo:** cinco respostas corretas em checkpoints diferentes concedem os cinco selos e permitem vencer ao alcançar o destino; no máximo 20 movimentos.
-- **Corrida 3v3:** configuração exige três pessoas por equipe, mostra seis peças robóticas, faz a rotação 1→2→3 em cada equipe e alterna quem responde primeiro.
+- **Corrida 3v3:** configuração exige três pessoas por equipe, mostra seis peças robóticas com nomes e cores escolhidas no placar, e seis peões simultaneamente visíveis em formações separadas no tabuleiro. Faz a rotação 1→2→3 em cada equipe e alterna quem responde primeiro.
 - **Privacidade do duelo:** resposta e pergunta anterior não ficam visíveis ao participante seguinte; resultado e explicação só aparecem após as duas respostas.
 - **Combate 3v3:** acerto avança uma casa; acertar juntos avança os dois times; errar juntos não causa dano; se só um acerta, o outro time perde 1 PV e pode levar game over antes da chegada.
 - **Rota 3v3:** checkpoints nas casas 3, 6, 9, 12 e 15 concedem os cinco selos; a vitória exige os cinco selos e chegar à casa 18 com vida restante.

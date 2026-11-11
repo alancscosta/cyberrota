@@ -183,3 +183,14 @@ body.immersive-menu #app{height:100dvh;min-height:100dvh;padding:0;overflow:hidd
 @keyframes rack-recoil{0%,100%{translate:0 0}30%{translate:-4px 2px}65%{translate:3px -1px}}
 @keyframes crack-flash{0%,100%{opacity:0}15%,65%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.datacenter-scene,.datacenter-rack,.rack-cracks,.blast-ring,.spark-shards{animation:none!important}}
+
+/* 3v3: keep the complete opposing roster visible in both the dock and board. */
+.race-team-strip{align-items:stretch}
+.race-team{min-width:0;align-content:start}
+.race-team-roster{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.race-player-chip{display:inline-flex;align-items:center;gap:3px;min-width:0;padding:2px 5px 2px 2px;border:1px solid rgba(205,231,245,.14);border-radius:999px;background:rgba(5,15,27,.48);color:#dceaf4;font:600 10px/1.1 "IBM Plex Sans",sans-serif}
+.race-player-chip svg{width:19px;height:19px;flex:none}
+.race-team.blue .race-player-chip{border-color:rgba(109,187,255,.35)}
+.race-team.red .race-player-chip{border-color:rgba(255,115,124,.4)}
+.player-pawn .race-team-marker{filter:drop-shadow(0 1px 2px #06131f)}
+@media(max-width:720px){.race-player-chip{font-size:9px;padding-right:4px}.race-player-chip svg{width:17px;height:17px}.race-team-roster{gap:2px}}
