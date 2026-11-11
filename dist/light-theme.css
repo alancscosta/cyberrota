@@ -1,122 +1,122 @@
-:root{color-scheme:light;--ink:#f5f6f7;--ink-2:#fff;--ink-3:#eceef0;--line:#e1e3e6;--muted:#646a70;--muted-light:#8a9096;--paper:#f5f6f7;--white:#fff;--mint:#272a2e;--lime:#17191c;--blue:#647b91;--amber:#937447;--red:#985b58;--purple:#75637e;--radius:12px;--shadow:0 5px 18px rgba(28,33,38,.06)}
+:root{color-scheme:dark;--ink:#e6f2fa;--ink-2:#142a40;--ink-3:#1a344c;--line:#29445d;--muted:#9db1c2;--muted-light:#8197a9;--paper:#0b1825;--white:#142a40;--mint:#64d9ff;--lime:#a6f08c;--blue:#5bbaff;--amber:#f3c47b;--red:#ff8e9b;--purple:#d49bff;--radius:12px;--shadow:0 5px 18px rgba(28,33,38,.06)}
 *{font-family:Inter,"Segoe UI",Arial,sans-serif!important;letter-spacing:normal!important}
-html,body{background:#f5f6f7;color:#202327}
+html,body{background:#0b1825;color:#e6f2fa}
 body{-webkit-font-smoothing:antialiased;font-size:14px;caret-color:transparent}
 input,textarea,[contenteditable="true"],[contenteditable=""],[contenteditable="plaintext-only"]{caret-color:auto}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:#45494e}
-.sidebar,.topbar,.app-footer{background:#fff;color:#202327;border-color:#e3e5e7}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline-color:#43d6ff}
+.sidebar,.topbar,.app-footer{background:#142a40;color:#e6f2fa;border-color:#29445d}
 .sidebar{box-shadow:1px 0 0 #eaebed}
-.brand,.profile-button,.profile-copy b,.breadcrumb strong,.nav-item:hover{color:#222529}
+.brand,.profile-button,.profile-copy b,.breadcrumb strong,.nav-item:hover{color:#e6f2fa}
 .brand strong{font-weight:700;font-size:19px}
 .brand strong span,.brand-mark i,.brand-mark b{color:#333;background:#333}
-.brand-mark{border-color:#cfd2d5}
+.brand-mark{border-color:#34516b}
 .brand-mark b{box-shadow:-7px -5px 0 -1px #555,7px -5px 0 -1px #555,-7px 5px 0 -1px #555,7px 5px 0 -1px #555}
-.side-label,.brand small,.breadcrumb,.app-footer,.profile-copy small{color:#777d83}
-.nav-item{color:#62686e}
-.nav-item:hover{background:#f3f4f5}
-.nav-item.active{background:#eceef0;color:#202327}
-.nav-icon,.nav-item.active .nav-icon{color:#555b61}
-.nav-count{background:#f0f1f2;color:#555b61}
-.sync-card{background:#f7f8f9;border-color:#e4e6e8}
+.side-label,.brand small,.breadcrumb,.app-footer,.profile-copy small{color:#839bad}
+.nav-item{color:#b0c3d2}
+.nav-item:hover{background:#142a40}
+.nav-item.active{background:#1a344c;color:#e6f2fa}
+.nav-icon,.nav-item.active .nav-icon{color:#a8bfd2}
+.nav-count{background:#1a344c;color:#a8bfd2}
+.sync-card{background:#12283e;border-color:#e4e6e8}
 .sync-dot,.online-pill i{background:#5d806a;box-shadow:none}
-.sync-card b,.sync-card small,.sync-check,.avatar,.profile-more{color:#555d64}
-.avatar{background:#f0f1f2;border-color:#dadde0}
+.sync-card b,.sync-card small,.sync-check,.avatar,.profile-more{color:#a8bfd2}
+.avatar{background:#1a344c;border-color:#34516b}
 .topbar{backdrop-filter:none}
-#app{color:#25282c}
-.page-head h1,.hero h1,.section-title h2,.mission-panel h3,.mode-card h3,.dock-top h1,.modal-head h2,.game-card h2,.feedback-title,.empty-state h2{font-family:Inter,"Segoe UI",Arial,sans-serif;font-weight:650;letter-spacing:-.025em!important;color:#202327}
-.page-head p,.hero p,.section-title p,.mode-card p,.topic-name,.inline-help,.field-hint,.empty-state p{color:#666d73}
-.eyebrow,.hero-kicker,.side-label,.breadcrumb,.online-pill,.metric-copy small,.app-footer,.art-label,.world-title,.world-footer,.hud-brand small,.dock-top>div>small,.dock-live,.boss-float-hud small{font-family:Inter,"Segoe UI",Arial,sans-serif!important;font-size:10px;letter-spacing:.035em!important;color:#6c7278}
-.hero,.mission-panel{background:#fff;border:1px solid #e3e5e7;box-shadow:none}
+#app{color:#e6f2fa}
+.page-head h1,.hero h1,.section-title h2,.mission-panel h3,.mode-card h3,.dock-top h1,.modal-head h2,.game-card h2,.feedback-title,.empty-state h2{font-family:Inter,"Segoe UI",Arial,sans-serif;font-weight:650;letter-spacing:-.025em!important;color:#e6f2fa}
+.page-head p,.hero p,.section-title p,.mode-card p,.topic-name,.inline-help,.field-hint,.empty-state p{color:#a8bfd2}
+.eyebrow,.hero-kicker,.side-label,.breadcrumb,.online-pill,.metric-copy small,.app-footer,.art-label,.world-title,.world-footer,.hud-brand small,.dock-top>div>small,.dock-live,.boss-float-hud small{font-family:Inter,"Segoe UI",Arial,sans-serif!important;font-size:10px;letter-spacing:.035em!important;color:#a8bfd2}
+.hero,.mission-panel{background:#142a40;border:1px solid #29445d;box-shadow:none}
 .hero{min-height:230px;border-radius:14px}
 .hero:before,.hero:after,.mission-panel:after{display:none}
-.hero-kicker,.hero h1 em{color:#34383c}
+.hero-kicker,.hero h1 em{color:#c5d7e4}
 .hero-kicker i,.hero-art .orbit:before,.hero-art .orbit:after{background:#858b91;box-shadow:none}
-.hero-art .orbit,.hero-art .orbit.two{border-color:#d7dadd}
-.core-node{background:#f1f2f3;border-color:#d5d8db;box-shadow:none}
+.hero-art .orbit,.hero-art .orbit.two{border-color:#34516b}
+.core-node{background:#1a344c;border-color:#34516b;box-shadow:none}
 .core-node svg{stroke:#43484d}
 .art-label{color:#767c82}
-.metric-strip,.topic-panel,.panel,.mode-card,.mission-panel,.route-console,.game-card,.side-game-card{background:#fff;border:1px solid #e3e5e7;box-shadow:none}
+.metric-strip,.topic-panel,.panel,.mode-card,.mission-panel,.route-console,.game-card,.side-game-card{background:#142a40;border:1px solid #29445d;box-shadow:none}
 .metric-strip{border-radius:12px}
-.metric{border-color:#e7e8ea}
-.metric-icon,.metric:nth-child(2) .metric-icon,.metric:nth-child(3) .metric-icon,.metric:nth-child(4) .metric-icon,.mode-icon,.mode-card:nth-child(n) .mode-icon{color:#4b5055;background:#f1f2f3}
-.metric-copy strong{color:#24282c}
+.metric{border-color:#29445d}
+.metric-icon,.metric:nth-child(2) .metric-icon,.metric:nth-child(3) .metric-icon,.metric:nth-child(4) .metric-icon,.mode-icon,.mode-card:nth-child(n) .mode-icon{color:#c5d7e4;background:#1a344c}
+.metric-copy strong{color:#e6f2fa}
 .mode-card{min-height:168px;transition:border-color .15s,background-color .15s}
-.mode-card:hover,.mode-card.active-recommended{transform:none;background:#fafafa;border-color:#cfd2d5}
-.mode-tag{color:#545a60;background:#f0f1f2}
-.mode-arrow,.text-link,.profile-button:hover .profile-copy b{color:#353a3f}
-.topic-bar{background:#eceef0}
+.mode-card:hover,.mode-card.active-recommended{transform:none;background:#172d43;border-color:#34516b}
+.mode-tag{color:#a8bfd2;background:#1a344c}
+.mode-arrow,.text-link,.profile-button:hover .profile-copy b{color:#cfdae4}
+.topic-bar{background:#1a344c}
 .mission-panel{position:relative}
-.progress-line{background:#eceef0}
+.progress-line{background:#1a344c}
 .progress-line i{background:#454a50}
-.progress-caption,.mission-meta{color:#656b71}
+.progress-caption,.mission-meta{color:#a8bfd2}
 .btn-primary{background:#25292d;color:#fff;box-shadow:none}
 .btn-primary:hover{background:#111315;transform:none}
-.btn-secondary,.small-action,.btn-quiet{background:#fff;color:#34393e;border-color:#d9dcdf}
-.btn-secondary:hover,.small-action:hover,.btn-quiet:hover{border-color:#969ca2;color:#202327}
-.btn-danger{background:#fff3f2;color:#8f4c48;border-color:#ead2d0}
-.filter-chip,.field input,.field select,.field textarea,.search-input,.form-control,select,input,textarea{background:#fff;color:#292d31;border-color:#d8dbde}
-.filter-chip{color:#5e646a}
+.btn-secondary,.small-action,.btn-quiet{background:#142a40;color:#d5e4ef;border-color:#34516b}
+.btn-secondary:hover,.small-action:hover,.btn-quiet:hover{border-color:#49657c;color:#e6f2fa}
+.btn-danger{background:#142a403f2;color:#ffaaa0;border-color:#63414a}
+.filter-chip,.field input,.field select,.field textarea,.search-input,.form-control,select,input,textarea{background:#142a40;color:#e0edf6;border-color:#34516b}
+.filter-chip{color:#a8bfd2}
 .filter-chip.active{background:#262a2e;color:#fff;border-color:#262a2e}
 .panel h2,.panel h3,.side-game-card h3,.topic-panel h2,.empty-state h2{color:#272b2f}
-.topic-percent,.progress-caption,.table-caption,.card-meta,.deck-card small,.role-tile p{color:#696f75}
-.table-wrap,.card-list,.deck-card,.role-tile,.order-item,.turn-player,.route-stop,.route-icon,.review-toggle{background:#fafafa;color:#40464b;border-color:#e2e4e6}
-.turn-player.active,.route-stop.current,.route-stop.complete{background:#f0f2f3;color:#25292d;border-color:#d9dcdf}
-.route-icon{color:#51575d}
-.route-icon:before,.route-line{background-color:#c9cdd1}
-.alert-box{background:#f7f5ef;color:#5d5545;border-color:#e6dfcf}
-.empty-state{border-color:#d6d9dc;color:#63696f}
+.topic-percent,.progress-caption,.table-caption,.card-meta,.deck-card small,.role-tile p{color:#9db1c2}
+.table-wrap,.card-list,.deck-card,.role-tile,.order-item,.turn-player,.route-stop,.route-icon,.review-toggle{background:#172d43;color:#cfdae4;border-color:#29445d}
+.turn-player.active,.route-stop.current,.route-stop.complete{background:#1a344c;color:#e6f2fa;border-color:#34516b}
+.route-icon{color:#b5c8d6}
+.route-icon:before,.route-line{background-color:#29445d}
+.alert-box{background:#282c32;color:#f0d39d;border-color:#534737}
+.empty-state{border-color:#34516b;color:#a8bfd2}
 .modal-backdrop{background:rgba(24,27,30,.34);backdrop-filter:none}
-.modal-card{background:#fff;color:#25292d;border:1px solid #e0e2e4;border-radius:14px;box-shadow:0 14px 40px rgba(24,27,30,.14)}
-.modal-head p,.close-button,.field-hint{color:#656b71}
-.close-button{background:#fff;border-color:#dedfe1}
-.segmented{background:#f2f3f4;border-color:#e1e3e5}
-.segmented button{color:#646a70}
+.modal-card{background:#142a40;color:#e6f2fa;border:1px solid #29445d;border-radius:14px;box-shadow:0 14px 40px rgba(24,27,30,.14)}
+.modal-head p,.close-button,.field-hint{color:#a8bfd2}
+.close-button{background:#142a40;border-color:#34516b}
+.segmented{background:#173047;border-color:#29445d}
+.segmented button{color:#a8bfd2}
 .segmented button.selected{background:#272b2f;color:#fff}
-.option-button,.difficulty-button,.role-button,.order-item button{background:#fff;color:#3d4247;border-color:#dfe1e3;box-shadow:none}
-.option-button:hover,.difficulty-button:hover,.role-button:hover:not(:disabled),.order-item:hover{background:#f5f6f7;border-color:#bfc3c7;color:#25292d}
-.option-button.selected,.difficulty-button.selected{background:#f0f1f2;border-color:#595e63;color:#24282c}
-.question-explain{background:#f4f5f6;color:#40464b;border-color:#e0e2e4}
-.result-banner,.result-banner.loss{background:#f3f4f5;color:#25292d;border-color:#dfe1e3}
-.result-banner p,.feedback-answer{color:#585f65}
-.result-mark{background:#f0f1f2;color:#34393e;border-color:#d9dcdf}
+.option-button,.difficulty-button,.role-button,.order-item button{background:#142a40;color:#c5d7e4;border-color:#34516b;box-shadow:none}
+.option-button:hover,.difficulty-button:hover,.role-button:hover:not(:disabled),.order-item:hover{background:#0b1825;border-color:#49657c;color:#e6f2fa}
+.option-button.selected,.difficulty-button.selected{background:#1a344c;border-color:#595e63;color:#e6f2fa}
+.question-explain{background:#142a40;color:#cfdae4;border-color:#29445d}
+.result-banner,.result-banner.loss{background:#142a40;color:#e6f2fa;border-color:#34516b}
+.result-banner p,.feedback-answer{color:#a8bfd2}
+.result-mark{background:#1a344c;color:#d5e4ef;border-color:#34516b}
 .toast{background:#25292d;color:#fff;border-color:#25292d;box-shadow:0 5px 18px #0002;animation:none}
 .toast.error{background:#713e3b;color:#fff;border-color:#713e3b}
 
 /* A light control room surrounds the colorful tabletop scene. */
-body.in-game{background:#f1f2f4;color:#22262a}
-body.in-game .game-world{--game-ink:#24282c;--game-muted:#636a70;background:#f0f1f3;color:#24282c}
+body.in-game{background:#0b1825;color:#e6f2fa}
+body.in-game .game-world{--game-ink:#24282c;--game-muted:#636a70;background:#0b1825;color:#e6f2fa}
 body.in-game .game-world:before,body.in-game .game-world:after{display:none}
-.game-hud{background:#fff;border-color:#e1e3e5;backdrop-filter:none}
-.hud-brand b,.hud-center,.hud-exit{color:#282c30}
-.hud-brand small{color:#73797f}
-.hud-sigil{color:#353a3f;background:#f1f2f3;border-color:#d9dcdf}
-.hud-center .round-badge,.round-badge{background:#f0f1f2;color:#555b61;border-color:#e1e3e5}
-.hud-exit{background:#fff;border-color:#dfe1e3}
-.world-stage{background:#f0f1f3}
-.world-title,.world-title>b,.world-footer{color:#575e64}
-.game-control-dock{background:#fff;border-color:#e1e3e5;box-shadow:-8px 0 20px rgba(24,28,32,.035)}
+.game-hud{background:#142a40;border-color:#29445d;backdrop-filter:none}
+.hud-brand b,.hud-center,.hud-exit{color:#d5e4ef}
+.hud-brand small{color:#a8bfd2}
+.hud-sigil{color:#cfdae4;background:#1a344c;border-color:#34516b}
+.hud-center .round-badge,.round-badge{background:#1a344c;color:#a8bfd2;border-color:#29445d}
+.hud-exit{background:#142a40;border-color:#34516b}
+.world-stage{background:#0b1825}
+.world-title,.world-title>b,.world-footer{color:#a8bfd2}
+.game-control-dock{background:#142a40;border-color:#29445d;box-shadow:-8px 0 20px rgba(24,28,32,.035)}
 .dock-top h1,.dock-top>div>small{color:#272b2f}
-.dock-live{color:#4f7159}
+.dock-live{color:#a6e6b7}
 .dock-live i,.hacker-hud i{background:#5e826a;box-shadow:none;animation:none}
-.route-console,.game-control-dock .game-card,.game-control-dock .side-game-card{background:#fff;border-color:#e1e3e5;box-shadow:none}
-.game-control-dock .side-game-card h3,.turn-action>div b,.turn-copy strong{color:#292d31}
-.route-console .turn-banner,.game-control-dock .turn-banner{background:#f5f6f7;color:#30353a}
-.turn-copy small,.turn-action>div small{color:#666d73}
-.server-health,.seal-chip{background:#f6f7f8;border-color:#e0e2e4}
-.server-health small,.seal-chip small{color:#555d63}
+.route-console,.game-control-dock .game-card,.game-control-dock .side-game-card{background:#142a40;border-color:#29445d;box-shadow:none}
+.game-control-dock .side-game-card h3,.turn-action>div b,.turn-copy strong{color:#e0edf6}
+.route-console .turn-banner,.game-control-dock .turn-banner{background:#0b1825;color:#c5d7e4}
+.turn-copy small,.turn-action>div small{color:#a8bfd2}
+.server-health,.seal-chip{background:#142a40;border-color:#29445d}
+.server-health small,.seal-chip small{color:#a8bfd2}
 .server-health>b{color:var(--topic)}
-.server-health>i,.co-op-alerts i{background:#e4e6e8}
-.question-area,.question-area h2,.game-control-dock .question-area h2{color:#25292d}
-.question-meta .pill,.pill{background:#f0f1f2;color:#545a60;border-color:#e0e2e4}
+.server-health>i,.co-op-alerts i{background:#29445d}
+.question-area,.question-area h2,.game-control-dock .question-area h2{color:#e6f2fa}
+.question-meta .pill,.pill{background:#1a344c;color:#a8bfd2;border-color:#29445d}
 .difficulty-button.easy{--difficulty:#637d69}.difficulty-button.medium{--difficulty:#927447}.difficulty-button.hard{--difficulty:#895652}
-.game-card .game-progress span,.game-progress span{background:#e6e8ea}
+.game-card .game-progress span,.game-progress span{background:#223b52}
 .game-card .game-progress span.done,.game-progress span.done{background:#565c62}
-.turn-token{background:#e7e9eb;color:#32373c}
-.health-bar{background:#e8e9eb}
-.hacker-caption,.hacker-head h3{color:#555c62}
-.role-button:disabled{background:#f5f6f7;color:#777d82;opacity:.7}
-.turn-player.active{background:#f0f1f2;color:#2d3236}
-.game-finished{background:#f0f1f3}
+.turn-token{background:#1a344c;color:#cfdae4}
+.health-bar{background:#1a344c}
+.hacker-caption,.hacker-head h3{color:#a8bfd2}
+.role-button:disabled{background:#0b1825;color:#9db1c2;opacity:.7}
+.turn-player.active{background:#1a344c;color:#d5e4ef}
+.game-finished{background:#0b1825}
 
 /* Keep the board colorful, with a quieter gray route and low-cost rendering. */
 .board-svg{filter:none}
@@ -137,9 +137,9 @@ body.in-game .game-world:before,body.in-game .game-world:after{display:none}
 .tile-seguranca .tile-face{fill:#b07972;stroke:#e7cfcc}
 .player-pawn text{stroke:#33383d}
 .destination-crown text{fill:#393326}
-.boss-float-hud{background:#fff;border-color:#dfc7c7;box-shadow:0 4px 14px rgba(38,30,30,.09)}
-.boss-float-hud>span,.boss-float-hud small{color:#6b4545}
-.boss-float-hud>i{background:#e8dddd}
+.boss-float-hud{background:#142a40;border-color:#63414a;box-shadow:0 4px 14px rgba(38,30,30,.09)}
+.boss-float-hud>span,.boss-float-hud small{color:#ffaaa0}
+.boss-float-hud>i{background:#31232d}
 .boss-float-hud>i b{box-shadow:none}
 .boss-model{animation:none!important;filter:drop-shadow(0 5px 3px rgba(26,29,32,.18))!important}
 .boss-aura,.boss-eye{animation:none!important}
@@ -149,39 +149,39 @@ body.in-game .game-world:before,body.in-game .game-world:after{display:none}
 .cooperative .boss-hit .boss-impact{animation:impact-ring .46s ease-out 2;filter:none}
 .cooperative .boss-hit .boss-aura{animation:none;stroke:#fff1b2}
 @keyframes boss-hit-light{0%,100%{translate:-18px 0}30%{translate:-27px 1px}65%{translate:-11px 0}}
-@media(max-width:720px){.cooperative .boss-model{scale:1.02}.cooperative .boss-float-hud{background:#fff}}
+@media(max-width:720px){.cooperative .boss-model{scale:1.02}.cooperative .boss-float-hud{background:#142a40}}
 .hero-art .orbit,.hero-art .art-label{display:none}
 .core-node{width:92px;height:92px;border-radius:16px}
 html{scroll-behavior:auto}
 /* Contrast pass for co-op health and secondary copy on the light surface. */
-.cooperative .boss-float-hud{background:#fff;border:1px solid #d8dadd;box-shadow:0 3px 10px rgba(25,29,33,.08)}
-.cooperative .boss-float-hud>span{color:#33383d;font:700 10px Inter,"Segoe UI",Arial,sans-serif}
-.cooperative .boss-float-hud small{color:#555c62;font:500 9px Inter,"Segoe UI",Arial,sans-serif}
-.cooperative .boss-float-hud>i{background:#e2e4e6}
+.cooperative .boss-float-hud{background:#142a40;border:1px solid #d8dadd;box-shadow:0 3px 10px rgba(25,29,33,.08)}
+.cooperative .boss-float-hud>span{color:#cfdae4;font:700 10px Inter,"Segoe UI",Arial,sans-serif}
+.cooperative .boss-float-hud small{color:#a8bfd2;font:500 9px Inter,"Segoe UI",Arial,sans-serif}
+.cooperative .boss-float-hud>i{background:#29445d}
 .cooperative .boss-float-hud>i b{background:#ad4652;box-shadow:none}
-.game-control-dock .inline-help,.game-control-dock p,.game-control-dock .question-actions small,.game-control-dock .turn-copy small,.game-control-dock .turn-action>div small,.game-control-dock .hacker-caption,.game-control-dock .server-health small,.game-control-dock .seal-chip small,.game-control-dock .role-button,.game-control-dock .turn-player{color:#4c5359}
-.game-control-dock .role-button:disabled{color:#656b71}
-.game-control-dock .question-meta .pill,.game-control-dock .round-clock{color:#454b51}
-.game-control-dock .question-explain{background:#f1f2f3;color:#3d4349;border-color:#dfe1e3}
-.game-control-dock .question-explain strong{color:#25292d}
-.game-control-dock .hacker-health{color:#934b49}
+.game-control-dock .inline-help,.game-control-dock p,.game-control-dock .question-actions small,.game-control-dock .turn-copy small,.game-control-dock .turn-action>div small,.game-control-dock .hacker-caption,.game-control-dock .server-health small,.game-control-dock .seal-chip small,.game-control-dock .role-button,.game-control-dock .turn-player{color:#b5c8d6}
+.game-control-dock .role-button:disabled{color:#a8bfd2}
+.game-control-dock .question-meta .pill,.game-control-dock .round-clock{color:#c5d7e4}
+.game-control-dock .question-explain{background:#1a344c;color:#cfdae4;border-color:#34516b}
+.game-control-dock .question-explain strong{color:#e6f2fa}
+.game-control-dock .hacker-health{color:#ffaaa0}
 /* Tabletop action effects: one-shot motion, no ambient animation loops. */
 .game-hud{gap:10px}
-.hud-sound{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 11px;border:1px solid #dfe1e3;border-radius:9px;background:#fff;color:#454b51;font-size:11px;font-weight:600}
-.hud-sound:hover{background:#f2f3f4}
+.hud-sound{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 11px;border:1px solid #34516b;border-radius:9px;background:#142a40;color:#c5d7e4;font-size:11px;font-weight:600}
+.hud-sound:hover{background:#173047}
 .hud-sound span{font-size:16px}
 .hud-exit{flex:none}
 .turn-action{gap:11px}
 .turn-action-copy{display:grid;gap:4px;min-width:0;flex:1}
-.turn-action-copy b{font-size:11px;color:#2c3136}
+.turn-action-copy b{font-size:11px;color:#d5e4ef}
 .turn-action-copy small{font-size:9px;line-height:1.35;color:#60676d}
 .dice-widget{display:grid;justify-items:center;gap:5px;flex:none;width:58px}
 .dice-perspective{width:46px;height:46px;perspective:210px}
 .dice-cube{position:relative;width:40px;height:40px;margin:3px;transform-style:preserve-3d;transform:rotateX(-20deg) rotateY(-27deg);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
-.dice-face{position:absolute;inset:0;display:block;width:40px;height:40px;border:1px solid #c9cdd1;border-radius:8px;background:linear-gradient(145deg,#fff,#e9ebed);box-shadow:inset 0 1px 1px #fff,0 2px 3px #25292d18;backface-visibility:hidden}
+.dice-face{position:absolute;inset:0;display:block;width:40px;height:40px;border:1px solid #34516b;border-radius:8px;background:linear-gradient(145deg,#173b59,#0c2237);box-shadow:inset 0 1px 2px #8be4ff22,0 2px 6px #020a1480;backface-visibility:hidden}
 .face-front{transform:translateZ(20px)}.face-back{transform:rotateY(180deg) translateZ(20px)}.face-right{transform:rotateY(90deg) translateZ(20px)}.face-left{transform:rotateY(-90deg) translateZ(20px)}.face-top{transform:rotateX(90deg) translateZ(20px)}.face-bottom{transform:rotateX(-90deg) translateZ(20px)}
 .dice-pips{display:grid;width:100%;height:100%;padding:6px;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);place-items:center}
-.dice-pips i{width:5px;height:5px;border-radius:50%;background:transparent}.dice-pips i.pip{background:#33383d;box-shadow:inset 0 1px 1px #0003}
+.dice-pips i{width:5px;height:5px;border-radius:50%;background:transparent}.dice-pips i.pip{background:#43d6ff;box-shadow:0 0 4px #43d6ff66}
 .dice-widget>small{font-size:8px;font-weight:650;letter-spacing:.05em;color:#646b71}
 .dice-cube.is-rolling{animation:cube-tumble 1.12s cubic-bezier(.2,.72,.2,1) both}
 .dice-cube.result-1{transform:rotateX(-20deg) rotateY(-27deg)}.dice-cube.result-2{transform:rotateX(-68deg) rotateY(-27deg)}.dice-cube.result-3{transform:rotateX(-20deg) rotateY(-117deg)}
@@ -193,7 +193,7 @@ html{scroll-behavior:auto}
 @keyframes pawn-travel{0%{translate:0 -15px;scale:.72;opacity:.35}62%{translate:0 2px;scale:1.12;opacity:1}100%{translate:0 0;scale:1}}
 .feedback-card{transform-origin:top center}
 .feedback-correct{border-color:#8ba994!important;animation:feedback-correct-in .36s cubic-bezier(.18,.78,.28,1)}
-.feedback-wrong{border-color:#cb9b96!important;animation:feedback-wrong-in .32s ease-out}
+.feedback-wrong{border-color:#74515d!important;animation:feedback-wrong-in .32s ease-out}
 .feedback-correct .result-mark{animation:success-stamp .38s cubic-bezier(.18,.8,.25,1)}
 .feedback-wrong .result-mark{animation:error-nudge .32s ease-out}
 @keyframes feedback-correct-in{0%{opacity:.55;transform:translateY(10px) scale(.97)}70%{transform:translateY(-2px) scale(1.01)}100%{opacity:1;transform:translateY(0) scale(1)}}
@@ -201,7 +201,7 @@ html{scroll-behavior:auto}
 @keyframes success-stamp{0%{transform:scale(.55) rotate(-10deg)}75%{transform:scale(1.12) rotate(2deg)}100%{transform:scale(1)}}
 @keyframes error-nudge{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg)}70%{transform:rotate(6deg)}}
 .server-hit{animation:server-damage .42s ease-out}
-@keyframes server-damage{0%,100%{transform:translateX(0);background:#f6f7f8}25%{transform:translateX(-3px);background:#f4dfdd}55%{transform:translateX(3px)}80%{transform:translateX(-1px)}}
+@keyframes server-damage{0%,100%{transform:translateX(0);background:#142a40}25%{transform:translateX(-3px);background:#38242b}55%{transform:translateX(3px)}80%{transform:translateX(-1px)}}
 @media(max-width:720px){.hud-sound{width:36px;justify-content:center;padding:0;font-size:0}.hud-sound span{font-size:17px}.turn-action{gap:7px}.dice-widget{width:48px}.dice-perspective{transform:scale(.88)}.turn-action .btn{padding:9px 8px;font-size:9px}}
 @media(prefers-reduced-motion:reduce){.dice-cube.is-rolling,.round-start,.pawn-move,.feedback-card,.result-mark,.server-hit{animation:none!important}}
 
@@ -209,11 +209,11 @@ html{scroll-behavior:auto}
 
 /* The die leaves from beneath the board, rolls across the scene, then rests in its tray. */
 .dice-tray{position:absolute;right:clamp(14px,3vw,42px);bottom:61px;z-index:2;width:84px;height:78px;display:grid;place-items:center;align-content:center;gap:5px;border:1px dashed #aeb5bb;border-radius:13px;background:rgba(255,255,255,.54);color:#71777d}
-.dice-tray-mark{width:49px;height:46px;border:1px dashed #b9bec3;border-radius:11px;background:linear-gradient(145deg,#f5f6f7aa,#e3e6e999);box-shadow:inset 0 2px 4px #fff9}
+.dice-tray-mark{width:49px;height:46px;border:1px dashed #49657c;border-radius:11px;background:linear-gradient(145deg,#173b59aa,#0d253bcc);box-shadow:inset 0 2px 4px #071827}
 .dice-tray>small{font-size:7px;font-weight:700;letter-spacing:.055em;color:#777e84;white-space:nowrap}
-.dice-tray-active{border-style:solid;border-color:#c7ccd0;background:rgba(255,255,255,.82);box-shadow:0 5px 15px #24282c12}
-.dice-tray-active .dice-tray-mark{border-style:solid;border-color:#e0e3e6}
-.dice-tray-active>small{color:#454b51}
+.dice-tray-active{border-style:solid;border-color:#345a75;background:#102b42;box-shadow:0 5px 15px #02091466}
+.dice-tray-active .dice-tray-mark{border-style:solid;border-color:#29445d}
+.dice-tray-active>small{color:#c5d7e4}
 .stage-dice{position:absolute;right:13px;bottom:48px;z-index:3;width:62px;height:62px;display:grid;place-items:center;transform-origin:center}
 .stage-dice.throwing{animation:dice-travel 1.15s cubic-bezier(.18,.7,.2,1) both}
 .stage-dice.settled{transform:translate(0,0) scale(1)}
@@ -248,18 +248,18 @@ html{scroll-behavior:auto}
 /* Plain, native sans-serif system for a quieter, more confident interface. */
 :root{color-scheme:light;--paper:#fff;--white:#fff;--line:#e3e5e8;--muted:#60666d;--shadow:0 1px 3px rgba(20,24,28,.05)}
 *{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;letter-spacing:normal!important}
-html,body{background:#fff;color:#25292d}
+html,body{background:#142a40;color:#e6f2fa}
 body{font-size:15px;-webkit-font-smoothing:antialiased}
-.sidebar,.topbar,.app-footer{background:#fff;color:#25292d;border-color:#e4e6e8}
+.sidebar,.topbar,.app-footer{background:#142a40;color:#e6f2fa;border-color:#e4e6e8}
 .sidebar{box-shadow:1px 0 0 #e9eaec}
 .brand{gap:10px;margin-bottom:38px;color:#202428}
-.brand strong{font:750 18px/1.1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.035em!important;color:#22262a}
+.brand strong{font:750 18px/1.1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.035em!important;color:#e6f2fa}
 .brand small{font:600 10px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0!important;color:#686e74}
-.brand-mark{width:34px;height:34px;border:0;border-radius:10px;display:grid;place-items:center;background:#f0f1f2;transform:none}
-.brand-mark b{position:static;width:auto;height:auto;border-radius:0;background:transparent;color:#32373c;box-shadow:none;font:750 11px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.04em!important}
+.brand-mark{width:34px;height:34px;border:0;border-radius:10px;display:grid;place-items:center;background:#1a344c;transform:none}
+.brand-mark b{position:static;width:auto;height:auto;border-radius:0;background:transparent;color:#cfdae4;box-shadow:none;font:750 11px/1 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.04em!important}
 .side-label{padding:0 13px 9px;color:#545b62;font:650 11px/1.3 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0!important;text-transform:none}
 .nav-item{min-height:42px;color:#4e555c;font-size:13px;font-weight:600}
-.nav-item.active{background:#f0f1f2;color:#202428;font-weight:700}
+.nav-item.active{background:#1a344c;color:#202428;font-weight:700}
 .nav-icon,.nav-item.active .nav-icon{color:#555c63}
 .icon-library{position:absolute;width:0;height:0;overflow:hidden}
 .ui-icon{display:inline-block;width:18px;height:18px;flex:none;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
@@ -274,13 +274,13 @@ body{font-size:15px;-webkit-font-smoothing:antialiased}
 .icon-button .ui-icon{width:17px;height:17px}
 .mission-meta .ui-icon{width:14px;height:14px;margin-right:4px}
 .mode-arrow{display:none!important}
-.breadcrumb{font:650 15px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#30353a;letter-spacing:0!important}
-.breadcrumb strong{font:700 15px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#25292d}
+.breadcrumb{font:650 15px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#c5d7e4;letter-spacing:0!important}
+.breadcrumb strong{font:700 15px/1.2 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#e6f2fa}
 .topbar{height:64px;box-shadow:none}
 .top-actions{gap:10px}
-.icon-button{border-color:#d9dcdf;background:#fff;color:#33383d;font:700 13px system-ui,sans-serif}
-#app{padding-top:32px;background:#fff}
-.hero{min-height:210px;padding:30px 32px;border-radius:12px;background:#f7f8f9}
+.icon-button{border-color:#34516b;background:#142a40;color:#cfdae4;font:700 13px system-ui,sans-serif}
+#app{padding-top:32px;background:#142a40}
+.hero{min-height:210px;padding:30px 32px;border-radius:12px;background:#12283e}
 .hero-art{display:none}
 .hero-kicker{display:block;color:#5d646b;font:600 12px/1.35 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:0!important;text-transform:none}
 .hero-kicker i{display:none}
@@ -288,16 +288,16 @@ body{font-size:15px;-webkit-font-smoothing:antialiased}
 .hero h1 em{font-style:normal;font-weight:750;color:#202428}
 .hero p{max-width:520px;margin-bottom:20px;color:#555c63;font-size:15px;line-height:1.5}
 .page-head h1,.section-title h2,.mission-panel h3,.mode-card h3,.dock-top h1,.modal-head h2,.game-card h2,.feedback-title,.empty-state h2{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:750;letter-spacing:-.035em!important;color:#202428}
-.page-head p,.hero p,.section-title p,.mode-card p,.topic-name,.inline-help,.field-hint,.empty-state p{color:#555d64}
+.page-head p,.hero p,.section-title p,.mode-card p,.topic-name,.inline-help,.field-hint,.empty-state p{color:#a8bfd2}
 .eyebrow,.hero-kicker,.metric-copy small,.app-footer,.world-title,.world-footer,.hud-brand small,.dock-top>div>small,.dock-live,.boss-float-hud small{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;font-size:11px;font-weight:600;letter-spacing:0!important;color:#626970}
 .metric-copy small{text-transform:none;white-space:normal}
 .side-label,.breadcrumb{text-transform:none}
 .btn,.small-action{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;font-weight:700;border-radius:8px;transition:background-color .15s,border-color .15s,color .15s}
 .btn-primary{background:#25292d;color:#fff}
 .btn-primary:hover{background:#111315}
-.btn-secondary,.small-action,.btn-quiet{background:#fff;color:#32373c;border-color:#d8dbde}
-.btn-secondary:hover,.small-action:hover,.btn-quiet:hover{background:#f7f8f9;border-color:#b8bdc2;color:#202428}
-.text-link{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;font-weight:650;color:#3d4349}
+.btn-secondary,.small-action,.btn-quiet{background:#142a40;color:#cfdae4;border-color:#34516b}
+.btn-secondary:hover,.small-action:hover,.btn-quiet:hover{background:#12283e;border-color:#49657c;color:#202428}
+.text-link{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:13px;font-weight:650;color:#cfdae4}
 .mode-card{border-radius:11px;padding:17px}
 .mode-card h3{font-size:17px;font-weight:750}
 .mode-card p{font-size:13px;line-height:1.5}
@@ -307,6 +307,6 @@ body{font-size:15px;-webkit-font-smoothing:antialiased}
 .app-footer{font-size:11px;font-weight:550;letter-spacing:0!important}
 .hud-brand b{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;font-weight:750;letter-spacing:-.02em!important;text-transform:none}
 .hud-brand small{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:10px;font-weight:550;letter-spacing:0!important;text-transform:none}
-.hud-sigil{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:9px;background:#f0f1f2;color:#32373c;font:750 10px system-ui,sans-serif}
+.hud-sigil{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:9px;background:#1a344c;color:#cfdae4;font:750 10px system-ui,sans-serif}
 .dock-top h1{font-size:22px;font-weight:750}
 @media(max-width:620px){.hero{min-height:0;padding:24px 21px}.hero h1{font-size:33px}.hero p{font-size:14px}.breadcrumb,.breadcrumb strong{font-size:14px}}

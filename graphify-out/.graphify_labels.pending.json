@@ -1,10 +1,16 @@
 {
   "0": "README.md",
   "1": "Plano de execução — SDD/TDD",
-  "2": "game-core.test.cjs",
+  "2": "visual-contract.test.cjs",
   "3": "Proposta de regras para o protótipo",
-  "4": "Regras implementadas — Cyber Rota",
-  "5": "Cyber Rota: Defenda a Rede — plano de desenvolvimento",
+  "4": "SDD — Vitória do Hacker e tabuleiro de Defesa",
+  "5": "UI Design",
   "6": "Cyber Rota: Defenda a Rede",
-  "7": "print-and-play.md"
+  "7": "Product-specific creative direction",
+  "8": "Common generated-interface tells",
+  "9": "UI Art Direction",
+  "10": "adr-3d-engine.md",
+  "11": "Final UI review",
+  "12": "Critérios de aceitação",
+  "13": "Regras de jogo — Cyber Rota"
 }

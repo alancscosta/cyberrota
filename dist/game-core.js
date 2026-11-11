@@ -132,6 +132,19 @@
     return next;
   }
 
+  function skipCoopTurn(state) {
+    if (!state || state.outcome) return state;
+    const next = clone(state);
+    next.log.unshift({ outcome: 'timeout', round: next.round, player: next.players[next.currentPlayer]?.name || null });
+    if (next.round >= next.maxRounds) {
+      next.outcome = 'loss';
+      return next;
+    }
+    next.round += 1;
+    next.currentPlayer = (next.currentPlayer + 1) % next.players.length;
+    return next;
+  }
+
   function useCoopHealingNode(state, nodeId) {
     if (!state || state.outcome || !Array.isArray(state.healingNodes)) return state;
     const index = state.healingNodes.findIndex((node) => node.id === Number(nodeId) && !node.used);
@@ -152,7 +165,7 @@
     const normalizeTeam = (players) => Array.isArray(players) ? players.map((player) => String(player?.name ?? player).trim()) : [];
     const blue = normalizeTeam(bluePlayers);
     const red = normalizeTeam(redPlayers);
-    if (blue.length !== 3 || red.length !== 3 || [...blue, ...red].some((name) => !name)) throw new RangeError('A Corrida de Pacotes exige três jogadores por equipe.');
+    if (blue.length !== 3 || red.length !== 3 || [...blue, ...red].some((name) => !name)) throw new RangeError('Desligue o Servidor exige três jogadores por equipe.');
     return {
       teams: {
         blue: { players: blue, positions: [0, 0, 0] },
@@ -172,10 +185,6 @@
     return { team, player: state.teams[team].players[playerIndex], playerIndex };
   }
 
-  function raceProgress(state, team) {
-    return team === 'blue' ? Math.max(...state.teams.blue.positions) : DESTINATION - Math.min(...state.teams.red.positions);
-  }
-
   function resolveRaceTurn(state, result) {
     if (!state || state.outcome || state.turn >= state.maxTurns) return state;
     const { team, player, playerIndex } = racePairing(state);
@@ -191,17 +200,25 @@
       else next.teams.blue.positions[playerIndex] = Math.min(DESTINATION, next.teams.blue.positions[playerIndex] + roll);
     }
     next.turn += 1;
-    const blueCaptured = next.teams.blue.positions.some((position) => position >= DESTINATION);
-    const redCaptured = next.teams.red.positions.some((position) => position <= 0);
-    const captured = blueCaptured && redCaptured ? 'both-flags' : blueCaptured ? 'red-flag' : redCaptured ? 'blue-flag' : null;
-    next.log.unshift({ turn: next.turn, team, player, playerIndex, correct, roll, advancedOpponent: correct ? null : opponentPlayer, playerPosition: next.teams[team].positions[playerIndex], opponentPosition: correct ? null : next.teams[opponent].positions[playerIndex], bluePositions: next.teams.blue.positions.slice(), redPositions: next.teams.red.positions.slice(), captured });
-    if (blueCaptured && redCaptured) next.outcome = 'draw';
-    else if (blueCaptured) next.outcome = 'blue-win';
-    else if (redCaptured) next.outcome = 'red-win';
-    else if (next.turn >= next.maxTurns) {
-      const blueProgress = raceProgress(next, 'blue'), redProgress = raceProgress(next, 'red');
-      next.outcome = blueProgress > redProgress ? 'blue-win' : redProgress > blueProgress ? 'red-win' : 'draw';
-    }
+    const blueAtStand = next.teams.blue.positions.every((position) => position >= DESTINATION);
+    const redAtStand = next.teams.red.positions.every((position) => position <= 0);
+    const serverOff = blueAtStand && redAtStand ? 'both' : blueAtStand ? 'red' : redAtStand ? 'blue' : null;
+    next.log.unshift({ turn: next.turn, team, player, playerIndex, correct, roll, advancedOpponent: correct ? null : opponentPlayer, playerPosition: next.teams[team].positions[playerIndex], opponentPosition: correct ? null : next.teams[opponent].positions[playerIndex], bluePositions: next.teams.blue.positions.slice(), redPositions: next.teams.red.positions.slice(), serverOff });
+    if (blueAtStand && redAtStand) next.outcome = 'draw';
+    else if (blueAtStand) next.outcome = 'blue-win';
+    else if (redAtStand) next.outcome = 'red-win';
+    else if (next.turn >= next.maxTurns) next.outcome = 'draw';
+    return next;
+  }
+
+  function skipRaceTurn(state) {
+    if (!state || state.outcome || state.turn >= state.maxTurns) return state;
+    const { team, player, playerIndex } = racePairing(state);
+    const next = clone(state);
+    next.turn += 1;
+    next.log.unshift({ turn: next.turn, team, player, playerIndex, skipped: true,
+      bluePositions: next.teams.blue.positions.slice(), redPositions: next.teams.red.positions.slice() });
+    if (next.turn >= next.maxTurns) next.outcome = 'draw';
     return next;
   }
 
@@ -232,5 +249,5 @@
     return leaders.length === 1 ? leaders[0] : { tie: leaders };
   }
 
-  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceTurn, hackerPhase, coopVictoryStage, snapshotDeck, winner, normalizeText };
+  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, skipCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceTurn, skipRaceTurn, hackerPhase, coopVictoryStage, snapshotDeck, winner, normalizeText };
 });

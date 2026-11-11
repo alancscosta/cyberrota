@@ -1,20 +1,20 @@
 {
   "tests/game-core.test.cjs": {
-    "mtime": 1794184043.1003366,
-    "seen": 1794184621.463594,
-    "ast_hash": "3b3149a2ceb867daa29b03c0953b5c91",
+    "mtime": 1794363822.0240352,
+    "seen": 1794364515.808636,
+    "ast_hash": "e7a2f359eea9291abcdb59e6e6a42db2",
     "semantic_hash": ""
   },
   "PLANO_DESENVOLVIMENTO.md": {
-    "mtime": 1794184610.232166,
-    "seen": 1794184621.463594,
-    "ast_hash": "22333eb461c55f5e62ea1f9b520ce290",
+    "mtime": 1794364458.4052002,
+    "seen": 1794364515.808636,
+    "ast_hash": "c107eadee085a05e4cefe368bc88b945",
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794184398.7515895,
-    "seen": 1794184621.463594,
-    "ast_hash": "51bdeb981f40db36f4d3a1931b64cee3",
+    "mtime": 1794363866.4259512,
+    "seen": 1794364515.808636,
+    "ast_hash": "b1441c0118056098e757eaac88cff089",
     "semantic_hash": ""
   },
   "docs/print-and-play.md": {
@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "specs/acceptance.md": {
-    "mtime": 1794184398.7525904,
-    "seen": 1794184621.463594,
-    "ast_hash": "1ef47cb2202bef9e0b65109a291fd456",
+    "mtime": 1794364267.7113001,
+    "seen": 1794364515.808636,
+    "ast_hash": "0b66c1979af0ada28eda9e6bf1277f16",
     "semantic_hash": ""
   },
   "specs/content.md": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "specs/game-rules.md": {
-    "mtime": 1794184610.2341676,
-    "seen": 1794184621.463594,
-    "ast_hash": "986ed6862cf3bfd4ba8f7fae91b80b60",
+    "mtime": 1794364262.2410173,
+    "seen": 1794364515.808636,
+    "ast_hash": "bc108d76788648b40d09e8007d8f4c79",
     "semantic_hash": ""
   },
   "specs/rooms-and-decks.md": {
@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794182086.7276888,
-    "seen": 1794182111.653569,
-    "ast_hash": "a6c143f471e65c0007a66813e2836d49",
+    "mtime": 1794193361.8455355,
+    "seen": 1794362169.230677,
+    "ast_hash": "98bc892bf2717b53e45c37c237501e7e",
     "semantic_hash": ""
   },
   "vite.config.js": {
@@ -60,21 +60,75 @@
     "semantic_hash": ""
   },
   "PLANO_IMPLEMENTACAO_MODOS_COMBATE.md": {
-    "mtime": 1794184610.233167,
-    "seen": 1794184621.463594,
-    "ast_hash": "76bd5fae497a82f45f1f68c5971ccce9",
+    "mtime": 1794364282.1651616,
+    "seen": 1794364515.808636,
+    "ast_hash": "0e5aab7c903f4a6fbc36d725ff4377e1",
     "semantic_hash": ""
   },
   "docs/adr-3d-engine.md": {
-    "mtime": 1794183561.2845218,
-    "seen": 1794183630.3847435,
-    "ast_hash": "7879e22ebbe2995d13470033aa1f0a04",
+    "mtime": 1794361432.0903697,
+    "seen": 1794362169.230677,
+    "ast_hash": "701832e0d048861572b39b3a28e329aa",
     "semantic_hash": ""
   },
   "docs/research-ai-game-tools.md": {
-    "mtime": 1794184450.052233,
-    "seen": 1794184621.463594,
-    "ast_hash": "74bf12e26edaf42589e9a51d2a5a6831",
+    "mtime": 1794275298.816823,
+    "seen": 1794362169.230677,
+    "ast_hash": "42c406948f667c8d8d899e8cbabc099f",
+    "semantic_hash": ""
+  },
+  "tests/visual-contract.test.cjs": {
+    "mtime": 1794364430.9231758,
+    "seen": 1794364515.808636,
+    "ast_hash": "faa6fb4d291946047697160a22164728",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ui-art-direction/SKILL.md": {
+    "mtime": 1794187034.3143365,
+    "seen": 1794362169.230677,
+    "ast_hash": "67d6b4f5e04a8f0efd0e90e4db86043f",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ui-design-skill-LICENSE.txt": {
+    "mtime": 1794187035.089167,
+    "seen": 1794362169.230677,
+    "ast_hash": "fdc89bf6975f0fb1ea558d170aae3608",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ui-design/SKILL.md": {
+    "mtime": 1794187033.9526472,
+    "seen": 1794362169.230677,
+    "ast_hash": "85e063288dd727e30bf9903416fe5b81",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ui-design/references/anti-slop.md": {
+    "mtime": 1794187034.7187624,
+    "seen": 1794362169.230677,
+    "ast_hash": "94b43b091ddc9737aa5cd6b027870218",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ui-design/references/creative-direction.md": {
+    "mtime": 1794187035.4490335,
+    "seen": 1794362169.230677,
+    "ast_hash": "75a6fafcdd626ad78818152b0d28f45a",
+    "semantic_hash": ""
+  },
+  ".agents/skills/ui-design/references/ui-review.md": {
+    "mtime": 1794187035.8054037,
+    "seen": 1794362169.230677,
+    "ast_hash": "c95f16c2224e15708da623493ae5ee7b",
+    "semantic_hash": ""
+  },
+  "specs/defense-victory-board-sdd.md": {
+    "mtime": 1794358202.8114564,
+    "seen": 1794362169.230677,
+    "ast_hash": "0846bba1da114d99375456ee8415290b",
+    "semantic_hash": ""
+  },
+  "cyberrota-atualizado.png": {
+    "mtime": 1794192691.4940321,
+    "seen": 1794362169.230677,
+    "ast_hash": "04ad24f9372d1914586892a6a5c929d5",
     "semantic_hash": ""
   },
   "package-lock.json": {

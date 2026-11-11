@@ -5,14 +5,14 @@
 ## Modos implementados
 
 - **Treino Solo:** rota de 19 casas numeradas de 0 a 18, cinco checkpoints/selos, dado virtual e baralho padrão.
-- **Corrida de Pacotes 3v3:** três pessoas por equipe, Azul contra Vermelho; a cada acerto o time avança uma casa, ganha selos nos checkpoints e precisa chegar à casa 18. Quando um time erra sozinho, perde PV; PV zero causa game over antes da chegada.
+- **Desligue o Servidor 3v3:** três pessoas por equipe, Azul contra Vermelho; acerto avança o peão ativo pelo dado e erro o recua enquanto move o rival correspondente. Os três integrantes precisam chegar ao estande para desligar o servidor inimigo.
 - **Defenda a Rede:** cinco servidores, Hacker com fases de armadura, perguntas de ataque, efeitos de combate e três nós verdes de cura. No Desafio, erros causam penalidade maior e recuperam vida do Hacker.
-- **Apresentação:** os jogos continuam com tabuleiro, HUD curto, perguntas legíveis e efeitos por cima do cenário. Rota de cidade, arena da Corrida e centro de dados cooperativo são composições diferentes.
+- **Apresentação:** os jogos continuam com tabuleiro, HUD curto, perguntas legíveis e efeitos por cima do cenário. Rota de cidade, percurso quadrado do 3v3 e centro de dados cooperativo são composições diferentes.
 
 ## Regras e decisões
 
 - Pass-and-play local; respostas ficam ocultas durante a troca de participante.
-- A Corrida usa 10 PV por equipe. Duelos com respostas diferentes ferem o time que errou; respostas iguais não causam dano. Se nenhum time chegar depois de 30 duelos, posição decide e PV desempata.
+- O modo 3v3 usa uma rota de 19 casas e não tem PV por equipe. Se nenhum trio chegar ao estande em 60 turnos, termina em empate.
 - Defenda a Rede: acerto tira PV do Hacker e recupera servidor; erro danifica servidor e soma alerta. No Desafio, o Hacker recupera 2 PV e o servidor sofre 50% de dano no erro. Três nós de cura restauram 25% do servidor mais frágil, uma vez cada.
 - Sons originais sintetizados têm controle de silêncio. Ações relevantes também têm feedback textual.
 - Cartas erradas, estatísticas, progresso, preferências e sessão ativa são salvos no navegador.
@@ -33,5 +33,5 @@ Use `npm install` e `npm run dev` para iniciar. `npm run build` gera o pacote de
 - Ajustar equilíbrio de PV, dano e duração com sessões de jogo reais.
 - Revisar contraste, teclado, leitor de tela, telas pequenas e movimento reduzido.
 - Fazer playtest com iniciantes para conferir regras, duração e troca do dispositivo.
-- Completar o pacote Print & Play para refletir a Corrida 3v3 e os efeitos de Defenda a Rede.
+- Completar o pacote Print & Play para refletir o modo Desligue o Servidor 3v3 e os efeitos de Defenda a Rede.
 - Planejar contas e partidas online somente se a sincronização remota virar requisito.

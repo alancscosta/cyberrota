@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const app = fs.readFileSync(path.join(root, 'dist/app.js'), 'utf8');
@@ -10,6 +11,7 @@ const css = fs.readFileSync(path.join(root, 'dist/play-redesign.css'), 'utf8');
 const hackerCss = fs.readFileSync(path.join(root, 'dist/hacker-visual.css'), 'utf8');
 const finishCss = fs.readFileSync(path.join(root, 'dist/cyberrota-finish.css'), 'utf8');
 const raceMode = fs.readFileSync(path.join(root, 'dist/race-mode.js'), 'utf8');
+const boardCss = fs.readFileSync(path.join(root, 'dist/board.css'), 'utf8');
 
 test('the interface bundles IBM Plex Sans locally and overrides legacy font rules', () => {
   assert.ok(hackerCss.includes('font-family: "IBM Plex Sans"'), 'the interface selects IBM Plex Sans');
@@ -119,9 +121,9 @@ test('the die only colors real pips and shows standard one-through-six faces', (
   for (const face of ['renderDiePips(1)', 'renderDiePips(2)', 'renderDiePips(3)', 'renderDiePips(4)', 'renderDiePips(5)', 'renderDiePips(6)']) assert.ok(app.includes(face), `the cube has a standard ${face.slice(-2,-1)} face`);
 });
 
-test('each player chooses a unique color and sees its matching robot avatar before joining', () => {
+test('each player chooses a unique color and sees the matching pawn before joining', () => {
   assert.ok(app.includes('const PLAYER_COLOR_LABELS = ['), 'the six player colors have visible names');
-  assert.ok(app.includes('function renderPlayerAvatar(index,color)'), 'every color has a rendered robot avatar');
+  assert.ok(app.includes('renderBoardPawnAvatar(colorIndex,color)'), 'color selection uses the same pawn art as the board');
   assert.ok(app.includes("data-color-index=\"'+colorIndex+'\""), 'color choices expose their palette index to the setup form');
   assert.ok(app.includes('takenByOther=selectedColors.some((value,other)=>other!==index&&value===colorIndex)'), 'a color used by another player is disabled');
   assert.ok(app.includes('new Set(selectedColorIndexes).size!==names.length'), 'starting a game rejects duplicate colors even if form state is tampered');
@@ -129,31 +131,84 @@ test('each player chooses a unique color and sees its matching robot avatar befo
   assert.ok(app.includes("player.color||playerColors[index%playerColors.length]"), 'the selected color drives in-game player avatars and tokens');
 });
 
-test('the 3v3 race visibly shows both full teams on the board and in the score strip', () => {
-  assert.ok(app.includes('RaceMode.render(game,'), 'the capture-the-flag screen is a dedicated, testable renderer');
+test('the 3v3 race shows both teams and a purpose-built server-disconnect board', () => {
+  assert.ok(app.includes('RaceMode.render(game,'), 'the server-disconnect screen is a dedicated, testable renderer');
   assert.ok(raceMode.includes('race-team-roster') && raceMode.includes('aria-label="Jogadores da equipe'), 'both team score cards list all three participants');
-  assert.ok(raceMode.includes('renderBoardPawnAvatar') && raceMode.includes('CASA ${position}'), 'the score strip shows each player avatar, name, and individual house');
-  assert.ok(app.includes('game.race.teams[team].positions[index]'), 'each of six board pawns uses its own position');
-  assert.ok(raceMode.includes('renderBoardScene(game.players[0])') && raceMode.includes('BASE VERMELHA'), 'the 3v3 board shows both opposing bases');
+  assert.ok(raceMode.includes('renderBoardPawnAvatar') && raceMode.includes('CASA ${localPosition}'), 'the score strip shows each player pawn, name, and individual house');
+  assert.ok(raceMode.includes('function boardScene(game, ui)'), '3v3 uses a dedicated board scene');
+  assert.ok(raceMode.includes('viewBox="0 0 800 800"') && raceMode.includes('race-board-base'), 'the redesigned route fits a square playing surface');
+  assert.ok(raceMode.includes('race-server-stand') && raceMode.includes('server-cable') && raceMode.includes('server-socket'), 'both team stands show a wired server and outlet');
+  assert.ok(raceMode.includes('server-powering-down') && raceMode.includes('stand-beacon'), 'server lights and the stand beacon animate off after the trio arrives');
+  assert.ok(raceMode.includes('occupants = roster.filter((piece) => piece.position === position)') && raceMode.includes('point[1] - 12 + offsetY'), 'pawns share centered, evenly spaced layouts on their current route tile');
+  assert.ok(app.includes('globalThis.RaceMode.boardScene(game,'), 'the main game renderer uses the dedicated 3v3 board');
 });
 
-test('capture-the-flag game visibly rolls a six-sided die and explains success and miss movement', () => {
+test('server-disconnect game shows its die on the main board and explains movement', () => {
   assert.ok(raceMode.includes('data-action="race-roll"') && raceMode.includes('Rolar dado · 1–6'), 'the active player rolls before seeing the question');
-  assert.ok(html.includes('type="module" src="race-mode.js?v=1"') && raceMode.includes('renderDiePips(game.raceRoll)'), 'the selected die face appears beside the question');
+  assert.ok(html.includes('type="module" src="race-mode.js?v=') && raceMode.includes('ui.renderRaceDiceTray(game.raceRoll, activeColor)'), 'the selected die face appears on the main stage');
+  assert.ok(raceMode.includes('ui.renderRaceDiceTray(game.raceRoll, activeColor)'), 'the 3v3 calls the shared style of dice tray');
+  assert.ok(app.includes('function renderRaceDiceTray(value,color)') && app.includes('race-dice-tray'), 'the 3v3 die uses the same 3D cube and tray structure as other modes');
+  assert.ok(boardCss.includes('.race-world-stage .race-dice-tray{z-index:8}'), 'the 3v3 die is anchored in the gameplay stage');
   assert.ok(raceMode.includes('Acerto avança o dado') && raceMode.includes('Erro recua seu peão'), 'the instructions explain the movement rule in the game UI');
-  assert.ok(raceMode.includes('captured ? \'BANDEIRA CAPTURADA\''), 'the turn result calls out flag captures');
+  assert.ok(raceMode.includes('EQUIPE COMPLETA NO ESTANDE'), 'the turn result calls out the whole team arriving');
   assert.ok(raceMode.includes('event.opponentPosition ?? race.teams[event.team'), 'a miss displays the opposing pawn’s actual house number');
+  assert.ok(raceMode.includes('EQUIPE ${game.race.outcome') && raceMode.includes('GANHADORA'), 'the winning team appears in a large centered overlay');
+  assert.ok(raceMode.includes("const winnerTone = game.race.outcome === 'blue-win' ? 'blue' : 'red'") && raceMode.includes('race-victory-overlay team-${winnerTone}'), 'the victory overlay identifies the winning team for color styling');
+  assert.ok(boardCss.includes('.race-victory-overlay') && boardCss.includes('race-victory-title'), 'the winning overlay fades in and out over the match');
+  assert.ok(boardCss.includes('.race-victory-overlay.team-blue .race-victory-content strong') && boardCss.includes('.race-result-card.team-blue h2') && boardCss.includes('color:#43d6ff'), 'all Blue victory headlines use the blue team color');
+  assert.ok(boardCss.includes('.race-victory-overlay.team-red .race-victory-content strong') && boardCss.includes('.race-result-card.team-red h2') && boardCss.includes('color:#ff7188'), 'all Red victory headlines use the red team color');
+  assert.ok(hackerCss.includes('body.in-game .dice-tray-active .dice-pips i.pip { background: var(--turn-color'), 'the die face stays in the game palette while current-player pips change color');
   assert.ok(finishCss.includes('race-result-card:not(.damage) .race-damage') && finishCss.includes('color:#b7f0d1'), 'a correct move uses a green, readable result label');
   assert.ok(finishCss.includes('race-result-card.damage .race-damage') && finishCss.includes('color:#ffc2c5'), 'a failed move uses a separate red result label');
   assert.ok(app.includes('Core.resolveRaceTurn(game.race,{correct,roll:game.raceRoll})'), 'answer results update individual peons through the tested game rules');
   assert.ok(app.includes('restored.mode===\'competitive\'&&restored.race') && app.includes('race.teams.blue.positions=Array(3)'), 'saved games from the former team-race rules migrate without a blank screen');
 });
 
+test('a completed 3v3 route renders only the rival server powering down and the winner overlay', () => {
+  const context = { GameCore: require('../dist/game-core.js') };
+  vm.runInNewContext(raceMode, context);
+  const colors = ['#43d6ff', '#769bff', '#ffbd68', '#d49bff', '#72e0b3', '#ff8e9b'];
+  const game = {
+    mode: 'competitive', phase: 'race-shutdown', raceRoll: 5, raceVictoryStartedAt: Date.now(),
+    race: { ...context.GameCore.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']), teams: { blue: { players: ['A1', 'A2', 'A3'], positions: [18, 18, 18] }, red: { players: ['V1', 'V2', 'V3'], positions: [18, 18, 18] } }, outcome: 'blue-win', turn: 6, maxTurns: 60 },
+    players: [...['A1', 'A2', 'A3', 'V1', 'V2', 'V3']].map((name, index) => ({ name, color: colors[index] })),
+  };
+  const ui = {
+    playerColors: colors, soundMuted: true, renderBoardPawnAvatar: () => '<svg/>', renderBoardPawn: () => '<g/>',
+    renderDiePips: () => '<span class="dice-pips"><i class="pip"/></span>', renderQuestion: () => '',
+    renderRaceDiceTray: () => '<div class="dice-tray race-dice-tray"/>',
+    renderBoardScene: () => context.RaceMode.boardScene(game, ui), initials: (name) => name.slice(0, 1), esc: (value) => String(value),
+    uiIcon: () => '',
+  };
+  const html = context.RaceMode.render(game, ui);
+  assert.match(html, /SERVIDOR DESCONECTADO/);
+  assert.match(html, /race-victory-overlay team-blue/);
+  assert.match(html, /EQUIPE AZUL<br>GANHADORA/);
+  assert.equal((html.match(/server-powering-down/g) || []).length, 1, 'only the opposing red server powers down');
+  assert.equal((html.match(/class="race-board-pawn/g) || []).length, 6, 'all six players remain visible on the board through the shutdown animation');
+  assert.match(html, /SERVIDOR VERMELHO/);
+  assert.match(html, /SERVIDOR AZUL/);
+  game.race.outcome = 'red-win';
+  const redHtml = context.RaceMode.render(game, ui);
+  assert.match(redHtml, /race-victory-overlay team-red/);
+  assert.match(redHtml, /EQUIPE VERMELHA<br>GANHADORA/);
+  game.phase = 'finished';
+  const redResultHtml = context.RaceMode.render(game, ui);
+  assert.match(redResultHtml, /race-result-card team-red/);
+});
+
+test('the blue socket clears the first front slot and both servers share the same rack silhouette', () => {
+  assert.ok(raceMode.includes("team === 'blue' ? { x: -48, y: 124"), 'blue outlet and cable are on the rack’s left side, away from the first slot');
+  assert.ok(!raceMode.includes('rack-door-open-right') && !raceMode.includes('rack-door-panel'), 'the red server has no protruding door that differs from the blue rack');
+  assert.ok(raceMode.includes("const labelX = team === 'red' ? -36 : 0"), 'the red server label stays clear of its power socket');
+});
+
 test('co-op player avatars have six silhouettes and appear in the roster and on the pawn', () => {
-  assert.ok(app.includes('PLAYER_AVATAR_SHAPES'), 'the six participant colors map to distinct board-piece silhouettes');
-  assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the piece portrait uses the selected color');
+  assert.ok(app.includes('function renderBoardPawn(index,color)'), 'the six participant colors map to distinct board-piece silhouettes');
+  assert.ok(app.includes('renderBoardPawnAvatar(index,color)'), 'the piece portrait uses the selected color');
   assert.ok(app.includes("renderBoardPawnAvatar(avatarIndex,color)+'</span><span>'+esc(player.name)"), 'each roster entry displays its matching piece portrait');
-  assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the board pawns reuse the distinct piece silhouettes');
+  assert.ok(!app.includes('PLAYER_AVATAR_SHAPES') && !app.includes('renderPlayerPiece('), 'unused legacy robot art has been removed');
+  assert.ok(app.includes('renderBoardPawn(avatarIndex,color)'), 'the board pawns reuse the distinct piece silhouettes');
   assert.ok(app.includes('class=\"pawn-base-top\"') && app.includes('rx=\"12\" ry=\"3\"'), 'the six board figures use a broad, stable tabletop base');
   assert.ok(hackerCss.includes('.board-pawn-avatar .pawn-head { fill: var(--pawn-color)'), 'roster and turn avatars retain the exact token color outside the board SVG');
   assert.ok(hackerCss.includes('.board-pawn-avatar .pawn-base-top { fill: var(--pawn-color)'), 'roster and turn avatars retain their colored base');
@@ -167,12 +222,12 @@ test('the defense route stays clear of server bays and the defense hub', () => {
 test('turn and victory notices are large centered overlays over the gameplay', () => {
   assert.ok(hackerCss.includes('body.in-game .coop-turn-card .turn-announcement { position: fixed;'), 'turn announcement overlays the middle of gameplay');
   assert.ok(hackerCss.includes('font: 900 clamp(36px,7vw,78px)'), 'turn announcement is readable at a glance');
-  assert.ok(hackerCss.includes('body.in-game .victory-overlay h1 { margin-top: 6px; font: 850 clamp(38px,6.4vw,76px)'), 'victory is presented large and centered on the board');
+  assert.ok(boardCss.includes('race-victory-overlay{position:fixed;inset:0') && boardCss.includes('.race-victory-content strong{font:900 clamp(48px,10vw,124px)'), 'victory is presented full-screen with a large centered title');
 });
 
 test('restored co-op saves derive armor damage stages from their recorded hits', () => {
   assert.ok(app.includes("restored.coop.armorStage=Math.max(Number(restored.coop.armorStage)||0,restored.coop.log.filter((event)=>event.outcome==='correct').length)"), 'older saved games restore missing armor stages from the combat log');
-  assert.ok(html.includes('game-core.js?v=14'), 'the browser reloads the current damage and victory timing logic');
+  assert.ok(html.includes('game-core.js?v=16'), 'the browser reloads the current damage, turn skip, and victory logic');
 });
 
 test('damage visor uses two separated eye slits rather than a connecting line', () => {
@@ -220,8 +275,19 @@ test('the Defense board keeps a clear square footprint, classic traces, and alig
 test('turn prompts and dice use the active player color with readable light contrast', () => {
   assert.ok(app.includes('const PLAYER_COLORS = [') && app.includes('style="--turn-color:${turnColor}"'), 'the active player color is shared with the die');
   assert.ok(app.includes('class="turn-announcement"') && app.includes('SUA VEZ!!!'), 'the current player gets a clear turn announcement');
-  assert.ok(hackerCss.includes('.dice-face') && hackerCss.includes('background: #f7fbff') && hackerCss.includes('color: #17324a'), 'the colored die uses a white face and dark readable pips');
+  assert.ok(hackerCss.includes('.dice-face') && hackerCss.includes('background:linear-gradient(145deg,#173b59,#0c2237)') && hackerCss.includes('color:#dff7ff'), 'the colored die uses a dark game-palette face with readable pips');
   assert.ok(hackerCss.includes('turn-announcement-fade'), 'the turn prompt fades in and out');
+});
+
+test('each active turn gets a five-second fade countdown and a 20-second actionable clock', () => {
+  assert.ok(app.includes('const TURN_INTRO_SECONDS=5') && app.includes('const TURN_SECONDS=20'), 'turn timing is centralized at five and twenty seconds');
+  assert.ok(app.includes('function startPlayerTurnClock') && app.includes('function expirePlayerTurn'), 'turn clock starts and resolves timeout through dedicated handlers');
+  assert.ok(app.includes('VAMOS NESSA') && app.includes('turn-countdown-number') && app.includes('turn-clock-value'), 'the countdown and remaining-time clock have visible UI');
+  assert.ok(app.includes('Core.skipCoopTurn(game.coop)') && app.includes('Core.skipRaceTurn(game.race)'), 'timeouts pass co-op and 3v3 turns without simulating wrong answers');
+  assert.ok(app.includes('startPlayerTurnClock') && app.includes('TURN_INTRO_SECONDS'), 'new turns start with the intro before the answer timer');
+  assert.ok(boardCss.includes('.turn-start-overlay') && boardCss.includes('turn-announcement-fade'), 'the large countdown uses the existing turn fade language');
+  assert.ok(boardCss.includes('.turn-clock') && boardCss.includes('prefers-reduced-motion'), 'the remaining clock is styled accessibly and honors reduced motion');
+  assert.ok(app.includes('function renderRouteGame(cp){const checkpoint=') && app.includes('const turnPlayer=cp,turnColor=cp.color||PLAYER_COLORS[game.currentPlayer%PLAYER_COLORS.length]'), 'the solo turn banner resolves its own player avatar and color');
 });
 
 test('larger route platforms and the victory message fade in and out', () => {
@@ -230,12 +296,12 @@ test('larger route platforms and the victory message fade in and out', () => {
   assert.ok(hackerCss.includes('victory-message-fade'), 'the final victory message fades in and out');
 });
 
-test('the co-op victory keeps the board and presents a green finish state', () => {
+test('the co-op victory reuses the 3v3 full-screen title after the Hacker explosion', () => {
   assert.ok(app.includes('function renderCoopVictory()'), 'co-op victory has a dedicated board-preserving scene');
   assert.ok(app.includes('Core.coopVictoryStage(sequence.startedAt)'), 'the final message waits for the tested slow-motion stage progression');
-  assert.ok(app.includes("stage==='button'?'<button class=\"victory-return\" data-action=\"finish-session\">Ir ao menu</button>':''"), 'the menu button only exists in the stage revealed after the three-second victory message');
+  assert.ok(app.includes("stage==='button'?'<button class=\"coop-victory-return\" data-action=\"finish-session\">Ir ao menu</button>':''"), 'the menu button only exists after the victory title fades out');
   assert.ok(app.includes("victorySequence={stage:'explosion',startedAt:Date.now()}"), 'the explosion timing starts with the winning hit');
-  assert.ok(app.includes('class="victory-overlay"'), 'the final win state has a visible overlay after the explosion');
+  assert.ok(app.includes('class="race-victory-overlay coop-victory-overlay"') && app.includes('VITÓRIA<br>DA EQUIPE'), 'the final win uses the 3v3 full-screen victory structure');
   assert.ok(app.includes("${bossDefeated?'boss-defeated ':''}"), 'the Hacker is hidden after the final explosion');
   assert.ok(app.includes('class="boss-final-explosion"'), 'the final blast is rendered on the Hacker');
   assert.ok(app.includes('class="boss-final-part ${part.name}"'), 'the final wreck uses recognizable robot assemblies');
@@ -244,8 +310,9 @@ test('the co-op victory keeps the board and presents a green finish state', () =
   assert.ok(app.includes("name:'left-arm'"), 'the arms are separated into falling parts');
   assert.ok(app.includes("name:'left-leg'"), 'the legs are separated into falling parts');
   assert.ok(!app.includes('boss-rubble-part'), 'generic small cube shrapnel is not used for the boss');
-  assert.ok(hackerCss.includes('.victory-overlay'), 'the victory state uses the game visual system');
-  assert.ok(hackerCss.includes('#67e69a'), 'victory uses the established green success color');
+  assert.ok(boardCss.includes('.coop-victory-overlay .race-victory-content strong') && boardCss.includes('animation:race-victory-title 3s'), 'the co-op message uses the shared 3v3 fade sequence while keeping its green success color');
+  assert.ok(boardCss.includes('coop-victory-overlay .race-victory-content strong{color:#a2ffca'), 'co-op success keeps the green success color');
+  assert.ok(boardCss.includes('.cooperative-victory .sequence-button .coop-victory-overlay .race-victory-content> :not(.coop-victory-return)'), 'after the fade only the delayed menu button remains visible');
   assert.ok(hackerCss.includes('animation: boss-final-fade .72s ease-out both !important'), 'the final destruction overrides legacy robot idle styles');
   assert.ok(hackerCss.includes('body.in-game .boss-model.boss-defeated { opacity: 0 !important; }'), 'reduced motion still leaves the final defeated pose');
   assert.ok(hackerCss.includes('boss-final-part-fall'), 'large robot parts fall and settle instead of bursting radially');

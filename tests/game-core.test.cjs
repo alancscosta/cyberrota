@@ -53,6 +53,19 @@ test('co-op uses the rolled die to move the shared pawn along the full route', (
   assert.equal(missed.position, 0, 'an incorrect answer never moves the pawn, whatever the roll');
 });
 
+test('a timed-out co-op turn advances the player and round without combat effects', () => {
+  const initial = Core.newCoopState(['Ana', 'Bia'], { maxRounds: 4 });
+  const timedOut = Core.skipCoopTurn(initial);
+  assert.equal(timedOut.currentPlayer, 1);
+  assert.equal(timedOut.round, 2);
+  assert.equal(timedOut.log[0].outcome, 'timeout');
+  assert.deepEqual(timedOut.servers, initial.servers);
+  assert.equal(timedOut.alerts, 0);
+  assert.equal(timedOut.hackerHp, initial.hackerHp);
+  const finalTimeout = Core.skipCoopTurn({ ...timedOut, round: 4 });
+  assert.equal(finalTimeout.outcome, 'loss');
+});
+
 test('co-op preserves each selected short, standard, or challenge round limit', () => {
   for (const maxRounds of [20, 24, 27]) {
     let state = Core.newCoopState(['Ana'], { maxRounds, hackerHp: 5000 });
@@ -148,7 +161,7 @@ test('competitive ties share the win between qualified players with the top scor
   assert.deepEqual(result.tie.map((player) => player.name), ['Ana', 'Bia']);
 });
 
-test('3v3 capture the flag requires three players per team and starts at opposite bases', () => {
+test('3v3 server shutdown requires three players per team and starts at opposite stands', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
   assert.deepEqual(state.teams.blue.positions, [0, 0, 0]);
   assert.deepEqual(state.teams.red.positions, [18, 18, 18]);
@@ -167,6 +180,17 @@ test('3v3 turns alternate teams and rotate independently through each trio', () 
   assert.deepEqual(afterRed.teams.red.positions, [16, 18, 18]);
 });
 
+test('a timed-out 3v3 turn only passes to the next player without moving either team', () => {
+  const initial = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  const timedOut = Core.skipRaceTurn(initial);
+  assert.equal(timedOut.turn, 1);
+  assert.deepEqual(Core.racePairing(timedOut), { team: 'red', player: 'V1', playerIndex: 0 });
+  assert.deepEqual(timedOut.teams, initial.teams);
+  assert.equal(timedOut.log[0].skipped, true);
+  const atLimit = Core.skipRaceTurn({ ...timedOut, turn: 59 });
+  assert.equal(atLimit.outcome, 'draw');
+});
+
 test('a wrong 3v3 answer retreats the active pawn and advances the corresponding opponent by the die', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
   state.teams.blue.positions[0] = 3;
@@ -180,35 +204,40 @@ test('a wrong 3v3 answer retreats the active pawn and advances the corresponding
   assert.equal(state.teams.red.positions[0], 18, 'input state remains unchanged');
 });
 
-test('capture the flag is the immediate win condition, including a flag captured after a miss', () => {
-  const blueCapture = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  blueCapture.teams.blue.positions[1] = 16;
-  blueCapture.turn = 2;
-  const blueWin = Core.resolveRaceTurn(blueCapture, { correct: true, roll: 5 });
-  assert.equal(blueWin.outcome, 'blue-win');
-  assert.equal(blueWin.log[0].captured, 'red-flag');
-  const redCapture = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
-  redCapture.turn = 1;
-  redCapture.teams.red.positions[0] = 5;
-  redCapture.teams.blue.positions[0] = 16;
-  const blueWinAfterRedMiss = Core.resolveRaceTurn(redCapture, { correct: false, roll: 3 });
-  assert.equal(blueWinAfterRedMiss.outcome, 'blue-win');
-  assert.equal(blueWinAfterRedMiss.log[0].captured, 'red-flag');
+test('the opposing server stays on until all three members reach its stand', () => {
+  const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  state.teams.blue.positions = [18, 18, 17];
+  state.turn = 4;
+  const win = Core.resolveRaceTurn(state, { correct: true, roll: 1 });
+  assert.equal(win.outcome, 'blue-win');
+  assert.equal(win.log[0].serverOff, 'red');
+  const stillOn = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  stillOn.teams.blue.positions = [18, 0, 0];
+  stillOn.turn = 2;
+  const onePlayerAtStand = Core.resolveRaceTurn(stillOn, { correct: true, roll: 2 });
+  assert.equal(onePlayerAtStand.outcome, null);
+  assert.equal(onePlayerAtStand.log[0].serverOff, null);
+  const miss = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  miss.teams.blue.positions = [17, 0, 0];
+  miss.turn = 1;
+  const opponentAdvanced = Core.resolveRaceTurn(miss, { correct: false, roll: 1 });
+  assert.equal(opponentAdvanced.teams.blue.positions[0], 18);
+  assert.equal(opponentAdvanced.outcome, null, 'a miss-driven advance still needs the whole trio at the stand');
 });
 
-test('3v3 movement clamps at each base and resolves a 60-turn limit by progress', () => {
+test('3v3 movement clamps at each stand and a 60-turn limit without a full trio is a draw', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
   state.teams.blue.positions[0] = 17;
   const atBase = Core.resolveRaceTurn(state, { correct: true, roll: 6 });
   assert.equal(atBase.teams.blue.positions[0], 18);
-  assert.equal(atBase.outcome, 'blue-win');
-  assert.equal(Core.resolveRaceTurn(atBase, { correct: true, roll: 6 }), atBase, 'finished match is immutable');
+  assert.equal(atBase.outcome, null, 'one player cannot switch off the rival server alone');
+  assert.equal(Core.resolveRaceTurn(atBase, { correct: true, roll: 6 }).turn, atBase.turn + 1, 'the match continues while two teammates are still on the route');
   const capped = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
   capped.turn = 59;
   capped.teams.blue.positions[0] = 10;
   capped.teams.red.positions[0] = 10;
   const result = Core.resolveRaceTurn(capped, { correct: true, roll: 1 });
-  assert.equal(result.outcome, 'blue-win');
+  assert.equal(result.outcome, 'draw');
   assert.equal(result.turn, 60);
 });
 

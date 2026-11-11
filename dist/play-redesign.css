@@ -119,11 +119,11 @@ body.in-game .game-control-dock .question-actions small,
 body.in-game .game-control-dock .turn-copy small { color: #607065; font-size: 12px; line-height: 1.5; }
 body.in-game .game-control-dock .question-meta .pill { color: #46594c !important; border: 1px solid #d0c5b3; border-radius: 2px; background: #e8e2d5; }
 body.in-game .game-control-dock .question-actions > small { max-width: none; }
-body.in-game .game-control-dock .option-button { min-height: 48px; padding: 10px 12px; border: 1px solid #c9c0b0; border-radius: 2px; background: #fffdf7; color: #2c3c33; font: 14px/1.35 "DM Sans", sans-serif; }
+body.in-game .game-control-dock .option-button { min-height: 48px; padding: 10px 12px; border: 1px solid #34536e; border-radius: 2px; background: #132b40; color: #e2eff8; font: 14px/1.35 "DM Sans", sans-serif; }
 body.in-game .game-control-dock .option-button:hover,
 body.in-game .game-control-dock .option-button.selected { border-color: #326149; background: #e6eee2; color: #213f30; }
 body.in-game .game-control-dock .option-key { color: #6e7b6e; font: 600 12px "DM Sans", sans-serif; }
-body.in-game .game-control-dock .difficulty-button { min-height: 64px; padding: 10px 12px; border-radius: 2px; background: #fffdf7; color: #2c3c33; }
+body.in-game .game-control-dock .difficulty-button { min-height: 64px; padding: 10px 12px; border-radius: 2px; background: #132b40; color: #e2eff8; }
 body.in-game .game-control-dock .difficulty-button strong { font-size: 14px; }
 body.in-game .game-control-dock .difficulty-button small { color: #657269; font: 11px "DM Sans", sans-serif; }
 body.in-game .game-control-dock .btn { min-height: 46px; border-radius: 2px; font: 600 13px "DM Sans", sans-serif; }

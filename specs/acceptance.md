@@ -1,10 +1,14 @@
 # Critérios de aceitação
 
 - **Solo:** cinco respostas corretas em checkpoints diferentes concedem os cinco selos e permitem vencer ao alcançar o destino; no máximo 20 movimentos.
-- **Corrida 3v3:** seis peões independentes (três por equipe) mostram nomes, avatares, cores e casas; os times começam em extremos opostos, alternam turnos e cada um percorre a rotação 1→2→3.
+- **Desligue o Servidor 3v3:** seis peões independentes (três por equipe) mostram nomes, avatares, cores e casas; os times começam em extremos opostos, alternam turnos e cada um percorre a rotação 1→2→3.
 - **Troca de turno 3v3:** cada participante recebe a própria pergunta somente depois de rolar seu dado; a resposta anterior fica oculta até a vez seguinte.
-- **Captura da bandeira 3v3:** acerto move o peão ativo o valor de um dado de seis faces; erro o recua uma casa e move o adversário correspondente o valor do dado. Casas ficam limitadas a 0–18.
-- **Fim 3v3:** o primeiro peão a alcançar a base inimiga captura a bandeira e vence; após 60 turnos, vence o time mais avançado ou há empate.
+- **Desligue o Servidor 3v3:** acerto move o peão ativo o valor de um dado de seis faces; erro o recua uma casa e move o adversário correspondente o valor do dado. Casas ficam limitadas a 0–18.
+- **Fim 3v3:** só vence a equipe quando os três peões alcançam o estande rival. O servidor pisca vermelho, apaga as luzes e o sinal superior apaga; a equipe vencedora aparece em tela cheia com fade, e o título usa a cor do time (azul ou vermelho). Após 60 turnos sem trio completo, há empate.
+- **Cenário 3v3:** tabuleiro quadrado com rota clara e sem tiles ou peças sobrepostos. Os servidores ficam fora das casas em estandes separados, com cabo e tomada visíveis, LEDs verdes online e transição para LEDs apagados após a chegada dos três peões.
+- **Dado 3v3:** aparece na área principal do tabuleiro e conserva superfície azul-marinho; somente os pontos recebem a cor do participante ativo.
+- **Peões 3v3:** as seis peças do tabuleiro, a escalação e o indicador de quem joga usam os mesmos peões coloridos, com seis silhuetas distintas. Nenhum sprite antigo de robô aparece nesse modo.
+- **Dado e superfícies:** dado, cartas e painéis usam superfícies azul-marinho da paleta tecnológica; nenhum controle ou área de jogo tem fundo branco.
 - **Cooperativo acerto:** reduz PV do Hacker conforme dificuldade e recupera até 25% do servidor sob ataque, sem passar de 100%.
 - **Cooperativo erro:** reduz 25% do servidor sob ataque e aumenta alertas; terceiro alerta atinge o servidor ativo mais frágil e reinicia alerta.
 - **Desafio:** erro aplica dano total de 50% ao servidor sob ataque, cura Hacker em 2 PV até o limite inicial, resolve alerta e depois checa condições terminais.
@@ -17,6 +21,7 @@
 - **HUD:** durante a partida, o tabuleiro ocupa a área principal e o painel compacto apresenta pergunta, vida e controles essenciais.
 - **Acessibilidade:** teclado/toque funcionam; nomes/símbolos distinguem Azul/Vermelho e eventos; jogo é compreensível sem áudio e sem movimento contínuo.
 - **Persistência:** recarregar retoma estado sem reaplicar efeitos e sair oferece encerrar ou continuar.
+- **Tempo por turno:** cada jogador vê uma contagem central de 5 segundos em fade e recebe 20 segundos para rolar o dado e responder. Expirar antes de rolar ou responder pula a vez sem mover peões, alterar servidores ou registrar resposta errada; o relógio reinicia para a pessoa seguinte.
 - **Modo local:** validar co-op com salas de 1, 2, 3 e 6 participantes, alternância de turno, dado e movimento; a sala é pass-and-play no mesmo dispositivo e não há sincronização online entre aparelhos.
 
 ## Revisão visual e multiplayer — aceite
@@ -44,7 +49,7 @@
 - Ao zerar os PV do Hacker na chegada, a partida mantém o tabuleiro visível e inicia uma explosão final localizada no corpo do boss.
 - A animação final ejeta placas e antenas; os fragmentos caem e ficam ao redor do sinal externo. O corpo não permanece sobre a plataforma nem volta a aparecer após a animação.
 - Cada golpe acrescenta avaria visível: placas e partes reconhecíveis caem em fases, fumaça permanece após o primeiro dano e fogo surge nas fases seguintes. Na vitória, cabeça, tronco, braços e pernas caem ao redor do relé, sem cubos genéricos ou dispersão de confetes.
-- Uma faixa de vitória verde, legível e acessível aparece sobre o tabuleiro com ação para voltar aos modos. A tela final mantém acesso ao resumo e às cartas para revisar.
+- Uma faixa de vitória verde, legível e acessível aparece sobre o tabuleiro com ação para voltar aos modos. A tela final mantém acesso ao resumo e às cartas para revisar. Após a explosão em câmera lenta, a vitória usa o mesmo título central em tela cheia e fade do modo 3v3; o botão de menu aparece após o fade, e o sucesso cooperativo permanece verde.
 - O tabuleiro de Defesa é menor no espaço de jogo e conserva a projeção isométrica de um quadrado, com a rota de 19 casas, circuitos discretos e entrada/chegada alinhadas.
 - Os cinco racks ficam totalmente dentro da plataforma, sem cobrir a rota, a base, casas de cura ou uns aos outros; pontos de impacto do laser correspondem às posições visuais dos racks.
 - A estrada segue a rota de casas no perímetro; os servidores ficam em baias centrais separadas da estrada e da base.

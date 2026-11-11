@@ -1,23 +1,23 @@
-# Plano de implementação — Corrida 3v3 e Defenda a Rede
+# Plano de implementação — Desligue o Servidor 3v3 e Defenda a Rede
 
 > **Estado:** plano executado após ajuste da direção visual. O produto é um jogo de tabuleiro isométrico 2D com acabamento volumétrico, personagens robóticos e combate animado. A rodada final de ajustes priorizou leitura do cenário, separação do Hacker e dos prédios e visibilidade dos servidores.
 
 ## Objetivo do trabalho
 
-- Transformar Corrida de Pacotes em 3v3 Azul contra Vermelho, mantendo a rota, os cinco selos e a linha de chegada.
-- Fazer os duelos aplicarem avanço, dano de PV, disparos laser e game over antes da chegada quando um time for eliminado.
+- Fazer o modo 3v3 Azul contra Vermelho terminar quando o trio inteiro chega ao estande rival e desliga seu servidor.
+- Mostrar o servidor conectado por cabo à tomada, LEDs verdes enquanto ativo e animação vermelha até desligar após a chegada do trio.
 - Tornar Defenda a Rede uma batalha de perguntas com dano claro no Hacker/servidores, efeitos especiais, armadura por fases e pontos de cura.
 - Manter a apresentação de tabuleiro: cenário 2D isométrico, peças e objetos com sombras, gradientes e camadas que simulam volume 3D. Todos os modos usam o caminho padrão de 19 casas. No cooperativo, acerto move o peão coletivo uma casa em direção ao sinal; erro mantém a casa atual e dispara contra o setor. O Hacker fica numa plataforma física acima do sinal, sem ocupar casa.
 
 ## Regras de implementação
 
-### Corrida de Pacotes 3v3
+### Desligue o Servidor 3v3
 
 - Seis pessoas, com exatamente três na equipe Azul e três na Vermelha. A ordem de resposta roda entre os integrantes e alterna qual time começa.
-- A rota tem 19 casas numeradas de 0 a 18 (18 movimentos), cinco checkpoints e uma chegada. Cada acerto move o time uma casa; cada checkpoint concede seu selo. O time precisa chegar à casa 18 com os cinco selos.
-- Cada lado começa com 10 PV. Se só um jogador acertar, a equipe que errou perde 1 PV e o time que acertou avança. Dois acertos fazem ambos avançarem; dois erros não causam dano nem movimento.
-- Zerar PV elimina o time imediatamente, mesmo antes da chegada. Se ambos chegam na mesma jogada, há empate. Limite de segurança de 30 duelos: posição decide e PV desempata se ninguém terminar a rota.
-- A mesma pergunta e dificuldade são usadas no duelo. O segundo participante não vê a resposta anterior; o resultado fica escondido até os dois responderem.
+- A rota tem 19 casas numeradas de 0 a 18. Acerto move o peão ativo pelo valor de um dado de seis faces; erro recua uma casa e move o adversário correspondente pelo valor do dado.
+- O servidor só desliga quando todos os três peões de uma equipe alcançam o estande inimigo. Após 60 turnos sem completar a rota, há empate.
+- O dado fica no palco do tabuleiro, com superfície azul-marinho constante e pontos na cor da pessoa ativa.
+- Cada lado usa seu próprio servidor desenhado no estande, com cabo, tomada e farol superior; chegada completa pisca as luzes em vermelho, apaga o rack e desliga o farol.
 
 ### Defenda a Rede
 
