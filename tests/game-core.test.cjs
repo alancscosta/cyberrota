@@ -53,6 +53,19 @@ test('co-op uses the rolled die to move the shared pawn along the full route', (
   assert.equal(missed.position, 0, 'an incorrect answer never moves the pawn, whatever the roll');
 });
 
+test('co-op preserves each selected short, standard, or challenge round limit', () => {
+  for (const maxRounds of [20, 24, 27]) {
+    let state = Core.newCoopState(['Ana'], { maxRounds, hackerHp: 5000 });
+    for (let turn = 0; turn < maxRounds - 1; turn += 1) {
+      state = Core.resolveCoopTurn(state, { theme: 'rede', correct: true, difficulty: 1, roll: 1 });
+      assert.equal(state.outcome, null, `the ${maxRounds}-round match remains active before its final turn`);
+    }
+    assert.equal(state.round, maxRounds);
+    state = Core.resolveCoopTurn(state, { theme: 'rede', correct: true, difficulty: 1, roll: 1 });
+    assert.equal(state.outcome, 'loss', `the ${maxRounds}-round match ends on its chosen limit`);
+  }
+});
+
 test('co-op requires reaching the external signal before the Hacker can be defeated', () => {
   const early = Core.newCoopState(['Ana'], { hackerHp: 2 });
   const staggered = Core.resolveCoopTurn(early, { theme: 'rede', correct: true, difficulty: 1, roll: 1 });

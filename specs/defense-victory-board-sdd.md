@@ -108,3 +108,23 @@ O golpe final hoje troca o jogo imediatamente para um painel genérico, desmonta
 
 - `tests/visual-contract.test.cjs`: confirma silhueta e formação dos peões, posições dos racks, colisões contra as 19 casas e núcleo, limites do tabuleiro e alinhamento dos impactos.
 - `tests/visual-contract.test.cjs`: confirma que CSS de turno afeta somente pontos ativos do dado.
+
+## Tabuleiro adaptável e movimento em saltos — ciclo atual
+
+- O caminho mantém 19 casas, e os modos Curta, Normal e Desafio mantêm os limites selecionados de 20, 24 e 27 turnos. O tabuleiro usa escala conjunta de 0,90, 0,86 ou 0,83; piso, casas, servidores, avatares, base e relé recebem a mesma transformação.
+- Os polígonos das casas devem ficar separados entre si, dentro do piso e longe dos racks e do núcleo. A trilha liga os centros sem atravessar plataformas.
+- O elenco e o cartão do jogador da vez exibem o mesmo avatar colorido e a mesma silhueta do peão na rota.
+- Um acerto move o grupo uma única vez, saltando sequencialmente pelos centros correspondentes ao dado. Atualizações do cartão, da animação de combate ou recargas não podem repetir o percurso.
+
+### Testes TDD deste ciclo
+
+- `tests/visual-contract.test.cjs` calcula interseções entre os polígonos das 19 casas, os limites do piso e o espaçamento dos racks.
+- `tests/visual-contract.test.cjs` valida as escalas dos três limites, a identidade dos avatares e os saltos sem reprodução em rerender.
+- `tests/game-core.test.cjs` verifica que Curta, Normal e Desafio terminam exatamente nos limites 20, 24 e 27.
+
+### Revisão após teste no navegador
+
+- Os avatares de elenco e turno reutilizam o SVG dos peões fora do contêiner do tabuleiro; os seletores de cor antigos só atendiam ao SVG dentro do mapa e deixavam silhuetas pretas. O CSS deve aplicar cor da peça, brilho e contraste também ao avatar fora do mapa.
+- Na jogada correta, guardar `moveAnimationPlayed` imediatamente após o primeiro render impede que o rerender de dano repita o salto. A posição final permanece estável até a próxima rodada.
+- Teste manual no navegador com seis jogadores: dado 3 moveu a equipe da casa 5 à 8; após o ataque, o Hacker passou de 16 para 14 PV. Na jogada seguinte, dado 2 moveu da casa 8 à 10 e o Hacker passou a 12 PV. O pino permaneceu na casa 10 após o rerender de combate.
+- TDD: o contrato visual agora exige os seletores que mantêm as cores nos avatares do elenco e do jogador ativo.

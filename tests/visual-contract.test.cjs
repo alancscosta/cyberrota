@@ -52,8 +52,11 @@ test('each armor stage renders its fragments in front of the Hacker until they l
 test('the co-op board shows every player token and a persistent turn roster', () => {
   assert.ok(app.includes('function renderCoopPlayerRoster()'), 'the full team has a dedicated always-visible roster');
   assert.ok(app.includes("class=\"coop-player-chip '+(index===game.coop.currentPlayer?'is-current':'')+'\""), 'the active player is highlighted among all names');
+  assert.ok(app.includes('renderBoardPawnAvatar(avatarIndex,color)'), 'the roster uses the same selected pawn avatar shown on the board');
+  assert.ok(app.includes('class="turn-token turn-player-avatar"'), 'the current-player banner shows that player’s selected pawn avatar');
   assert.ok(app.includes("class=\"coop-player-token '+(active?'is-current':'')+'\""), 'all six players are individually represented on the shared route pawn');
-  assert.ok(app.includes('playerMotion=pawnSteps?') && app.includes('point[0]+dx') && app.includes('point[1]+dy'), 'every pawn keeps its own spacing while the shared token animates along the path');
+  assert.ok(app.includes('playerMotion=pawnMotionValues.length>1?') && app.includes('hopY') && app.includes('calcMode=\"spline\"'), 'the team hops through each intermediate platform on a correct roll');
+  assert.ok(app.includes('moveAnimationPlayed'), 'a rerender cannot replay the movement that already finished this turn');
   assert.ok(app.includes('game.coop.players.map((player,index)=>'), 'the roster and board tokens derive from the full room roster');
 });
 
@@ -79,6 +82,10 @@ test('the defense board gives every rack clear road clearance and widens the paw
   }
   const tileVertices=[[-27,0],[-23,-4],[-2,-16],[2,-16],[23,-4],[27,7],[27,13],[2,27],[0,28],[-2,27],[-27,13]];
   for(const [x,y] of route) for(const [dx,dy] of tileVertices){const edge=(Math.abs(x+dx*1.3-500)/440)+(Math.abs(y+dy*1.3-280)/238);assert.ok(edge<=1,`route platform at ${x},${y} stays inside the board`);}
+  const tilePolygon=[[-27,0],[-23,-4],[-2,-16],[2,-16],[23,-4],[27,2],[27,13],[2,27],[0,28],[-2,27],[-27,13]].map(([x,y])=>[x*1.3,y*1.3]);
+  const project=(polygon,[ax,ay])=>{const values=polygon.map(([x,y])=>x*ax+y*ay);return [Math.min(...values),Math.max(...values)];};
+  const intersects=(first,second)=>{const a=tilePolygon.map(([x,y])=>[x+route[first][0],y+route[first][1]]),b=tilePolygon.map(([x,y])=>[x+route[second][0],y+route[second][1]]);for(const polygon of [a,b])for(let i=0;i<polygon.length;i++){const p=polygon[i],q=polygon[(i+1)%polygon.length],length=Math.hypot(q[0]-p[0],q[1]-p[1]),axis=[-(q[1]-p[1])/length,(q[0]-p[0])/length],ap=project(a,axis),bp=project(b,axis);if(ap[1]<=bp[0]||bp[1]<=ap[0])return false;}return true;};
+  for(let first=0;first<route.length;first++)for(let second=first+1;second<route.length;second++)assert.equal(intersects(first,second),false,`platforms ${first+1} and ${second+1} do not overlap`);
   for (const rack of rackBounds) { const overlapsHub=rack.left<575&&rack.right>425&&rack.top<410&&rack.bottom>215; assert.equal(overlapsHub,false,`${rack.name} rack stays clear of the defense hub`); for(const [x,y] of [[rack.left,rack.top],[rack.right,rack.top],[rack.left,rack.bottom],[rack.right,rack.bottom]]) assert.ok(Math.abs(x-500)/440+Math.abs(y-280)/238<.94,`${rack.name} rack stays inside the board`); }
   assert.ok(app.includes("transform=\"translate('+x+' '+y+') scale(1.3)\""), 'route platforms are widened to fit the compact team formation');
   assert.ok(app.includes('scale(.54)'), 'server buildings are large enough to read clearly inside the bays');
@@ -123,9 +130,11 @@ test('each player chooses a unique color and sees its matching robot avatar befo
 test('co-op player avatars have six silhouettes and appear in the roster and on the pawn', () => {
   assert.ok(app.includes('PLAYER_AVATAR_SHAPES'), 'the six participant colors map to distinct board-piece silhouettes');
   assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the piece portrait uses the selected color');
-  assert.ok(app.includes("renderPlayerAvatar(avatarIndex,color)+'</span><span>'+esc(player.name)"), 'each roster entry displays its matching piece portrait');
+  assert.ok(app.includes("renderBoardPawnAvatar(avatarIndex,color)+'</span><span>'+esc(player.name)"), 'each roster entry displays its matching piece portrait');
   assert.ok(app.includes('renderPlayerAvatar(index,color)'), 'the board pawns reuse the distinct piece silhouettes');
   assert.ok(app.includes('class=\"pawn-base-top\"') && app.includes('rx=\"12\" ry=\"3\"'), 'the six board figures use a broad, stable tabletop base');
+  assert.ok(hackerCss.includes('.board-pawn-avatar .pawn-head { fill: var(--pawn-color)'), 'roster and turn avatars retain the exact token color outside the board SVG');
+  assert.ok(hackerCss.includes('.board-pawn-avatar .pawn-base-top { fill: var(--pawn-color)'), 'roster and turn avatars retain their colored base');
 });
 
 test('the defense route stays clear of server bays and the defense hub', () => {
@@ -172,10 +181,10 @@ test('the five sector checkpoints retain their own palette accents', () => {
 
 test('the Defense board keeps a clear square footprint, classic traces, and aligned base', () => {
   assert.ok(app.includes('fisica:[365,275],rede:[365,160],transporte:[585,275],aplicacao:[290,245],seguranca:[660,245]'), 'all racks sit in separated interior bays away from the route and base');
-  assert.ok(app.includes('const coopPath=[[128,280],[183,310],[240,340],[305,370],[370,400],[435,430],[500,470],[565,430],[630,400],[695,370],[760,340],[817,310],[872,280],[825,250],[760,220],[695,190],[630,160],[560,125],[500,128]];'), 'the 19 walkable spaces follow the board perimeter with room for their larger platforms');
+  assert.ok(app.includes('const coopPath=[[128,280],[183,310],[240,340],[305,370],[370,400],[435,430],[500,470],[565,430],[630,400],[695,370],[760,340],[817,310],[872,280],[825,245],[760,220],[695,190],[630,160],[575,125],[500,128]];'), 'the 19 walkable spaces follow the board perimeter with room for their larger platforms');
   const route = JSON.parse(app.match(/const coopPath=(\[\[[^;]+\]\]);/)?.[1] || '[]');
   assert.equal(route.length, 19, 'the route contains 19 distinct walkable spaces');
-  for (const [x,y] of route) assert.ok(Math.abs(x-500)/440 + Math.abs(y-280)/238 <= 1 - 28/238, `platform at ${x},${y} stays inside the board with a margin`);
+  for (const [x,y] of route) assert.ok(Math.abs(x-500)/440 + Math.abs(y-280)/238 <= 1, `platform at ${x},${y} stays inside the board`);
   assert.equal((app.match(/d="M\$\{coopPathD\}"/g) || []).length, 2, 'the road edge and dashes use the same route points');
   assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the isometric square keeps a clear gap below the external robot platform');
   assert.ok(app.includes('M500 75 850 280 500 485 150 280Z') && app.includes('M500 108 786 280 500 451 214 280Z'), 'the earlier subtle circuit traces are restored');
@@ -219,7 +228,8 @@ test('the co-op victory keeps the board and presents a green finish state', () =
 });
 
 test('the Defense table is smaller and its racks and laser impacts share separated positions', () => {
-  assert.ok(app.includes('class="coop-board-layout" transform="translate(500 280) scale(.86) translate(-500 -280)"'), 'the square board is reduced as a single aligned composition');
+  assert.ok(app.includes('coopBoardScale(game.coop.maxRounds)'), 'the board fits each selected match length as a single aligned composition');
+  assert.ok(app.includes('if(maxRounds<=20)return .9;if(maxRounds>=27)return .83;return .86;'), 'short, standard and challenge matches each use a fitted scale');
   assert.ok(app.includes('M500 42 940 280 500 518 60 280Z'), 'the floor is a clean isometric square');
   assert.ok(app.includes('fisica:[365,275],rede:[365,160],transporte:[585,275],aplicacao:[290,245],seguranca:[660,245]'), 'the five server racks occupy distinct interior bays away from the road');
   assert.ok(app.includes('fisica:[400,317],rede:[400,202],transporte:[620,317],aplicacao:[325,287],seguranca:[695,287]'), 'laser impacts align with the repositioned racks');

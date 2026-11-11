@@ -406,3 +406,15 @@ body.in-game .board-coop .hacker-scream text { fill: #fff0e9; stroke: #630e25; s
   body.in-game .board-coop .hacker-scream path,
   body.in-game .board-coop .hacker-scream text { animation: none !important; translate: none !important; }
 }
+
+/* The turn banner and team roster reuse the exact pawn silhouette from the route. */
+body.in-game .coop-player-chip-avatar .board-pawn-avatar { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 2px 2px #020914); }
+body.in-game .board-pawn-avatar .pawn-shadow { fill: #020914; opacity: .62; }
+body.in-game .board-pawn-avatar .pawn-base-side { fill: color-mix(in srgb, var(--pawn-color) 53%, #071320); stroke: #06111d; stroke-width: 1.5; }
+body.in-game .board-pawn-avatar .pawn-base-top { fill: var(--pawn-color); stroke: #e9f8ff; stroke-width: 1.2; }
+body.in-game .board-pawn-avatar .pawn-stem { fill: color-mix(in srgb, var(--pawn-color) 68%, #102a3d); stroke: #dff8ff; stroke-width: 1.25; stroke-linejoin: round; }
+body.in-game .board-pawn-avatar .pawn-stem-highlight { fill: none; stroke: #ffffffd9; stroke-width: 1.1; stroke-linecap: round; }
+body.in-game .board-pawn-avatar .pawn-head { fill: var(--pawn-color); stroke: #f1fbff; stroke-width: 1.5; stroke-linejoin: round; filter: drop-shadow(0 1px 1px #020914); }
+body.in-game .board-pawn-avatar .pawn-head-highlight { fill: none; stroke: #ffffffd9; stroke-width: 1.1; stroke-linecap: round; }
+body.in-game .coop-turn-card .turn-token.turn-player-avatar { display: grid; width: 40px; height: 44px; padding: 1px; place-items: center; overflow: visible; }
+body.in-game .coop-turn-card .turn-token.turn-player-avatar .board-pawn-avatar { width: 100%; height: 100%; overflow: visible; }
