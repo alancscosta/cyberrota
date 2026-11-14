@@ -115,9 +115,9 @@ body:not(.in-game) #app .mode-card:nth-child(1) { --mode-accent: #55c6ee; }
 body:not(.in-game) #app .mode-card:nth-child(2) { --mode-accent: #f28c9e; }
 body:not(.in-game) #app .mode-card:nth-child(3) { --mode-accent: #72dec1; }
 
-body:not(.in-game) #app .mode-card[data-mode="coop"] .mode-icon {
-  width: 58px;
-  min-width: 58px;
+body:not(.in-game) #app .mode-card .mode-icon {
+  width: 72px;
+  min-width: 72px;
   flex-shrink: 0;
   padding: 0 6px;
   font-size: 12px;
