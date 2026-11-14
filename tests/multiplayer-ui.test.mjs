@@ -29,10 +29,20 @@ test('lobby host can rotate the room code and choose characters with pawn icons'
   assert.doesNotMatch(lobby, /class="room-color-choice[^`]*<span><\/span>/);
 });
 
-test('online room setup waits for the room controls module instead of opening an empty dialog', async () => {
+test('room client exports the API consumed by the multiplayer controls module', async () => {
+  const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
+  const controls = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
+  assert.match(controls, /import\s*\{\s*RoomClient\s*,\s*renderLobby\s*\}\s*from\s*['"]\.\/room-client\.js['"]/);
+  assert.match(roomClient, /export\s*\{[^}]*\bRoomClient\b[^}]*\brenderLobby\b[^}]*\}/s);
+});
+
+test('online room setup reports a module load failure instead of staying on an infinite loader', async () => {
   const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
   assert.match(app, /mountOnlineRoomLauncher\(mode\)/);
   assert.match(app, /cyberrota:rooms-ready/);
+  assert.match(app, /Não foi possível carregar os controles da sala/);
+  assert.match(app, /loadTimeout=window\.setTimeout\(/);
+  assert.match(app, /},5000\);window\.addEventListener\('cyberrota:rooms-ready'/);
 });
 
 test('online question UI renders answer choices and disables turns for non-active players', () => {
