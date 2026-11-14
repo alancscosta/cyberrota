@@ -11,7 +11,7 @@ Persistir o progresso exclusivamente na conta autenticada com Google. Pessoas se
 - O banco guarda perfil, foto do Google, estatísticas agregadas, histórico de partidas, caderno de erros, baralhos personalizados e partidas solo em andamento. O estado de salas online pertence ao serviço de salas.
 - Sem conta autenticada, perfil, estatísticas, erros, baralhos, histórico e partidas não são gravados no navegador nem no banco. O jogo segue disponível em memória.
 - O cliente carrega a conta e o progresso do banco antes de habilitar a interface de jogo. A identidade do Google não é editável localmente.
-- No login, dados locais legados podem ser importados uma única vez para a conta; após importação confirmada, as chaves antigas de progresso são removidas. Dados anônimos novos nunca são persistidos.
+- No login, progresso em memória da sessão atual e dados locais legados podem ser importados uma única vez para a conta; após importação confirmada, as chaves antigas de progresso são removidas. Dados anônimos novos nunca são persistidos antes da autenticação.
 - O painel da conta mantém o tema escuro do produto e a foto de perfil vem do campo `avatar_url` retornado pelo servidor.
 - Exportação retorna esses dados em JSON; exclusão remove a conta e os dados pessoais vinculados. O chamador deve transferir salas ativas antes de apagar a conta.
 - Importação legada de convidado é idempotente por `guestId`: estatísticas são somadas uma vez; histórico/erros preservam itens sem duplicá-los; decks com nome conflitante são mantidos com nome ajustado; salvamentos solo são preservados por dispositivo.

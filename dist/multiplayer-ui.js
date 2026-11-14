@@ -67,6 +67,10 @@ function renderPodium(snapshot, client) {
 function renderActive(root, client) {
   const snapshot = client.snapshot;
   if (!snapshot) return;
+  if (snapshot.code && snapshot.status !== 'closed') {
+    const url = new URL(location.href);
+    if (url.searchParams.get('sala') !== snapshot.code) { url.searchParams.set('sala', snapshot.code); history.replaceState(null, '', url); }
+  }
   if (snapshot.status === 'playing') { root.innerHTML = gameMarkup(snapshot, client); bindGame(root, client); return; }
   if (snapshot.status === 'finished') { root.innerHTML = renderPodium(snapshot, client); bindLobbyActions(root, client); return; }
   if (snapshot.status === 'closed') { client.destroy(); root.innerHTML = `<p class="room-helper">A sala ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; history.replaceState(null, '', location.pathname); return; }
@@ -134,7 +138,11 @@ function mount(container, { profile = 'Jogador convidado', customDecks = [], sta
         result = await client.joinRoom(code, { name: joinForm.elements.name.value, colorIndex });
       }
       client.snapshot = result.snapshot; history.replaceState(null, '', `?sala=${encodeURIComponent(code)}`); renderActive(root, client);
-    } catch (error) { window.RoomClient.active = null; client.destroy(); errorBox.textContent = error.message; }
+    } catch (error) {
+      window.RoomClient.active = null; client.destroy();
+      if (error.newCode) { joinForm.elements.code.value = error.newCode; errorBox.textContent = `O anfitrião trocou o código. O código novo é ${error.newCode}; tente entrar novamente.`; }
+      else errorBox.textContent = error.message;
+    }
   });
   const initialCode = readSavedCode();
   if (initialCode && CODE.test(initialCode)) {
@@ -147,4 +155,7 @@ function mount(container, { profile = 'Jogador convidado', customDecks = [], sta
 }
 
 export { launchMarkup, gameMarkup, renderQuestion, renderPodium, mount };
-if (typeof window !== 'undefined') window.CyberrotaRooms = { mount };
+if (typeof window !== 'undefined') {
+  window.CyberrotaRooms = { mount };
+  window.dispatchEvent(new Event('cyberrota:rooms-ready'));
+}

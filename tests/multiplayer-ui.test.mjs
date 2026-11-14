@@ -21,6 +21,20 @@ test('lobby offers distinct buttons to copy the room code and share its link', a
   assert.match(lobby, /Copiar link/);
 });
 
+test('lobby host can rotate the room code and choose characters with pawn icons', async () => {
+  const lobby = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
+  assert.match(lobby, /data-room-regenerate/);
+  assert.match(lobby, /Gerar outro código/);
+  assert.match(lobby, /room-color-pawn/);
+  assert.doesNotMatch(lobby, /class="room-color-choice[^`]*<span><\/span>/);
+});
+
+test('online room setup waits for the room controls module instead of opening an empty dialog', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /mountOnlineRoomLauncher\(mode\)/);
+  assert.match(app, /cyberrota:rooms-ready/);
+});
+
 test('online question UI renders answer choices and disables turns for non-active players', () => {
   const question = source.slice(source.indexOf('function renderQuestion'), source.indexOf('function renderPodium'));
   assert.match(question, /card\.question \|\| card\.prompt/);

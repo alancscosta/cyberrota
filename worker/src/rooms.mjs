@@ -726,12 +726,76 @@ export class RoomDurableObject {
       await this.saveRoom(room);
       return jsonResponse({ snapshot: publicRoomSnapshot(room), player: room.players[0], accountRooms: accountRoomRows(room) });
     }
+    if (url.pathname === '/initialize-rotated' && request.method === 'POST') {
+      if (await this.getRoom()) return jsonResponse({ error: 'ROOM_ALREADY_INITIALIZED' }, 409);
+      const { room } = await request.json();
+      if (!room || normalizeCode(room.code) !== room.code || room.status !== 'lobby' || !Array.isArray(room.players) || !room.players.length) {
+        return jsonResponse({ error: 'INVALID_ROTATED_ROOM', message: 'Não foi possível transferir esta sala.' }, 400);
+      }
+      delete room.rotationPending;
+      await this.saveRoom(room);
+      return jsonResponse({ snapshot: publicRoomSnapshot(room), accountRooms: accountRoomRows(room) });
+    }
     const room = await this.getRoom();
     if (!room) return jsonResponse({ error: 'ROOM_NOT_FOUND' }, 404);
+    if (room.movedTo) return jsonResponse({ error: 'ROOM_MOVED', message: `O código da sala agora é ${room.movedTo}.`, newCode: room.movedTo }, 410);
+    if (url.pathname === '/rotation/prepare' && request.method === 'POST') {
+      const body = await request.json();
+      const player = room.players.find((entry) => !entry.isBot && entry.resumeToken === body.resumeToken);
+      if (!player) return jsonResponse({ error: 'INVALID_RESUME_TOKEN', message: 'Não foi possível validar sua vaga.' }, 400);
+      if (player.playerId !== room.hostPlayerId) return jsonResponse({ error: 'HOST_ONLY', message: 'Somente o anfitrião pode gerar outro código.' }, 403);
+      if (room.status !== 'lobby') return jsonResponse({ error: 'ROOM_NOT_LOBBY', message: 'Só é possível trocar o código antes da partida.' }, 409);
+      if (room.rotationPending) return jsonResponse({ error: 'ROTATION_IN_PROGRESS', message: 'Já existe uma troca de código em andamento.' }, 409);
+      let targetCode;
+      try { targetCode = normalizeCode(body.targetCode); }
+      catch (error) { return jsonResponse({ error: error.code, message: error.message }, 400); }
+      if (targetCode === room.code) return jsonResponse({ error: 'SAME_ROOM_CODE', message: 'Gere um código diferente do atual.' }, 400);
+      const rotationToken = randomToken();
+      room.rotationPending = { targetCode, rotationToken };
+      await this.saveRoom(room);
+      return jsonResponse({ room, rotationToken });
+    }
+    if (url.pathname === '/rotation/cancel' && request.method === 'POST') {
+      const body = await request.json();
+      if (room.rotationPending?.rotationToken === body.rotationToken) {
+        delete room.rotationPending;
+        await this.saveRoom(room);
+      }
+      return jsonResponse({ cancelled: true });
+    }
+    if (url.pathname === '/rotation/commit' && request.method === 'POST') {
+      const body = await request.json();
+      const player = room.players.find((entry) => !entry.isBot && entry.resumeToken === body.resumeToken);
+      if (!player || player.playerId !== room.hostPlayerId) return jsonResponse({ error: 'HOST_ONLY', message: 'Somente o anfitrião pode gerar outro código.' }, 403);
+      if (!room.rotationPending || room.rotationPending.rotationToken !== body.rotationToken || room.rotationPending.targetCode !== body.newCode) {
+        return jsonResponse({ error: 'ROTATION_EXPIRED', message: 'A troca do código expirou. Tente novamente.' }, 409);
+      }
+      if (!body.newRoom || body.newRoom.code !== body.newCode || body.newRoom.status !== 'lobby') {
+        return jsonResponse({ error: 'INVALID_ROTATED_ROOM', message: 'Não foi possível transferir esta sala.' }, 400);
+      }
+      room.movedTo = body.newCode;
+      room.status = 'closed';
+      room.updatedAt = Date.now();
+      room.revision += 1;
+      delete room.rotationPending;
+      await this.saveRoom(room);
+      const event = JSON.stringify({ type: 'room.moved', newCode: body.newCode, snapshot: publicRoomSnapshot(body.newRoom) });
+      for (const socket of this.state.getWebSockets()) { try { socket.send(event); } catch { /* A conexão será removida pelo runtime. */ } }
+      return jsonResponse({ newCode: body.newCode, snapshot: publicRoomSnapshot(body.newRoom) });
+    }
+    if (url.pathname === '/rotation/abort' && request.method === 'POST') {
+      room.status = 'closed';
+      room.movedTo = null;
+      room.updatedAt = Date.now();
+      room.revision += 1;
+      await this.saveRoom(room);
+      return jsonResponse({ aborted: true });
+    }
     if (url.pathname === '/snapshot' && request.method === 'GET') {
       return jsonResponse({ snapshot: publicRoomSnapshot(room) });
     }
     if (url.pathname === '/join' && request.method === 'POST') {
+      if (room.rotationPending) return jsonResponse({ error: 'ROOM_ROTATING', message: 'O anfitrião está trocando o código da sala. Tente novamente.' }, 409);
       const body = await request.json();
       try {
         const player = { playerId: crypto.randomUUID(), accountId: body.accountId || null, resumeToken: randomToken(), name: body.name, colorIndex: body.colorIndex };
@@ -744,6 +808,7 @@ export class RoomDurableObject {
     if (url.pathname === '/command' && request.method === 'POST') {
       const body = await request.json();
       try {
+        if (room.rotationPending) throw roomError('ROOM_ROTATING', 'O anfitrião está trocando o código da sala. Tente novamente.');
         const player = room.players.find((entry) => !entry.isBot && entry.resumeToken === body.resumeToken);
         if (!player) throw roomError('INVALID_RESUME_TOKEN', 'Não foi possível validar sua vaga.');
         const updated = this.applyCommand(room, player, body.action, body.payload || {});

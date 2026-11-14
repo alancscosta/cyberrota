@@ -21,7 +21,7 @@ function needsEarlyStartConfirmation(snapshot) {
   return humans < Number(snapshot?.capacity || 0);
 }
 
-function pawnAvatar(player) {
+function pawnAvatar(player, extraClass = '') {
   const color = ROOM_COLORS[player.colorIndex]?.value || ROOM_COLORS[0].value;
   const heads = [
     '<circle cx="0" cy="-15" r="6"/>',
@@ -32,7 +32,7 @@ function pawnAvatar(player) {
     '<path d="m0-23 3 6 6 1-5 5 2 6-6-3-6 3 2-6-5-5 6-1Z"/>',
   ];
   const index = Math.max(0, Math.min(5, Number(player.colorIndex) || 0));
-  return `<svg class="room-pawn" viewBox="-13 -25 26 36" aria-hidden="true" style="--pawn-color:${color}"><ellipse cx="0" cy="8" rx="10" ry="2.5" class="room-pawn-shadow"/><path d="M-9 0v3c0 3 4 4 9 4s9-1 9-4V0c0 2-4 4-9 4s-9-2-9-4Z" class="room-pawn-base"/><path d="M-5 0c1-3 2-5 2-7v-5h6v5c0 2 1 4 5 7-3 2-10 2-13 0Z" class="room-pawn-body"/><g class="room-pawn-head">${heads[index]}</g></svg>`;
+  return `<svg class="room-pawn ${extraClass}" viewBox="-13 -25 26 36" aria-hidden="true" style="--pawn-color:${color}"><ellipse cx="0" cy="8" rx="10" ry="2.5" class="room-pawn-shadow"/><path d="M-9 0v3c0 3 4 4 9 4s9-1 9-4V0c0 2-4 4-9 4s-9-2-9-4Z" class="room-pawn-base"/><path d="M-5 0c1-3 2-5 2-7v-5h6v5c0 2 1 4 5 7-3 2-10 2-13 0Z" class="room-pawn-body"/><g class="room-pawn-head">${heads[index]}</g></svg>`;
 }
 
 function roomApiBase(code, base = '') {
@@ -77,6 +77,7 @@ class RoomClient extends EventTarget {
       const error = new Error(body.message || body.error || `Falha na sala (${response.status}).`);
       error.code = body.error;
       error.requiresConfirmation = body.requiresConfirmation;
+      error.newCode = body.newCode;
       throw error;
     }
     return body;
@@ -107,10 +108,45 @@ class RoomClient extends EventTarget {
   async resume() {
     const saved = this.savedPlayer();
     if (!saved) throw new Error('Esta vaga não está salva neste dispositivo.');
-    const result = await this.request(`${roomApiBase(this.code, this.apiBase)}`, { method: 'GET' });
+    let result;
+    try { result = await this.request(`${roomApiBase(this.code, this.apiBase)}`, { method: 'GET' }); }
+    catch (error) {
+      if (!error.newCode) throw error;
+      this.adoptRoomCode(error.newCode);
+      result = await this.request(`${roomApiBase(this.code, this.apiBase)}`, { method: 'GET' });
+    }
     this.snapshot = result.snapshot;
     this.player = saved;
     this.connect();
+    return result;
+  }
+
+  adoptRoomCode(code) {
+    const nextCode = String(code || '').trim().toUpperCase();
+    if (!nextCode || nextCode === this.code) return;
+    const previousCode = this.code;
+    const saved = this.player?.resumeToken ? this.player : this.savedPlayer();
+    this.code = nextCode;
+    if (saved?.resumeToken) {
+      this.storage?.setItem(credentialsKey(nextCode), JSON.stringify({ playerId: saved.playerId, resumeToken: saved.resumeToken }));
+      this.storage?.removeItem(credentialsKey(previousCode));
+    }
+    const previousSocket = this.socket;
+    this.socket = null;
+    previousSocket?.close(1000, 'room code changed');
+    this.connect();
+  }
+
+  async rotateCode() {
+    const saved = this.player?.resumeToken ? this.player : this.savedPlayer();
+    if (!saved?.resumeToken) throw new Error('Entre novamente na sala para trocar o código.');
+    const result = await this.request(`${roomApiBase(this.code, this.apiBase)}/rotate`, {
+      method: 'POST', body: JSON.stringify({ resumeToken: saved.resumeToken }),
+    });
+    this.adoptRoomCode(result.newCode || result.snapshot?.code);
+    this.snapshot = result.snapshot;
+    this.dispatchEvent(new CustomEvent('room', { detail: { type: 'room.snapshot', snapshot: result.snapshot } }));
+    this.onEvent({ type: 'room.snapshot', snapshot: result.snapshot });
     return result;
   }
 
@@ -120,21 +156,23 @@ class RoomClient extends EventTarget {
     if (!saved?.resumeToken) return null;
     const url = new URL(`${roomApiBase(this.code, this.apiBase)}/ws`, globalThis.location?.href || 'http://localhost');
     url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
-    this.socket = new WebSocket(url);
-    this.socket.addEventListener('open', () => {
+    const socket = new WebSocket(url);
+    this.socket = socket;
+    socket.addEventListener('open', () => {
       this.reconnectDelay = 750;
-      this.socket.send(JSON.stringify({ action: 'resume', resumeToken: saved.resumeToken }));
+      socket.send(JSON.stringify({ action: 'resume', resumeToken: saved.resumeToken }));
     });
-    this.socket.addEventListener('message', (event) => this.receive(event.data));
-    this.socket.addEventListener('close', () => this.scheduleReconnect());
-    this.socket.addEventListener('error', () => this.socket?.close());
-    return this.socket;
+    socket.addEventListener('message', (event) => this.receive(event.data));
+    socket.addEventListener('close', () => { if (this.socket === socket) this.scheduleReconnect(); });
+    socket.addEventListener('error', () => socket.close());
+    return socket;
   }
 
   receive(raw) {
     let event;
     try { event = JSON.parse(raw); } catch { return; }
     if (event.snapshot) this.snapshot = event.snapshot;
+    if (event.type === 'room.moved' && event.newCode) this.adoptRoomCode(event.newCode);
     if (event.player?.resumeToken) this.savePlayer(event.player);
     this.dispatchEvent(new CustomEvent('room', { detail: event }));
     this.onEvent(event);
@@ -196,12 +234,12 @@ function renderLobby(container, snapshot, localPlayerId, client, { onClosed = ()
       ${pawnAvatar(player)}<span class="room-player-copy"><b>${escapeHtml(player.name)}</b><small>${player.isBot ? 'BOT' : player.playerId === snapshot.hostPlayerId ? 'ANFITRIÃO' : 'JOGADOR'}${player.team ? ` · ${teamName(player.team)}` : ''}</small></span>
       <span class="room-player-status" aria-label="${player.connected ? 'Conectado' : 'Desconectado'}">${player.connected ? '●' : '○'}</span>
     </li>`).join('');
-  const colorOptions = choices.map((color) => `<button type="button" class="room-color-choice ${color.index === selectedColor ? 'is-selected' : ''}" data-color-index="${color.index}" aria-label="${color.name}" aria-pressed="${color.index === selectedColor}" style="--player-color:${color.value}"><span></span><small>${color.name}</small></button>`).join('');
+  const colorOptions = choices.map((color) => `<button type="button" class="room-color-choice ${color.index === selectedColor ? 'is-selected' : ''}" data-color-index="${color.index}" aria-label="${color.name}" aria-pressed="${color.index === selectedColor}" style="--player-color:${color.value}">${pawnAvatar({ colorIndex: color.index }, 'room-color-pawn')}<small>${color.name}</small></button>`).join('');
   const humanCount = snapshot.players.filter((player) => !player.isBot).length;
   const notFull = humanCount < snapshot.capacity;
   container.innerHTML = `<section class="room-lobby" aria-labelledby="room-lobby-title">
     <header class="room-lobby-header"><div><span class="room-eyebrow">SALA DE PARTIDA · ${snapshot.status === 'playing' ? 'EM JOGO' : 'LOBBY'}</span><h1 id="room-lobby-title">${title}</h1></div>
-      <div class="room-code-box"><small>CÓDIGO DA SALA</small><strong>${escapeHtml(snapshot.code)}</strong><div class="room-code-actions"><button type="button" data-room-copy-code>Copiar código</button><button type="button" data-room-copy-link>Copiar link</button></div></div></header>
+      <div class="room-code-box"><small>CÓDIGO DA SALA</small><strong>${escapeHtml(snapshot.code)}</strong><div class="room-code-actions"><button type="button" data-room-copy-code>Copiar código</button><button type="button" data-room-copy-link>Copiar link</button>${isHost && snapshot.status === 'lobby' ? '<button type="button" data-room-regenerate>Gerar outro código</button>' : ''}</div></div></header>
     <div class="room-lobby-layout"><section class="room-roster-panel"><div class="room-section-heading"><h2>Participantes</h2><span>${humanCount}/${snapshot.capacity} pessoas</span></div>
       <ul class="room-roster">${roster}</ul><p class="room-helper">Compartilhe o link para seus amigos entrarem. As cores escolhidas somem para os outros.</p></section>
       <section class="room-identity-panel"><div class="room-section-heading"><h2>Sua personagem</h2><span>${local ? 'Edite antes da partida' : 'Entre na sala para escolher'}</span></div>
@@ -222,6 +260,13 @@ function renderLobby(container, snapshot, localPlayerId, client, { onClosed = ()
     const button = event.currentTarget;
     try { await navigator.clipboard.writeText(roomShareUrl(snapshot.code)); button.textContent = 'Link copiado'; }
     catch { button.textContent = roomShareUrl(snapshot.code); }
+  });
+  container.querySelector('[data-room-regenerate]')?.addEventListener('click', async (event) => {
+    const button = event.currentTarget;
+    if (!globalThis.confirm?.('Gerar outro código? A sala e os jogadores serão mantidos, mas o código anterior deixará de aceitar entradas.')) return;
+    button.disabled = true;
+    try { await client.rotateCode(); }
+    catch (error) { button.disabled = false; globalThis.alert?.(error.message); }
   });
   container.querySelector('[data-room-identity]')?.addEventListener('submit', async (event) => {
     event.preventDefault();

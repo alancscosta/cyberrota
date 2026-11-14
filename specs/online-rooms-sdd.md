@@ -7,9 +7,10 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 ## Regras e contrato
 
 - Cada sala tem código compartilhável, modo, estado (`lobby`, `playing`, `finished` ou `closed`), anfitrião e roster persistente.
+- O Worker gera códigos aleatórios com três letras e três números, sem permitir duplicatas; o anfitrião pode gerar outro código durante o lobby. A troca conserva os participantes e invalida o código anterior, atualizando as URLs e reconexões.
 - Os cartões cooperativo e 3v3 abrem diretamente o fluxo online de criar sala ou entrar com código; a configuração local de personagens fica reservada ao modo solo.
 - Abrir um link com `?sala=CODIGO` leva à tela de entrada com o código preenchido. Depois de entrar, cada pessoa confirma seu nome e escolhe uma cor livre no lobby.
-- O anfitrião escolhe nome e personagem/cor ao criar. Jogadores entram pelo código/link e escolhem nome e uma cor livre entre as seis cores já existentes. O servidor reserva nome/cor por jogador e uma vaga desconectada continua reservada para reconexão.
+- O anfitrião escolhe nome e personagem/cor ao criar. Jogadores entram pelo código/link e escolhem nome e uma cor livre entre as seis cores já existentes, mostradas como bonecos coloridos. O servidor reserva nome/cor por jogador e uma vaga desconectada continua reservada para reconexão.
 - Defesa da Rede aceita capacidade de 2–6 (padrão 6). Corrida tem seis assentos fixos, com três por equipe; participantes humanos são alocados à equipe menos ocupada.
 - Só o anfitrião pode iniciar. Se ainda houver vagas na capacidade configurada, a solicitação retorna `ROOM_NOT_FULL` com `requiresConfirmation`; a confirmação explícita permite iniciar.
 - Defesa da Rede começa com os participantes humanos presentes, respeitando mínimo de dois. A Corrida preenche seis assentos com bots quando confirmada incompleta; cada equipe continua com três participantes e cada ação de bot tem 50% de chance de acerto.
@@ -25,6 +26,7 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 
 - Testar criação/configuração inválida, código e seis cores válidas.
 - Testar lotação, nomes, cores duplicadas, alocação de equipes e reconexão por token.
+- Testar a geração segura e não duplicada de códigos, a troca pelo anfitrião, a preservação das vagas e a migração do link/credenciais.
 - Testar autorização do anfitrião, aviso de início antecipado, mínimo cooperativo e composição 3v3 com bots.
 - Testar bots em fonte aleatória determinística, fechamento e retorno ao lobby sem apagar jogadores humanos.
 - Testar snapshot público sem gabarito, deck, tokens de retomada ou IDs de conta; testar deadlines sem registrar erro.

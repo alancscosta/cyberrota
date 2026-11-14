@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="cyberrota-finish.css?v=11">
   <link rel="stylesheet" href="podium.css?v=1">
   <link rel="stylesheet" href="rooms.css?v=1">
-  <link rel="stylesheet" href="account.css?v=1">
+  <link rel="stylesheet" href="account.css?v=2">
   <link rel="stylesheet" href="home-motion.css?v=1">
 </head>
 <body>
@@ -40,8 +40,8 @@
         <button class="nav-item" data-page="print"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-printer"/></svg></span> Versão impressa</button>
       </nav>
       <div class="sidebar-bottom">
-        <div class="sync-card"><span class="sync-dot"></span><div><b>Progresso neste dispositivo</b><small>Salvo automaticamente</small></div><span class="sync-check">✓</span></div>
-        <button class="profile-button" id="profile-button"><span class="avatar">CR</span><span class="profile-copy"><b id="profile-name">Jogador convidado</b><small>Perfil local</small></span><span class="profile-more">···</span></button>
+        <div class="sync-card"><span class="sync-dot"></span><div><b>Sem conta conectada</b><small>Sem login, nada fica salvo</small></div><span class="sync-check">✓</span></div>
+        <button class="profile-button" id="profile-button"><span class="avatar">CR</span><span class="profile-copy"><b id="profile-name">Visitante</b><small>Sem login</small></span><span class="profile-more">···</span></button>
       </div>
     </aside>
     <div class="main-column">
@@ -50,7 +50,7 @@
         <div class="top-actions"><button class="icon-button" id="help-button" aria-label="Ajuda" title="Ajuda"><svg class="ui-icon"><use href="#icon-info"/></svg></button><button class="avatar mini-avatar" id="profile-shortcut" aria-label="Perfil">CR</button></div>
       </header>
       <main id="app" tabindex="-1"></main>
-      <footer class="app-footer"><span>Cyber Rota · Aprenda redes jogando</span><span>Progresso salvo neste dispositivo</span></footer>
+      <footer class="app-footer"><span>Cyber Rota · Aprenda redes jogando</span><span id="progress-storage-label">Sem login, nada fica salvo</span></footer>
     </div>
   </div>
   <div id="modal-root"></div>
@@ -74,7 +74,7 @@
     <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
     <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   </svg>
-  <script type="module" src="account-client.js?v=1"></script>
+  <script type="module" src="account-client.js?v=2"></script>
   <script type="module" src="game-core.js?v=17"></script>
   <script type="module" src="race-mode.js?v=13"></script>
   <script type="module" src="room-client.js?v=1"></script>

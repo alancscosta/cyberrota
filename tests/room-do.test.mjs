@@ -81,3 +81,39 @@ test('room ownership can be transferred when an account is deleted', async () =>
   assert.equal(result.snapshot.players[0].name, 'Jogador');
   assert.deepEqual(result.accountRooms, [{ accountId: 'account-b', roomCode: 'ABC234', playerId: joined.body.player.playerId, isHost: true }]);
 });
+
+test('host can rotate a lobby code without losing players and the old code points to the new room', async () => {
+  const oldState = new MemoryState();
+  const oldRoom = new RoomDurableObject(oldState, {});
+  await send(oldRoom, '/initialize', { method: 'POST', body: {
+    code: 'ABC234', mode: 'coop', capacity: 2,
+    host: { playerId: 'host', accountId: 'acct-host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
+  } });
+  const joined = await send(oldRoom, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1 } });
+  let movedEvent;
+  oldState.sockets.push({ send(message) { movedEvent = JSON.parse(message); } });
+
+  const prepared = await send(oldRoom, '/rotation/prepare', { method: 'POST', body: { resumeToken: 'host-secret', targetCode: 'DEF456' } });
+  assert.equal(prepared.status, 200);
+  assert.equal(prepared.body.room.players.length, 2);
+  assert.equal((await send(oldRoom, '/join', { method: 'POST', body: { name: 'Caio', colorIndex: 2 } })).body.error, 'ROOM_ROTATING');
+
+  const newRoom = new RoomDurableObject(new MemoryState(), {});
+  const newState = { ...prepared.body.room, code: 'DEF456', revision: prepared.body.room.revision + 1 };
+  delete newState.rotationPending;
+  const initialized = await send(newRoom, '/initialize-rotated', { method: 'POST', body: { room: newState } });
+  assert.equal(initialized.status, 200);
+  assert.equal(initialized.body.snapshot.players.length, 2);
+  assert.equal(initialized.body.snapshot.players[1].playerId, joined.body.player.playerId);
+
+  const committed = await send(oldRoom, '/rotation/commit', { method: 'POST', body: {
+    resumeToken: 'host-secret', rotationToken: prepared.body.rotationToken, newCode: 'DEF456', newRoom: newState,
+  } });
+  assert.equal(committed.status, 200);
+  assert.equal(committed.body.snapshot.code, 'DEF456');
+  assert.equal(movedEvent.type, 'room.moved');
+  assert.equal(movedEvent.newCode, 'DEF456');
+  const oldLink = await send(oldRoom, '/snapshot');
+  assert.equal(oldLink.status, 410);
+  assert.equal(oldLink.body.newCode, 'DEF456');
+});

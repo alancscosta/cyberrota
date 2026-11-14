@@ -1,9 +1,19 @@
-.account-panel{margin:16px 0;padding:16px;border:1px solid var(--line,#dce2e8);border-radius:14px;background:var(--surface-soft,#f7f9fb)}
-.account-panel p{margin:8px 0 12px;color:var(--muted,#64748b);font-size:13px;line-height:1.5}
-.account-panel small{display:block;color:var(--muted,#64748b);font-size:12px}
-.account-panel-title{display:flex;align-items:center;gap:10px}
-.account-panel-title>div{display:grid;gap:3px}.account-panel-title b{font-size:14px}
-.account-avatar{display:grid;width:36px;height:36px;place-items:center;border-radius:50%;background:#e0f4fa;color:#087a98;font-weight:800}
+.account-panel{margin:14px 0 0;padding:18px;border:1px solid #294c68;border-radius:14px;background:linear-gradient(145deg,#122d45,#0e2236);color:#edf7ff;box-shadow:inset 0 1px #ffffff08}
+.account-panel p{margin:10px 0 15px;color:#a9bfd2;font-size:13px;line-height:1.5}
+.account-panel small{display:block;color:#a9bfd2;font-size:12px}
+.account-panel-title{display:flex;align-items:center;gap:12px}
+.account-panel-title>div{display:grid;gap:4px;min-width:0}.account-panel-title b{font-size:14px;color:#f2f8fd}
+.account-avatar{position:relative;display:grid;width:44px;height:44px;flex:none;overflow:hidden;place-items:center;border-radius:50%;background:#123a54;color:#9de8ff;font-weight:800}
+.account-avatar-photo{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;object-fit:cover}
+.account-signin-panel{display:grid;gap:8px}
+.account-signin-panel>p{margin:0 0 5px}
+.google-signin{display:flex;justify-content:flex-start;min-height:44px;align-items:center}
+.account-avatar-inner{display:block;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.profile-button .avatar,.mini-avatar{overflow:hidden;position:relative}
+.profile-button .avatar .account-avatar-photo,.mini-avatar .account-avatar-photo{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .account-actions{display:flex;flex-wrap:wrap;gap:8px}
 .account-actions .btn-danger{color:#a32737;border-color:#efb8be;background:#fff4f4}
-.google-signin{min-height:42px}
+body:not(.in-game) .account-actions .btn-danger{color:#ffaaa8;border-color:#77464d;background:#39252d}
+.sync-card:not(.has-account) .sync-dot{background:#d8ae68;box-shadow:none}
+.sync-card:not(.has-account) .sync-check{display:none}
+@media(max-width:620px){.account-panel{padding:15px}.account-actions .btn{flex:1 1 auto}}

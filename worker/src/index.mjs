@@ -107,7 +107,12 @@ async function routeAccount(request, env, path) {
     return json({ ok: true }, 200, { 'set-cookie': Accounts.clearSessionCookie({ secure: new URL(request.url).protocol === 'https:' }) });
   }
   const account = await requireAccount(request, env);
-  if (request.method === 'GET' && path === '/api/account/me') return json({ account });
+  if (request.method === 'GET' && path === '/api/account/me') return json({ account: {
+    id: account.id,
+    email: account.email,
+    displayName: account.display_name,
+    avatarUrl: account.avatar_url,
+  } });
   if (request.method === 'GET' && path === '/api/account/progress') {
     const progress = await Accounts.loadAccountProgress(env.DB, account.id);
     return json({ progress });
@@ -165,6 +170,43 @@ async function routeRoom(request, env, url) {
   const code = String(parts[2]).toUpperCase();
   if (!/^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/.test(code)) { const error = new Error('Código de sala inválido.'); error.status = 400; error.code = 'INVALID_CODE'; throw error; }
   const suffix = parts.slice(3).join('/');
+  if (suffix === 'rotate' && request.method === 'POST') {
+    const body = await readBody(request);
+    const oldStub = roomStub(env, code);
+    for (let attempts = 0; attempts < 5; attempts += 1) {
+      const newCode = generateRoomCode();
+      if (newCode === code) continue;
+      const preparedResponse = await oldStub.fetch(internalRoomRequest('/rotation/prepare', 'POST', { resumeToken: body.resumeToken, targetCode: newCode }));
+      const prepared = await preparedResponse.json().catch(() => ({}));
+      if (!preparedResponse.ok) return json(prepared, preparedResponse.status);
+      const nextRoom = JSON.parse(JSON.stringify(prepared.room));
+      delete nextRoom.rotationPending;
+      nextRoom.code = newCode;
+      nextRoom.updatedAt = Date.now();
+      nextRoom.revision = (Number(nextRoom.revision) || 0) + 1;
+      const newStub = roomStub(env, newCode);
+      const initializedResponse = await newStub.fetch(internalRoomRequest('/initialize-rotated', 'POST', { room: nextRoom }));
+      const initialized = await initializedResponse.json().catch(() => ({}));
+      if (!initializedResponse.ok) {
+        await oldStub.fetch(internalRoomRequest('/rotation/cancel', 'POST', { rotationToken: prepared.rotationToken }));
+        if (initialized.error === 'ROOM_ALREADY_INITIALIZED') continue;
+        return json(initialized, initializedResponse.status);
+      }
+      const committedResponse = await oldStub.fetch(internalRoomRequest('/rotation/commit', 'POST', {
+        resumeToken: body.resumeToken, rotationToken: prepared.rotationToken, newCode, newRoom: nextRoom,
+      }));
+      const committed = await committedResponse.json().catch(() => ({}));
+      if (!committedResponse.ok) {
+        await newStub.fetch(internalRoomRequest('/rotation/abort', 'POST', {}));
+        await oldStub.fetch(internalRoomRequest('/rotation/cancel', 'POST', { rotationToken: prepared.rotationToken }));
+        return json(committed, committedResponse.status);
+      }
+      await syncAccountRooms(env.DB, code, []);
+      await syncAccountRooms(env.DB, newCode, initialized.accountRooms);
+      return json({ newCode, snapshot: initialized.snapshot });
+    }
+    const error = new Error('Não foi possível gerar um código livre. Tente novamente.'); error.status = 503; error.code = 'ROOM_CODE_RETRY'; throw error;
+  }
   if (suffix === 'ws' && request.headers.get('upgrade')?.toLowerCase() === 'websocket') {
     return doRoomRequest(request, env, code, 'ws', { websocket: true });
   }
