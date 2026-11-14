@@ -25,9 +25,12 @@
 .online-game .room-primary-button,.online-podium .room-primary-button{border:0;background:#38bfe5;color:#07202d}.online-podium{margin:18px 0;padding:24px;border:1px solid #273c57;border-radius:20px;background:linear-gradient(145deg,#0d1829,#13243a);color:#f1f7fd}.online-podium>p{max-width:600px;color:#b7c5d4;font-size:13px;line-height:1.55}.online-podium ol{display:grid;gap:10px;max-width:650px;margin:22px 0;padding:0;list-style:none}.online-podium li{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #2c4159;border-radius:13px;background:#12243a}.online-podium .podium-place-1{border-color:#caa958;background:#2a281f}.online-podium .podium-place-2{border-color:#95a4b4}.online-podium .podium-place-3{border-color:#a97654}.podium-place-copy{display:grid;gap:4px}.podium-place-copy small{color:#becad7}
 @media(max-width:760px){.online-rooms-grid,.online-game-layout{grid-template-columns:1fr}.online-rooms-heading{padding-inline:16px}.online-rooms-grid{padding:12px 16px 16px}.online-game{padding:14px}.online-choice-row{grid-template-columns:1fr}}
 .online-room-dialog{width:min(100%,980px);max-height:min(94vh,900px);padding:clamp(14px,2vw,24px)}
-.online-room-dialog>.modal-head{margin-bottom:14px}
+.online-room-dialog>.modal-head{margin-bottom:20px}
 .online-room-dialog>.modal-head p{max-width:620px}
-.online-room-dialog>.online-rooms-panel{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
-.online-room-dialog .online-rooms-heading{padding:4px 8px 8px}
-.online-room-dialog .online-rooms-grid{padding:10px 8px 18px}
-@media(max-width:700px){.online-room-dialog{max-height:96vh;padding:12px}.online-room-dialog .online-rooms-grid{grid-template-columns:1fr;padding:10px 8px 14px}.online-room-dialog .online-rooms-heading{padding-inline:8px}}
+.online-room-dialog .online-rooms-panel{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.online-room-dialog .online-rooms-heading{padding:16px 18px 14px;gap:20px}
+.online-room-dialog .online-rooms-heading h2{margin:8px 0 8px;line-height:1.15}
+.online-room-dialog .online-rooms-heading p{line-height:1.55}
+.online-room-dialog .online-rooms-grid{gap:18px;padding:16px 18px 24px}
+.online-room-dialog .online-rooms-grid form{gap:14px;padding:20px}
+@media(max-width:700px){.online-room-dialog{max-height:96vh;padding:14px}.online-room-dialog .online-rooms-grid{grid-template-columns:1fr;padding:12px 0 16px}.online-room-dialog .online-rooms-heading{padding:12px 0 16px}.online-room-dialog .online-rooms-grid form{padding:16px}}

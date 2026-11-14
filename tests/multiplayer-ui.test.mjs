@@ -45,6 +45,12 @@ test('online room setup reports a module load failure instead of staying on an i
   assert.match(app, /},5000\);window\.addEventListener\('cyberrota:rooms-ready'/);
 });
 
+test('online room dialog gives the room heading and forms breathing room', async () => {
+  const styles = await readFile(new URL('../dist/rooms.css', import.meta.url), 'utf8');
+  assert.match(styles, /\.online-room-dialog \.online-rooms-heading\s*\{[^}]*padding:\s*16px\s+18px\s+14px/s);
+  assert.match(styles, /\.online-room-dialog \.online-rooms-grid\s*\{[^}]*gap:\s*18px[^}]*padding:\s*16px\s+18px\s+24px/s);
+});
+
 test('online question UI renders answer choices and disables turns for non-active players', () => {
   const question = source.slice(source.indexOf('function renderQuestion'), source.indexOf('function renderPodium'));
   assert.match(question, /card\.question \|\| card\.prompt/);
