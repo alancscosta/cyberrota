@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794622499.2989843,
-    "seen": 1794622684.286686,
-    "ast_hash": "9497e82db5c542511992abc80cef1c88",
+    "mtime": 1794626093.7232397,
+    "seen": 1794627348.079182,
+    "ast_hash": "20b056934f8856966d79ca19c5507dae",
     "semantic_hash": ""
   },
   "vite.config.js": {
@@ -852,57 +852,57 @@
     "semantic_hash": ""
   },
   "tests/multiplayer-ui.test.mjs": {
-    "mtime": 1794622304.2070372,
-    "seen": 1794622684.2926915,
-    "ast_hash": "3981da2ddead0fffc0c3834571b7ee82",
+    "mtime": 1794627386.074542,
+    "seen": 1794627455.8416865,
+    "ast_hash": "ce2ca27544b98905cb7642fbf9984349",
     "semantic_hash": ""
   },
   "tests/room-client.test.mjs": {
-    "mtime": 1794621831.1718009,
-    "seen": 1794622684.2926915,
-    "ast_hash": "c89f4736c77001aa1088416f4221b78a",
+    "mtime": 1794626590.3044913,
+    "seen": 1794627348.0891902,
+    "ast_hash": "3638d419679206b76fd2f1f4c6cc1752",
     "semantic_hash": ""
   },
   "tests/room-do.test.mjs": {
-    "mtime": 1794622185.2261937,
-    "seen": 1794622684.2926915,
-    "ast_hash": "1878e74f8c0060e8a6a9f083dd2e575e",
+    "mtime": 1794626372.989137,
+    "seen": 1794627348.0891902,
+    "ast_hash": "47ae357626956bacea407f38203b3808",
     "semantic_hash": ""
   },
   "tests/rooms.test.mjs": {
-    "mtime": 1794622180.5118196,
-    "seen": 1794622684.2926915,
-    "ast_hash": "78168588620a61ccd6a8c8556c27c62a",
+    "mtime": 1794625624.6586604,
+    "seen": 1794627348.0891902,
+    "ast_hash": "24cc1c282d957078148d89b66fa18f16",
     "semantic_hash": ""
   },
   "tests/worker-api.test.mjs": {
-    "mtime": 1794621780.4092238,
-    "seen": 1794622684.2926915,
-    "ast_hash": "926d0c355f26a741b587fb237801fb25",
+    "mtime": 1794626611.781646,
+    "seen": 1794627348.0901916,
+    "ast_hash": "81ed30d16dface2c96da6c3bb9904457",
     "semantic_hash": ""
   },
   "worker/src/index.mjs": {
-    "mtime": 1794622496.6007147,
-    "seen": 1794622684.2926915,
-    "ast_hash": "b7c0a66390f1213414add908be7f57da",
+    "mtime": 1794626435.880536,
+    "seen": 1794627348.0911925,
+    "ast_hash": "a678f9bcc5596314f490cbad4dc96676",
     "semantic_hash": ""
   },
   "worker/src/rooms.mjs": {
-    "mtime": 1794622161.9695473,
-    "seen": 1794622684.2926915,
-    "ast_hash": "b227ba817f7cc7fe528c5116fd8ba2ff",
+    "mtime": 1794626412.2518854,
+    "seen": 1794627348.0911925,
+    "ast_hash": "99c340bcd8afacea8c030da0046d46be",
     "semantic_hash": ""
   },
   "specs/accounts-storage-sdd.md": {
-    "mtime": 1794621199.9597864,
-    "seen": 1794622684.296695,
-    "ast_hash": "254eba9cfba1f292493e49a3b2cfa7c2",
+    "mtime": 1794626614.363401,
+    "seen": 1794627348.1002007,
+    "ast_hash": "0414cc1cb725c8d54da7621081d9bd68",
     "semantic_hash": ""
   },
   "specs/online-rooms-sdd.md": {
-    "mtime": 1794622191.2794302,
-    "seen": 1794622684.297696,
-    "ast_hash": "bd2ac551c51f6bff95367643fb20e71d",
+    "mtime": 1794626683.703963,
+    "seen": 1794627348.1012013,
+    "ast_hash": "e25b0dff9ed6383237d0d8aa6785c8b5",
     "semantic_hash": ""
   },
   "specs/podium-sdd.md": {
@@ -921,6 +921,12 @@
     "mtime": 1794624622.5522547,
     "seen": 1794624698.8378356,
     "ast_hash": "ce58c896c958626c7931358de91ee097",
+    "semantic_hash": ""
+  },
+  "tests/account-client.test.cjs": {
+    "mtime": 1794626831.4834023,
+    "seen": 1794627348.0891902,
+    "ast_hash": "4cd20017154ca990887f9a8c3f6fdb72",
     "semantic_hash": ""
   },
   "package-lock.json": {

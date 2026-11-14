@@ -1,17 +1,17 @@
-# Graph Report - cyberrota  (2026-11-13)
+# Graph Report - cyberrota  (2026-11-14)
 
 ## Corpus Check
-- 53 files · ~43,922 words
+- 54 files · ~46,681 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 21 file(s) not represented in the graph (top: .pptx 12, .ndjson 5, (none) 2)
 
 ## Summary
-- 464 nodes · 718 edges · 28 communities (24 shown, 4 thin omitted)
+- 476 nodes · 737 edges · 23 communities (20 shown, 3 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 21 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2dca0be2`
+- Built from commit: `3b670dcb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -30,18 +30,13 @@
 - index.mjs
 - accounts.js
 - build_design.mjs
-- RoomDurableObject
 - build_short.mjs
 - Turnos sem bloqueio e rota Solo — SDD
 - Worker API: spec-driven development
 - Contas e persistência — SDD
 - Salas online — SDD
 - Pódio multiplayer — SDD
-- build_official_title.mjs
-- build_professional.mjs
-- build_presentation.mjs
 - room-do.test.mjs
-- ref_node_fs
 - vercel.json
 
 ## God Nodes (most connected - your core abstractions)
@@ -65,7 +60,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (28 total, 4 thin omitted)
+## Communities (23 total, 3 thin omitted)
 
 ### Community 0 - "README.md"
 Cohesion: 0.06
@@ -76,8 +71,8 @@ Cohesion: 0.06
 Nodes (31): author, bugs, url, description, devDependencies, vite@^8.3.6, wrangler@^4.162.0, directories (+23 more)
 
 ### Community 2 - "visual-contract.test.cjs"
-Cohesion: 0.13
-Nodes (13): app, assert, boardCss, css, finishCss, fs, hackerCss, html (+5 more)
+Cohesion: 0.08
+Nodes (22): appSource, assert, createClient(), fs, path, response(), source, test (+14 more)
 
 ### Community 3 - "Proposta de regras para o protótipo"
 Cohesion: 0.18
@@ -88,8 +83,8 @@ Cohesion: 0.09
 Nodes (21): Aceitação TDD, Aditivo SDD — Espaçamento dos racks, peões e ataque do Hacker, Avatares e leitura imediata da partida — SDD, Contexto, Contrato espacial, Contratos TDD, Direção visual, Especificação (+13 more)
 
 ### Community 5 - "rooms.mjs"
-Cohesion: 0.13
-Nodes (42): deck, host, applyGameCommand(), assertActiveTurn(), assertHost(), assignTeam(), availableColorIndex(), botCorrectness() (+34 more)
+Cohesion: 0.10
+Nodes (48): deck, host, accountRoomRows(), applyGameCommand(), assertActiveTurn(), assertHost(), assignTeam(), availableColorIndex() (+40 more)
 
 ### Community 6 - "Cyber Rota: Defenda a Rede"
 Cohesion: 0.29
@@ -116,12 +111,8 @@ Cohesion: 0.12
 Nodes (32): asArray(), authenticateGoogleCredential(), base64UrlDecode(), base64UrlEncode(), clearSessionCookie(), createGuestSessionToken(), createSessionToken(), decodeJsonPart() (+24 more)
 
 ### Community 14 - "build_design.mjs"
-Cohesion: 0.21
-Nodes (12): add(), build, C, candidate, contentSlide(), finalPath, footer(), out (+4 more)
-
-### Community 15 - "RoomDurableObject"
-Cohesion: 0.29
-Nodes (6): accountRoomRows(), jsonResponse(), publicRoomConfig(), publicRoomSnapshot(), randomToken(), RoomDurableObject
+Cohesion: 0.05
+Nodes (46): add(), build, C, candidate, contentSlide(), finalPath, footer(), out (+38 more)
 
 ### Community 16 - "build_short.mjs"
 Cohesion: 0.24
@@ -147,29 +138,17 @@ Nodes (4): Objetivo, Regras e contrato, Salas online — SDD, TDD e aceite
 Cohesion: 0.40
 Nodes (4): Objetivo, Pódio multiplayer — SDD, Regras, TDD
 
-### Community 22 - "build_official_title.mjs"
-Cohesion: 0.23
-Nodes (12): add(), build, C, candidate, contentSlide(), finalPath, footer(), out (+4 more)
-
-### Community 23 - "build_professional.mjs"
-Cohesion: 0.23
-Nodes (12): build, bulletRows(), C, candidate, contentSlide(), finalPath, out, pres (+4 more)
-
-### Community 24 - "build_presentation.mjs"
-Cohesion: 0.17
-Nodes (9): buildDir, C, candidate, content, finalPath, outDir, pres, root (+1 more)
-
 ### Community 25 - "room-do.test.mjs"
 Cohesion: 0.20
 Nodes (3): deck, MemoryState, MemoryStorage
 
 ## Knowledge Gaps
-- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `RoomDurableObject` connect `RoomDurableObject` to `room-do.test.mjs`, `index.mjs`, `rooms.mjs`?**
+- **Why does `RoomDurableObject` connect `rooms.mjs` to `room-do.test.mjs`, `index.mjs`?**
   _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **Should `README.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
@@ -178,8 +157,8 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Plano de execução — SDD/TDD` be split into smaller, more focused modules?**
   _Cohesion score 0.06439393939393939 - nodes in this community are weakly interconnected._
 - **Should `visual-contract.test.cjs` be split into smaller, more focused modules?**
-  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
 - **Should `SDD — Vitória do Hacker e tabuleiro de Defesa` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `rooms.mjs` be split into smaller, more focused modules?**
-  _Cohesion score 0.13429951690821257 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10343061955965181 - nodes in this community are weakly interconnected._
