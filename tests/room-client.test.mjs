@@ -50,6 +50,34 @@ test('client refreshes changed room snapshots when a websocket event is missed',
   } finally { global.fetch = previousFetch; client.destroy(); }
 });
 
+test('older websocket snapshots cannot roll a co-op turn back to the dice phase', () => {
+  const client = new RoomClient({ code: 'ABC234', storage: null });
+  client.snapshot = { code: 'ABC234', status: 'playing', revision: 12, gameState: { mode: 'coop', phase: 'choose-difficulty' } };
+  client.receive(JSON.stringify({ type: 'room.snapshot', snapshot: { code: 'ABC234', status: 'playing', revision: 11, gameState: { mode: 'coop', phase: 'walk' } } }));
+  assert.equal(client.snapshot.revision, 12);
+  assert.equal(client.snapshot.gameState.phase, 'choose-difficulty');
+  client.destroy();
+});
+
+test('a rejected room action refreshes the authoritative snapshot before showing its error', async () => {
+  const client = new RoomClient({ code: 'ABC234', storage: null });
+  client.player = { playerId: 'active', resumeToken: 'token' };
+  client.snapshot = { code: 'ABC234', status: 'playing', revision: 4, gameState: { mode: 'coop', phase: 'walk' } };
+  const previousFetch = global.fetch;
+  const requests = [];
+  global.fetch = async (url, init = {}) => {
+    requests.push({ url: String(url), method: init.method || 'GET' });
+    if (init.method === 'POST') return Response.json({ error: 'INVALID_GAME_PHASE', message: 'Não é possível rolar o dado agora.' }, { status: 400 });
+    return Response.json({ snapshot: { code: 'ABC234', status: 'playing', revision: 5, gameState: { mode: 'coop', phase: 'choose-difficulty' } } });
+  };
+  try {
+    await assert.rejects(client.command('game.roll'), /Não é possível rolar o dado agora/);
+    assert.deepEqual(requests.map(({ method }) => method), ['POST', 'GET']);
+    assert.equal(client.snapshot.revision, 5);
+    assert.equal(client.snapshot.gameState.phase, 'choose-difficulty');
+  } finally { global.fetch = previousFetch; client.destroy(); }
+});
+
 test('snapshot recovery follows a room code rotation when its websocket event was missed', async () => {
   const entries = new Map([['cyberrota-room-ABC234', JSON.stringify({ playerId: 'host', resumeToken: 'secret' })]]);
   const storage = { getItem: (key) => entries.get(key) || null, setItem: (key, value) => entries.set(key, value), removeItem: (key) => entries.delete(key) };

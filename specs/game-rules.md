@@ -15,9 +15,9 @@ Os modos jogados no mesmo dispositivo são Treino Solo, Desligue o Servidor 3v3 
 
 ## Desligue o Servidor — 3v3
 
-- Seis pessoas jogam localmente: três na equipe Azul e três na Vermelha. Os seis peões têm posições independentes; Azul começa na casa 0 e Vermelho na casa 18, cada time voltado ao estande adversário.
+- Seis pessoas jogam localmente ou em sala online: três na equipe Azul e três na Vermelha. Os seis peões têm posições independentes; Azul começa na casa 0 e Vermelho na casa 18, cada time voltado ao estande adversário.
 - Os times alternam turnos, começando por Azul, e a rotação percorre em ordem os três participantes de cada time. A pessoa ativa rola um dado de seis faces e responde uma pergunta.
-- Acerto move o peão ativo o valor do dado em direção ao servidor rival. Erro recua esse peão uma casa em direção ao próprio estande e move o participante adversário correspondente o valor do dado em direção ao estande da equipe ativa. As posições ficam limitadas entre 0 e 18.
+- Acerto move o peão ativo o valor do dado em direção ao servidor rival. Erro recua esse peão uma casa em direção ao próprio estande, se ele já tiver avançado, e move o participante adversário correspondente uma casa em direção ao estande da equipe ativa. As posições ficam limitadas entre 0 e 18.
 - A equipe só desliga o servidor rival quando os três peões chegam ao estande. Ao completar o trio, as luzes do servidor ficam vermelhas e apagam, e a luz superior do estande também apaga; uma mensagem de vitória grande aparece em tela cheia com fade. O título usa azul para a equipe Azul e vermelho para a equipe Vermelha.
 - O tabuleiro tem uma rota retangular com tiles sem sobreposição e dois estandes fora das casas. Cada estande mostra um rack, cabo e tomada; os servidores ficam verdes enquanto estão ativos. O dado fica na área principal do tabuleiro, com a cor da face e da borda fixa na paleta azul-marinho e os pontos na cor da pessoa da vez.
 - A passagem do dispositivo oculta a pergunta/resposta anterior até a pessoa seguinte rolar o dado e revelar a própria pergunta. Não há dano, PV ou selos neste modo.

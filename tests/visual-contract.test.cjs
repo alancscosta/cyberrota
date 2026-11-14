@@ -239,7 +239,7 @@ test('turn and victory notices are large centered overlays over the gameplay', (
 
 test('restored co-op saves derive armor damage stages from their recorded hits', () => {
   assert.ok(app.includes("restored.coop.armorStage=Math.max(Number(restored.coop.armorStage)||0,restored.coop.log.filter((event)=>event.outcome==='correct').length)"), 'older saved games restore missing armor stages from the combat log');
-  assert.ok(html.includes('game-core.js?v=17'), 'the browser reloads the current damage, turn skip, and victory logic');
+  assert.ok(html.includes('game-core.js?v=18'), 'the browser reloads the current damage, turn skip, victory, and race movement logic');
 });
 
 test('damage visor uses two separated eye slits rather than a connecting line', () => {

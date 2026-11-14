@@ -196,8 +196,8 @@
     if (team === 'blue') next.teams.blue.positions[playerIndex] = correct ? Math.min(DESTINATION, next.teams.blue.positions[playerIndex] + roll) : Math.max(0, next.teams.blue.positions[playerIndex] - 1);
     else next.teams.red.positions[playerIndex] = correct ? Math.max(0, next.teams.red.positions[playerIndex] - roll) : Math.min(DESTINATION, next.teams.red.positions[playerIndex] + 1);
     if (!correct) {
-      if (team === 'blue') next.teams.red.positions[playerIndex] = Math.max(0, next.teams.red.positions[playerIndex] - roll);
-      else next.teams.blue.positions[playerIndex] = Math.min(DESTINATION, next.teams.blue.positions[playerIndex] + roll);
+      if (team === 'blue') next.teams.red.positions[playerIndex] = Math.max(0, next.teams.red.positions[playerIndex] - 1);
+      else next.teams.blue.positions[playerIndex] = Math.min(DESTINATION, next.teams.blue.positions[playerIndex] + 1);
     }
     next.turn += 1;
     const blueAtStand = next.teams.blue.positions.every((position) => position >= DESTINATION);

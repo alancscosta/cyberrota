@@ -3,11 +3,13 @@
 - **Solo:** cinco respostas corretas em checkpoints diferentes concedem os cinco selos e permitem vencer ao alcançar o destino; no máximo 20 movimentos.
 - **Desligue o Servidor 3v3:** seis peões independentes (três por equipe) mostram nomes, avatares, cores e casas; os times começam em extremos opostos, alternam turnos e cada um percorre a rotação 1→2→3.
 - **Troca de turno 3v3:** cada participante recebe a própria pergunta somente depois de rolar seu dado; a resposta anterior fica oculta até a vez seguinte.
-- **Desligue o Servidor 3v3:** acerto move o peão ativo o valor de um dado de seis faces; erro o recua uma casa e move o adversário correspondente o valor do dado. Casas ficam limitadas a 0–18.
+- **Desligue o Servidor 3v3:** acerto move o peão ativo o valor de um dado de seis faces; erro o recua uma casa (sem ultrapassar seu ponto inicial) e move o adversário correspondente uma casa. Casas ficam limitadas a 0–18.
 - **Fim 3v3:** só vence a equipe quando os três peões alcançam o estande rival. O servidor pisca vermelho, apaga as luzes e o sinal superior apaga; a equipe vencedora aparece em tela cheia com fade, e o título usa a cor do time (azul ou vermelho). Após 60 turnos sem trio completo, há empate.
 - **Cenário 3v3:** tabuleiro quadrado com rota clara e sem tiles ou peças sobrepostos. Os servidores ficam fora das casas em estandes separados, com cabo e tomada visíveis, LEDs verdes online e transição para LEDs apagados após a chegada dos três peões.
 - **Dado 3v3:** aparece na área principal do tabuleiro e conserva superfície azul-marinho; somente os pontos recebem a cor do participante ativo.
 - **Peões 3v3:** as seis peças do tabuleiro, a escalação e o indicador de quem joga usam os mesmos peões coloridos, com seis silhuetas distintas. Nenhum sprite antigo de robô aparece nesse modo.
+- **Salas online:** criar/entrar abre o lobby em modal sobre a tela de configuração; encerrar pelo anfitrião fecha o lobby e retorna à tela de criar/entrar. Iniciar fecha o modal e abre o tabuleiro em tela cheia.
+- **Defenda a Rede online:** o próximo jogador consegue rolar após o anterior responder e continuar; snapshots antigos não podem restaurar botões de uma fase anterior, e rejeições atualizam o estado compartilhado.
 - **Dado e superfícies:** dado, cartas e painéis usam superfícies azul-marinho da paleta tecnológica; nenhum controle ou área de jogo tem fundo branco.
 - **Cooperativo acerto:** reduz PV do Hacker conforme dificuldade e recupera até 25% do servidor sob ataque, sem passar de 100%.
 - **Cooperativo erro:** reduz 25% do servidor sob ataque e aumenta alertas; terceiro alerta atinge o servidor ativo mais frágil e reinicia alerta.

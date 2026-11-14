@@ -67,6 +67,16 @@ class RoomClient extends EventTarget {
     }
   }
 
+  acceptSnapshot(snapshot) {
+    if (!snapshot) return false;
+    if (this.code && snapshot.code && snapshot.code !== this.code) return false;
+    const currentRevision = Number(this.snapshot?.revision);
+    const nextRevision = Number(snapshot.revision);
+    if (Number.isFinite(currentRevision) && Number.isFinite(nextRevision) && nextRevision < currentRevision) return false;
+    this.snapshot = snapshot;
+    return true;
+  }
+
   savedPlayer() {
     try { return JSON.parse(this.storage?.getItem(credentialsKey(this.code)) || 'null'); }
     catch { return null; }
@@ -175,8 +185,8 @@ class RoomClient extends EventTarget {
   receive(raw) {
     let event;
     try { event = JSON.parse(raw); } catch { return; }
-    if (event.snapshot) this.snapshot = event.snapshot;
     if (event.type === 'room.moved' && event.newCode) this.adoptRoomCode(event.newCode);
+    if (event.snapshot) this.acceptSnapshot(event.snapshot);
     if (event.player?.resumeToken) this.savePlayer(event.player);
     this.dispatchEvent(new CustomEvent('room', { detail: event }));
     this.onEvent(event);
@@ -210,10 +220,10 @@ class RoomClient extends EventTarget {
       }
       const next = result.snapshot;
       const current = this.snapshot;
-      if (next && (!current || next.code !== current.code || Number(next.revision) > Number(current.revision))) {
-        this.snapshot = next;
-        this.dispatchEvent(new CustomEvent('room', { detail: { type: 'room.snapshot', snapshot: next } }));
-        this.onEvent({ type: 'room.snapshot', snapshot: next });
+      if (next && this.acceptSnapshot(next) && (!current || next.code !== current.code || Number(next.revision) > Number(current.revision))) {
+        const accepted = { type: 'room.snapshot', snapshot: this.snapshot };
+        this.dispatchEvent(new CustomEvent('room', { detail: accepted }));
+        this.onEvent(accepted);
       }
       return this.snapshot;
     } finally { this.pollInFlight = false; }
@@ -222,13 +232,27 @@ class RoomClient extends EventTarget {
   async command(action, payload = {}) {
     const saved = this.player?.resumeToken ? this.player : this.savedPlayer();
     if (!saved?.resumeToken) throw new Error('Entre novamente na sala para continuar.');
-    const result = await this.request(`${roomApiBase(this.code, this.apiBase)}/command`, {
-      method: 'POST', body: JSON.stringify({ resumeToken: saved.resumeToken, action, payload }),
-    });
-    this.snapshot = result.snapshot;
-    this.dispatchEvent(new CustomEvent('room', { detail: { type: 'room.snapshot', snapshot: result.snapshot } }));
-    this.onEvent({ type: 'room.snapshot', snapshot: result.snapshot });
-    return result.snapshot;
+    let result;
+    try {
+      result = await this.request(`${roomApiBase(this.code, this.apiBase)}/command`, {
+        method: 'POST', body: JSON.stringify({ resumeToken: saved.resumeToken, action, payload }),
+      });
+    } catch (error) {
+      try {
+        const latest = await this.request(roomApiBase(this.code, this.apiBase), { method: 'GET' });
+        if (this.acceptSnapshot(latest.snapshot)) {
+          const event = { type: 'room.snapshot', snapshot: this.snapshot };
+          this.dispatchEvent(new CustomEvent('room', { detail: event }));
+          this.onEvent(event);
+        }
+      } catch { /* Mantém o erro original da ação. */ }
+      throw error;
+    }
+    this.acceptSnapshot(result.snapshot);
+    const event = { type: 'room.snapshot', snapshot: this.snapshot };
+    this.dispatchEvent(new CustomEvent('room', { detail: event }));
+    this.onEvent(event);
+    return this.snapshot;
   }
 
   setIdentity(name, colorIndex) { return this.command('player.identity', { name, colorIndex }); }

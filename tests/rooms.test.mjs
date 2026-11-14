@@ -129,6 +129,11 @@ test('the server controls turn order, rolls, question selection, answer validati
   assert.equal(snapshot.config.deck, undefined);
   assert.equal(snapshot.players.some((player) => player.accountId !== undefined), false);
   assert.equal(JSON.stringify(snapshot).includes('resumeToken'), false);
+  room = applyGameCommand(room, 'host-1', 'game.continue');
+  assert.equal(room.gameState.phase, 'walk', 'the shared turn returns to the only phase that offers the die');
+  assert.equal(room.gameState.currentPlayerId, 'p2');
+  room = applyGameCommand(room, 'p2', 'game.roll', {}, { random: () => 0 });
+  assert.equal(room.gameState.phase, 'choose-difficulty', 'the next co-op player can roll after the prior answer is continued');
 });
 
 test('co-op roles modify the shared question and are accepted only from the active player', () => {
@@ -218,6 +223,22 @@ test('the server controls race roll/answer and advances to the paired participan
   room = applyGameCommand(room, 'host-1', 'game.continue');
   assert.equal(room.gameState.currentPlayerId, 'p2');
   assert.equal(room.gameState.phase, 'race-roll');
+});
+
+test('the online race applies the fixed one-space miss penalty and one-space opponent advance', () => {
+  let room = createRoomState({ code: 'ABC234', mode: 'competitive', host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { confirmEarly: true, config: { deck }, random: () => 0 });
+  const index = room.gameState.racePlayerIndex;
+  const team = room.gameState.raceCurrentTeam;
+  const opponent = team === 'blue' ? 'red' : 'blue';
+  room.gameState.race.teams[team].positions[index] = team === 'blue' ? 5 : 13;
+  room.gameState.race.teams[opponent].positions[index] = team === 'blue' ? 18 : 0;
+  room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0.99 });
+  assert.equal(room.gameState.raceRoll, 6);
+  room = applyGameCommand(room, 'host-1', 'game.answer', { answer: 1 }, { random: () => 0 });
+  assert.equal(room.gameState.race.teams[team].positions[index], team === 'blue' ? 4 : 14);
+  assert.equal(room.gameState.race.teams[opponent].positions[index], team === 'blue' ? 17 : 1);
 });
 
 test('account deletion anonymizes linked seats and transfers host without removing game seats', () => {

@@ -41,7 +41,7 @@ test('lobby host can rotate the room code and choose characters with pawn icons'
 test('room client exports the API consumed by the multiplayer controls module', async () => {
   const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
   const controls = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
-  assert.match(controls, /import\s*\{[^}]*\bcanReuseActiveRoom\b[^}]*\}\s*from\s*['"]\.\/room-client\.js\?v=6['"]/);
+  assert.match(controls, /import\s*\{[^}]*\bcanReuseActiveRoom\b[^}]*\}\s*from\s*['"]\.\/room-client\.js\?v=7['"]/);
   assert.match(roomClient, /export\s*\{[^}]*\bRoomClient\b[^}]*\bcanReuseActiveRoom\b[^}]*\}/s);
 });
 
@@ -80,9 +80,27 @@ test('a started room leaves the modal lobby and renders the existing full-screen
   assert.match(app, /function renderBoardScene\(/);
 });
 
+test('a newly created room opens its lobby over the create/join screen and closing returns to setup', async () => {
+  assert.match(source, /function renderLobbyModal\(/);
+  assert.match(source, /class="room-lobby-modal-backdrop"[\s\S]*role="dialog" aria-modal="true"/);
+  assert.match(source, /renderLobbyModal\(root,\s*snapshot,\s*client\.player\?\.playerId,\s*client/);
+  assert.match(source, /if \(gameSurfaceActive\) \{ gameSurfaceActive = false; document\.body\.classList\.remove\('in-game'\); modalRoot\.innerHTML = ''; appRoot\.innerHTML =/);
+  assert.match(source, /else\s+root\.innerHTML\s*=\s*`<p class="room-helper">A SALA COD:/);
+  const styles = await readFile(new URL('../dist/rooms.css', import.meta.url), 'utf8');
+  assert.match(styles, /\.room-lobby-modal-backdrop\s*\{[^}]*position:\s*fixed;[^}]*inset:\s*0;[^}]*backdrop-filter:\s*blur\(/);
+});
+
+test('the deployed room, game-core, and lobby style URLs load the updated versions together', async () => {
+  const html = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
+  assert.match(html, /game-core\.js\?v=18/);
+  assert.match(html, /room-client\.js\?v=7/);
+  assert.match(html, /multiplayer-ui\.js\?v=7/);
+  assert.match(html, /rooms\.css\?v=3/);
+});
+
 test('a room opened from a saved link keeps rendering websocket snapshots after resuming', async () => {
   const ui = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
-  assert.match(ui, /from '\.\/room-client\.js\?v=6'/);
+  assert.match(ui, /from '\.\/room-client\.js\?v=7'/);
   assert.match(ui, /new RoomClient\(\{\s*code: initialCode,\s*onEvent: \(\) => renderActive\(root, saved\)\s*\}\)/);
   assert.match(ui, /canAutoResumeRoom\(current\.snapshot, initialMode\)/);
   assert.match(ui, /saved\.request\(`\/api\/rooms\/\$\{encodeURIComponent\(initialCode\)\}`\)/);

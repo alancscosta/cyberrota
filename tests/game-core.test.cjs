@@ -246,17 +246,35 @@ test('a timed-out 3v3 turn only passes to the next player without moving either 
   assert.equal(atLimit.outcome, 'draw');
 });
 
-test('a wrong 3v3 answer retreats the active pawn and advances the corresponding opponent by the die', () => {
+test('a wrong 3v3 answer retreats the active pawn one space and advances the opponent one space', () => {
   const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
   state.teams.blue.positions[0] = 3;
   const next = Core.resolveRaceTurn(state, { correct: false, roll: 4 });
   assert.deepEqual(next.teams.blue.positions, [2, 0, 0]);
-  assert.deepEqual(next.teams.red.positions, [14, 18, 18]);
+  assert.deepEqual(next.teams.red.positions, [17, 18, 18]);
   assert.equal(next.log[0].player, 'A1');
   assert.equal(next.log[0].advancedOpponent, 'V1');
   assert.equal(next.log[0].playerPosition, 2);
-  assert.equal(next.log[0].opponentPosition, 14);
+  assert.equal(next.log[0].opponentPosition, 17);
   assert.equal(state.teams.red.positions[0], 18, 'input state remains unchanged');
+});
+
+test('a wrong 3v3 answer cannot push its pawn behind home and moves the opponent one regardless of the die', () => {
+  const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  state.teams.blue.positions[0] = 0;
+  const next = Core.resolveRaceTurn(state, { correct: false, roll: 6 });
+  assert.equal(next.teams.blue.positions[0], 0);
+  assert.equal(next.teams.red.positions[0], 17);
+});
+
+test('the red 3v3 team follows the same one-step miss rule in the opposite direction', () => {
+  const state = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  state.turn = 1;
+  state.teams.red.positions[0] = 5;
+  state.teams.blue.positions[0] = 4;
+  const next = Core.resolveRaceTurn(state, { correct: false, roll: 6 });
+  assert.equal(next.teams.red.positions[0], 6, 'the active red pawn retreats one toward its starting stand');
+  assert.equal(next.teams.blue.positions[0], 5, 'the paired blue pawn advances one toward the red stand');
 });
 
 test('the opposing server stays on until all three members reach its stand', () => {

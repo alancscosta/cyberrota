@@ -66,6 +66,13 @@ test('a turn is accepted only from the active participant and completion persist
   assert.equal(rejected.body.error, 'NOT_ACTIVE_PLAYER');
   const accepted = await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.roll' } });
   assert.equal(accepted.body.snapshot.gameState.phase, 'choose-difficulty');
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.choose-difficulty', payload: { difficulty: 2 } } });
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.answer', payload: { answer: 0 } } });
+  const continued = await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.continue' } });
+  assert.equal(continued.body.snapshot.gameState.phase, 'walk');
+  assert.equal(continued.body.snapshot.gameState.currentPlayerId, joined.body.player.playerId);
+  const visitorRoll = await send(room, '/command', { method: 'POST', body: { resumeToken: joined.body.player.resumeToken, action: 'game.roll' } });
+  assert.equal(visitorRoll.body.snapshot.gameState.phase, 'choose-difficulty', 'the second account can roll on its own turn');
 });
 
 test('starting a match broadcasts the playing snapshot to every connected player', async () => {

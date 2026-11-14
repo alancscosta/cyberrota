@@ -1,4 +1,4 @@
-import { RoomClient, renderLobby, roomUrlWithoutCode, canReuseActiveRoom, canAutoResumeRoom } from './room-client.js?v=6';
+import { RoomClient, renderLobby, roomUrlWithoutCode, canReuseActiveRoom, canAutoResumeRoom } from './room-client.js?v=7';
 
 const CODE = /^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/;
 const attached = new WeakSet();
@@ -33,7 +33,13 @@ function renderActive(root, client) {
   if (snapshot.status === 'finished') { gameSurfaceActive = true; modalRoot.innerHTML = ''; document.body.classList.add('in-game'); appRoot.innerHTML = window.CyberrotaOnlineRenderer?.finish ? window.CyberrotaOnlineRenderer.finish(snapshot, client) : '<section class="room-lobby online-room-error">A partida terminou. Atualize a página para abrir o resultado.</section>'; return; }
   if (snapshot.status === 'closed') { client.destroy(); window.RoomClient.active = null; clearRoomCodeFromUrl(); if (gameSurfaceActive) { gameSurfaceActive = false; document.body.classList.remove('in-game'); modalRoot.innerHTML = ''; appRoot.innerHTML = `<section class="room-lobby online-room-closed"><p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada.</p><button class="room-primary-button" data-room-home>Voltar ao painel</button></section>`; appRoot.querySelector('[data-room-home]')?.addEventListener('click', () => location.reload()); } else root.innerHTML = `<p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; return; }
   if (gameSurfaceActive) { modalRoot.innerHTML = ''; document.body.classList.remove('in-game'); renderLobby(appRoot, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) }); bindLobbyActions(appRoot, client); return; }
-  renderLobby(root, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) });
+  renderLobbyModal(root, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) });
+  bindLobbyActions(root, client);
+}
+
+function renderLobbyModal(root, snapshot, localPlayerId, client, { onClosed = () => {} } = {}) {
+  root.innerHTML = '<div class="room-lobby-modal-backdrop"><section class="room-lobby-modal-panel" role="dialog" aria-modal="true" aria-label="Lobby da sala"><div data-room-lobby-content></div></section></div>';
+  renderLobby(root.querySelector('[data-room-lobby-content]'), snapshot, localPlayerId, client, { onClosed });
 }
 
 function bindLobbyActions(root, client) {

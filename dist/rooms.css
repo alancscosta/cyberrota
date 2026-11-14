@@ -25,3 +25,7 @@
 .online-room-dialog .online-rooms-grid form{gap:14px;padding:20px}
 @media(max-width:700px){.online-room-dialog{max-height:96vh;padding:14px}.online-room-dialog .online-rooms-grid{grid-template-columns:1fr;padding:12px 0 16px}.online-room-dialog .online-rooms-heading{padding:12px 0 16px}.online-room-dialog .online-rooms-grid form{padding:16px}}
 .online-room-code{align-self:center;margin-left:10px;padding:7px 10px;border:1px solid rgba(111,218,255,.32);border-radius:999px;background:#10283e;color:#9be9ff;font:700 11px/1 "IBM Plex Sans",sans-serif;letter-spacing:.08em;white-space:nowrap}
+.room-lobby-modal-backdrop{position:fixed;inset:0;z-index:10020;display:grid;place-items:center;overflow-y:auto;padding:clamp(12px,3vw,32px);background:rgba(3,9,18,.78);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}
+.room-lobby-modal-panel{width:min(100%,1180px);max-height:calc(100dvh - 24px);overflow:auto;border-radius:24px;box-shadow:0 30px 100px #020811aa}
+.room-lobby-modal-panel>.room-lobby{margin:0 auto;max-height:calc(100dvh - 24px);overflow-y:auto}
+@media(max-width:700px){.room-lobby-modal-backdrop{align-items:start;padding:8px}.room-lobby-modal-panel{max-height:calc(100dvh - 16px);border-radius:18px}.room-lobby-modal-panel>.room-lobby{max-height:calc(100dvh - 16px);padding:16px;border-radius:18px}}
