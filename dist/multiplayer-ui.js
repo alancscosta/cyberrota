@@ -7,11 +7,11 @@ const colors = ['#43d6ff', '#769bff', '#ffbd68', '#d49bff', '#72e0b3', '#ff8e9b'
 
 function readSavedCode() { return new URL(location.href).searchParams.get('sala')?.trim().toUpperCase() || ''; }
 
-function launchMarkup(profile, customDecks) {
+function launchMarkup(profile, customDecks, selectedMode = 'coop') {
   const code = readSavedCode();
   const decks = [{ name: 'Padrão', value: 'standard' }, ...(customDecks || []).map((deck, index) => ({ name: deck.name, value: String(index) }))];
   return `<section class="online-rooms-panel"><div class="online-rooms-heading"><div><span class="room-eyebrow">JOGUE COM OUTRAS PESSOAS</span><h2>Salas online</h2><p>Crie uma sala e compartilhe o código ou entre na sala de alguém.</p></div><span class="online-free-tag">GRATUITO</span></div>
-    <div class="online-rooms-grid"><form data-create-online-room><h3>Criar sala</h3><label>Seu nome<input name="name" maxlength="20" required value="${esc(profile || 'Jogador convidado')}"></label><label>Modo<select name="mode"><option value="coop">Defenda a Rede · cooperativo</option><option value="competitive">Desligue o Servidor · 3v3</option></select></label><label data-capacity-field>Vagas<select name="capacity">${[2,3,4,5,6].map((n) => `<option value="${n}" ${n === 6 ? 'selected' : ''}>${n} jogadores</option>`).join('')}</select></label><label>Baralho<select name="deck">${decks.map((deck) => `<option value="${esc(deck.value)}">${esc(deck.name)}</option>`).join('')}</select></label><button class="room-primary-button" type="submit">Criar e abrir lobby</button><p data-room-error role="status"></p></form>
+    <div class="online-rooms-grid"><form data-create-online-room><h3>Criar sala</h3><label>Seu nome<input name="name" maxlength="20" required value="${esc(profile || 'Jogador convidado')}"></label><label>Modo<select name="mode"><option value="coop" ${selectedMode === 'coop' ? 'selected' : ''}>Defenda a Rede · cooperativo</option><option value="competitive" ${selectedMode === 'competitive' ? 'selected' : ''}>Desligue o Servidor · 3v3</option></select></label><label data-capacity-field>Vagas<select name="capacity">${[2,3,4,5,6].map((n) => `<option value="${n}" ${n === 2 ? 'selected' : ''}>${n} jogadores</option>`).join('')}</select></label><label>Baralho<select name="deck">${decks.map((deck) => `<option value="${esc(deck.value)}">${esc(deck.name)}</option>`).join('')}</select></label><button class="room-primary-button" type="submit">Criar e abrir lobby</button><p data-room-error role="status"></p></form>
     <form data-join-online-room><h3>Entrar em uma sala</h3><label>Código da sala<input name="code" maxlength="8" minlength="8" autocomplete="off" placeholder="8 letras ou números" value="${esc(code)}" required></label><label>Seu nome<input name="name" maxlength="20" required value="${esc(profile || 'Jogador convidado')}"></label><button class="room-secondary-button" type="submit">Entrar no lobby</button><p data-join-error role="status"></p></form></div>
     <div data-room-root></div></section>`;
 }
@@ -92,9 +92,9 @@ function bindGame(root, client) {
   });
 }
 
-function mount(container, { profile = 'Jogador convidado', customDecks = [], standardDeck = [] } = {}) {
+function mount(container, { profile = 'Jogador convidado', customDecks = [], standardDeck = [], initialMode = 'coop' } = {}) {
   if (!container) return;
-  if (!container.innerHTML) container.innerHTML = launchMarkup(profile, customDecks);
+  if (!container.innerHTML) container.innerHTML = launchMarkup(profile, customDecks, initialMode);
   const root = container.querySelector('[data-room-root]');
   if (!root) return;
   let client = window.RoomClient.active;

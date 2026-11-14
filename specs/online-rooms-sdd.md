@@ -7,6 +7,8 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 ## Regras e contrato
 
 - Cada sala tem código compartilhável, modo, estado (`lobby`, `playing`, `finished` ou `closed`), anfitrião e roster persistente.
+- Os cartões cooperativo e 3v3 abrem diretamente o fluxo online de criar sala ou entrar com código; a configuração local de personagens fica reservada ao modo solo.
+- Abrir um link com `?sala=CODIGO` leva à tela de entrada com o código preenchido. Depois de entrar, cada pessoa confirma seu nome e escolhe uma cor livre no lobby.
 - O anfitrião escolhe nome e personagem/cor ao criar. Jogadores entram pelo código/link e escolhem nome e uma cor livre entre as seis cores já existentes. O servidor reserva nome/cor por jogador e uma vaga desconectada continua reservada para reconexão.
 - Defesa da Rede aceita capacidade de 2–6 (padrão 6). Corrida tem seis assentos fixos, com três por equipe; participantes humanos são alocados à equipe menos ocupada.
 - Só o anfitrião pode iniciar. Se ainda houver vagas na capacidade configurada, a solicitação retorna `ROOM_NOT_FULL` com `requiresConfirmation`; a confirmação explícita permite iniciar.
