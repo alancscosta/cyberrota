@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 const source = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
 
 test('online launcher offers co-op, fixed 3v3, join-by-code, and custom deck selection', () => {
-  const markup = source.slice(source.indexOf('function launchMarkup'), source.indexOf('function currentPlayer'));
+  const markup = source.slice(source.indexOf('function launchMarkup'), source.indexOf('function renderActive'));
   assert.match(markup, /Defenda a Rede/);
   assert.match(markup, /Desligue o Servidor · 3v3/);
   assert.match(markup, /Entrar em uma sala/);
@@ -51,29 +51,44 @@ test('online room dialog gives the room heading and forms breathing room', async
   assert.match(styles, /\.online-room-dialog \.online-rooms-grid\s*\{[^}]*gap:\s*18px[^}]*padding:\s*16px\s+18px\s+24px/s);
 });
 
-test('online question UI renders answer choices and disables turns for non-active players', () => {
-  const question = source.slice(source.indexOf('function renderQuestion'), source.indexOf('function renderPodium'));
-  assert.match(question, /card\.question \|\| card\.prompt/);
-  assert.match(question, /myTurn \? '' : 'disabled'/);
-  assert.match(question, /data-online-answer/);
-  assert.doesNotMatch(question, /<\/script/);
-});
-
-test('online race UI shows the room code, roster, and active turn', () => {
-  const markup = source.slice(source.indexOf('function gameMarkup'), source.indexOf('function renderQuestion'));
-  assert.match(markup, /snapshot\.code/);
-  assert.match(markup, /snapshot\.players/);
-  assert.match(markup, /Rolar dado/);
+test('online match uses the same game controls and board as the existing game', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /CyberrotaOnlineRenderer/);
+  assert.match(app, /renderRaceDiceTray/);
+  assert.match(source, /CyberrotaOnlineRenderer\.render/);
+  assert.match(source, /CyberrotaOnlineRenderer\?\.finish/);
+  assert.match(app, /function renderMultiplayerPodium\(/);
+  assert.doesNotMatch(source, /online-turn-card|function gameMarkup/);
 });
 
 test('a started room leaves the modal lobby and renders the existing full-screen board', async () => {
-  const board = await readFile(new URL('../dist/online-board.js', import.meta.url), 'utf8');
-  assert.match(board, /function onlineBoardMarkup\(/);
-  assert.match(board, /RaceMode\.boardScene\(/);
-  assert.match(board, /function cooperativeBoardMarkup\(/);
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
   assert.match(source, /gameSurfaceActive/);
-  assert.match(source, /document\.body\.classList\.add\('in-game'\)/);
+  assert.match(source, /CyberrotaOnlineRenderer\.render/);
   assert.match(source, /document\.getElementById\('app'\)/);
-  assert.match(source, /game-layout/);
   assert.match(source, /data-room-root/);
+  assert.match(app, /globalThis\.RaceMode\.render\(game/);
+  assert.match(app, /function renderBoardScene\(/);
+});
+
+test('online matches reuse the original game renderer and send its controls to the room server', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /CyberrotaOnlineRenderer/);
+  assert.match(app, /renderRaceDiceTray/);
+  assert.match(app, /game\.roll/);
+  assert.match(app, /game\.answer/);
+  assert.match(app, /TURN_INTRO_SECONDS/);
+  assert.match(app, /game\.turnClock=onlineRendererState\.clock/);
+  assert.match(app, /rankPodium/);
+  assert.match(source, /CyberrotaOnlineRenderer\.render/);
+  assert.doesNotMatch(source, /online-turn-card|function gameMarkup/);
+});
+
+test('finished online rooms reuse the original 3D podium and room actions', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(source, /CyberrotaOnlineRenderer\?\.finish/);
+  assert.match(app, /function renderMultiplayerPodium\(/);
+  assert.match(app, /renderBoardPawnAvatar\(avatar,color\)/);
+  assert.match(app, /data-action="room-next-match"/);
+  assert.match(app, /data-action="room-close"/);
 });

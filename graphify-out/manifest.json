@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "tests/visual-contract.test.cjs": {
-    "mtime": 1794621507.0615551,
-    "seen": 1794622684.2926915,
-    "ast_hash": "c69e73523927a80a1b64b80a00527580",
+    "mtime": 1794628890.8956954,
+    "seen": 1794629212.7505188,
+    "ast_hash": "41376862b770ed1e30cc818db0e7d2fc",
     "semantic_hash": ""
   },
   ".agents/skills/ui-art-direction/SKILL.md": {
@@ -852,15 +852,15 @@
     "semantic_hash": ""
   },
   "tests/multiplayer-ui.test.mjs": {
-    "mtime": 1794627386.074542,
-    "seen": 1794627455.8416865,
-    "ast_hash": "ce2ca27544b98905cb7642fbf9984349",
+    "mtime": 1794629186.1758118,
+    "seen": 1794629212.7495186,
+    "ast_hash": "ddfb549fbe912096490690fe10cc7c0f",
     "semantic_hash": ""
   },
   "tests/room-client.test.mjs": {
-    "mtime": 1794626590.3044913,
-    "seen": 1794627348.0891902,
-    "ast_hash": "3638d419679206b76fd2f1f4c6cc1752",
+    "mtime": 1794628746.5816474,
+    "seen": 1794629212.7495186,
+    "ast_hash": "0e6cbde36aa61e88b9a0bdeb4f23233c",
     "semantic_hash": ""
   },
   "tests/room-do.test.mjs": {
@@ -870,9 +870,9 @@
     "semantic_hash": ""
   },
   "tests/rooms.test.mjs": {
-    "mtime": 1794625624.6586604,
-    "seen": 1794627348.0891902,
-    "ast_hash": "24cc1c282d957078148d89b66fa18f16",
+    "mtime": 1794628789.339861,
+    "seen": 1794629212.7505188,
+    "ast_hash": "28c2b50aab916353abbe2ab1a1690b34",
     "semantic_hash": ""
   },
   "tests/worker-api.test.mjs": {
@@ -888,9 +888,9 @@
     "semantic_hash": ""
   },
   "worker/src/rooms.mjs": {
-    "mtime": 1794626412.2518854,
-    "seen": 1794627348.0911925,
-    "ast_hash": "99c340bcd8afacea8c030da0046d46be",
+    "mtime": 1794628801.1207802,
+    "seen": 1794629212.75152,
+    "ast_hash": "47e70810ff041df33634477fbc44c345",
     "semantic_hash": ""
   },
   "specs/accounts-storage-sdd.md": {
@@ -900,9 +900,9 @@
     "semantic_hash": ""
   },
   "specs/online-rooms-sdd.md": {
-    "mtime": 1794626683.703963,
-    "seen": 1794627348.1012013,
-    "ast_hash": "e25b0dff9ed6383237d0d8aa6785c8b5",
+    "mtime": 1794628844.4215221,
+    "seen": 1794629212.7595277,
+    "ast_hash": "507af1e8e6eaa47c5c927c5757fb3813",
     "semantic_hash": ""
   },
   "specs/podium-sdd.md": {

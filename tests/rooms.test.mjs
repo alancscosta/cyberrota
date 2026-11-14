@@ -130,6 +130,17 @@ test('the server controls turn order, rolls, question selection, answer validati
   assert.equal(JSON.stringify(snapshot).includes('resumeToken'), false);
 });
 
+test('online turn deadlines include the original 5 second callout and 20 second action window', () => {
+  let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { config: { deck }, random: () => 0, now: 1_000 });
+  assert.equal(room.gameState.turnDeadlineAt, 26_000);
+  room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0, now: 6_000 });
+  assert.equal(room.gameState.turnDeadlineAt, 31_000);
+  room = applyGameCommand(room, 'host-1', 'game.choose-difficulty', { difficulty: 2 }, { random: () => 0, now: 11_000 });
+  assert.equal(room.gameState.turnDeadlineAt, 36_000);
+});
+
 test('the server controls race roll/answer and advances to the paired participant', () => {
   let room = createRoomState({ code: 'ABC234', mode: 'competitive', host });
   room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;

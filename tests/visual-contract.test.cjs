@@ -157,9 +157,9 @@ test('the 3v3 race shows both teams and a purpose-built server-disconnect board'
 
 test('server-disconnect game shows its die on the main board and explains movement', () => {
   assert.ok(raceMode.includes('data-action="race-roll"') && raceMode.includes('Rolar dado · 1–6'), 'the active player rolls before seeing the question');
-  assert.ok(html.includes('type="module" src="race-mode.js?v=') && raceMode.includes('ui.renderRaceDiceTray(game.raceRoll, activeColor)'), 'the selected die face appears on the main stage');
-  assert.ok(raceMode.includes('ui.renderRaceDiceTray(game.raceRoll, activeColor)'), 'the 3v3 calls the shared style of dice tray');
-  assert.ok(app.includes('function renderRaceDiceTray(value,color)') && app.includes('race-dice-tray'), 'the 3v3 die uses the same 3D cube and tray structure as other modes');
+  assert.ok(html.includes('type="module" src="race-mode.js?v=') && raceMode.includes('ui.renderRaceDiceTray(game.raceRoll, activeColor'), 'the selected die face appears on the main stage');
+  assert.ok(raceMode.includes('ui.renderRaceDiceTray(game.raceRoll, activeColor, Boolean(game.diceAnimating))'), 'the 3v3 calls the shared style of dice tray and animates online rolls');
+  assert.ok(app.includes('function renderRaceDiceTray(value,color,rolling=false)') && app.includes('race-dice-tray'), 'the 3v3 die uses the same 3D cube and tray structure as other modes');
   assert.ok(boardCss.includes('.race-world-stage .race-dice-tray{z-index:8}'), 'the 3v3 die is anchored in the gameplay stage');
   assert.ok(raceMode.includes('Acerto avança o dado') && raceMode.includes('Erro recua seu peão'), 'the instructions explain the movement rule in the game UI');
   assert.ok(raceMode.includes('EQUIPE COMPLETA NO ESTANDE'), 'the turn result calls out the whole team arriving');

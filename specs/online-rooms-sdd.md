@@ -17,7 +17,7 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 - A próxima partida devolve a sala ao lobby com o mesmo código e os participantes humanos. Encerrar sala é ação exclusiva do anfitrião.
 - O estado autoritativo fica no Durable Object da sala e snapshots são transmitidos por WebSocket sem tokens de retomada.
 - Os comandos de jogo (`game.roll`, `game.choose-difficulty`, `game.answer`, `game.continue`, `game.skip`, `game.heal`) são aplicados pelo Durable Object com GameCore compartilhado; só o participante ativo pode rolar, escolher dificuldade, responder, pular ou curar.
-- O servidor inicia um prazo de 20 segundos para a ação da vez. Expiração pula o turno sem registrar resposta errada; os relógios são persistidos como deadlines e tratados por alarmes do Durable Object.
+- Cada etapa mantém a chamada visual de 5 segundos do jogo original; se ninguém agir, ações de dado, dificuldade e perguntas de alternativas usam uma escolha aleatória. Perguntas abertas recebem os 20 segundos originais. O deadline autoritativo do servidor reserva 25 segundos por etapa (5 + 20); a expiração pula o turno sem registrar resposta errada, e alarmes do Durable Object aplicam o fallback se o navegador do jogador não estiver conectado.
 - Deck e respostas corretas ficam em estado privado. Snapshots públicos removem o deck, gabarito, respostas aceitas, tokens de retomada e IDs de conta.
 - IDs de conta são injetados pelo Worker após validar sessão; respostas internas carregam linhas `accountRooms` para sincronizar associação da conta sem expô-las aos navegadores.
 - O Durable Object conserva a sala durante o jogo e a fecha após 24 horas sem atividade.

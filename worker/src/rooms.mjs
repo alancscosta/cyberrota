@@ -5,6 +5,9 @@ const ROOM_CODE_LETTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 const ROOM_CODE_DIGITS = '23456789';
 const GAME_THEMES = Core.THEMES;
 const ROOM_TTL_MS = 24 * 60 * 60 * 1000;
+const TURN_INTRO_MS = 5_000;
+const TURN_ACTIVE_MS = 20_000;
+const TURN_TOTAL_MS = TURN_INTRO_MS + TURN_ACTIVE_MS;
 export const PLAYER_COLORS = Object.freeze([
   { index: 0, name: 'Ciano', value: '#43d6ff' },
   { index: 1, name: 'Azul', value: '#769bff' },
@@ -142,7 +145,7 @@ function makeGameState(room, { random = Math.random, now = Date.now() } = {}) {
     raceRoll: null,
     outcome: null,
     lastActorId: null,
-    turnDeadlineAt: now + 20000,
+    turnDeadlineAt: now + TURN_TOTAL_MS,
     ...(room.mode === 'coop' ? {
       coop: Core.newCoopState(roster.filter((player) => !player.isBot).map((player) => player.name), {
         maxRounds: Number(room.config.maxRounds) || 24,
@@ -185,7 +188,7 @@ function prepareRaceTurn(room, game, random = Math.random, now = Date.now()) {
   game.racePlayerIndex = turn.playerIndex;
   game.raceRoll = null;
   game.phase = 'race-roll';
-  game.turnDeadlineAt = now + 20000;
+  game.turnDeadlineAt = now + TURN_TOTAL_MS;
   const seat = currentRaceSeat(room, game);
   game.currentPlayerId = seat?.playerId ?? null;
 }
@@ -467,7 +470,7 @@ function continueGame(room, game, random = Math.random, now = Date.now()) {
     game.feedback = null;
     game.question = null;
     game.phase = 'walk';
-    game.turnDeadlineAt = now + 20000;
+    game.turnDeadlineAt = now + TURN_TOTAL_MS;
     setCurrentTurn(room, game);
     return game;
   }
@@ -511,12 +514,12 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
         game.coopRoll = 1 + Math.floor(random() * 3);
         game.lastRoll = game.coopRoll;
         game.phase = 'choose-difficulty';
-        game.turnDeadlineAt = now + 20000;
+        game.turnDeadlineAt = now + TURN_TOTAL_MS;
       } else if (game.mode === 'competitive' && game.phase === 'race-roll') {
         game.raceRoll = 1 + Math.floor(random() * 6);
         game.lastRoll = game.raceRoll;
         game.phase = 'question';
-        game.turnDeadlineAt = now + 20000;
+        game.turnDeadlineAt = now + TURN_TOTAL_MS;
       } else throw roomError('INVALID_GAME_PHASE', 'Não é possível rolar o dado agora.');
       game.lastActorId = actor.playerId;
     } else if (action === 'game.choose-difficulty') {
@@ -524,7 +527,7 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
       const difficulty = Number(payload.difficulty);
       if (![1, 2, 3].includes(difficulty)) throw roomError('INVALID_DIFFICULTY', 'Escolha uma dificuldade válida.');
       selectCoopQuestion(game, difficulty, random);
-      game.turnDeadlineAt = now + 20000;
+      game.turnDeadlineAt = now + TURN_TOTAL_MS;
       game.lastActorId = actor.playerId;
     } else if (action === 'game.answer') {
       if (game.phase !== 'question') throw roomError('INVALID_GAME_PHASE', 'Não há pergunta aguardando resposta.');
@@ -545,7 +548,7 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
         game.coopRoll = null;
         delete game.turnDeadlineAt;
         if (game.coop.outcome) room.status = 'finished';
-        else { game.turnDeadlineAt = now + 20000; setCurrentTurn(room, game); }
+        else { game.turnDeadlineAt = now + TURN_TOTAL_MS; setCurrentTurn(room, game); }
       } else if (game.mode === 'competitive' && ['race-roll', 'question'].includes(game.phase)) {
         game.race = Core.skipRaceTurn(game.race);
         game.turns = game.race.turn;

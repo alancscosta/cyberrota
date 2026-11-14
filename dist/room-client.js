@@ -324,6 +324,4 @@ const api = {
 };
 
 if (typeof window !== 'undefined') window.RoomClient = api;
-if (typeof module !== 'undefined' && module.exports) module.exports = api;
-
-export { RoomClient, renderLobby };
+export { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, renderLobby };
