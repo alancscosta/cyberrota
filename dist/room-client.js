@@ -239,7 +239,7 @@ function renderLobby(container, snapshot, localPlayerId, client, { onClosed = ()
   const notFull = humanCount < snapshot.capacity;
   container.innerHTML = `<section class="room-lobby" aria-labelledby="room-lobby-title">
     <header class="room-lobby-header"><div><span class="room-eyebrow">SALA DE PARTIDA · ${snapshot.status === 'playing' ? 'EM JOGO' : 'LOBBY'}</span><h1 id="room-lobby-title">${title}</h1></div>
-      <div class="room-code-box"><small>CÓDIGO DA SALA</small><strong>${escapeHtml(snapshot.code)}</strong><div class="room-code-actions"><button type="button" data-room-copy-code>Copiar código</button><button type="button" data-room-copy-link>Copiar link</button>${isHost && snapshot.status === 'lobby' ? '<button type="button" data-room-regenerate>Gerar outro código</button>' : ''}</div></div></header>
+      <div class="room-code-box"><small>SALA COD:</small><strong>${escapeHtml(snapshot.code)}</strong><div class="room-code-actions"><button type="button" data-room-copy-code>Copiar código</button><button type="button" data-room-copy-link>Copiar link</button>${isHost && snapshot.status === 'lobby' ? '<button type="button" data-room-regenerate>Gerar outro código</button>' : ''}</div></div></header>
     <div class="room-lobby-layout"><section class="room-roster-panel"><div class="room-section-heading"><h2>Participantes</h2><span>${humanCount}/${snapshot.capacity} pessoas</span></div>
       <ul class="room-roster">${roster}</ul><p class="room-helper">Compartilhe o link para seus amigos entrarem. As cores escolhidas somem para os outros.</p></section>
       <section class="room-identity-panel"><div class="room-section-heading"><h2>Sua personagem</h2><span>${local ? 'Edite antes da partida' : 'Entre na sala para escolher'}</span></div>

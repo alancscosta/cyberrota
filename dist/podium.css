@@ -1,38 +1,63 @@
+body.in-game .postgame-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: clamp(10px, 2.4vw, 28px);
+  background: rgba(5, 16, 32, .34);
+  backdrop-filter: blur(9px) saturate(.68);
+  -webkit-backdrop-filter: blur(9px) saturate(.68);
+}
+
 body.in-game .postgame-layout {
-  position: relative;
-  z-index: 2;
-  width: min(1120px, calc(100vw - 32px));
-  max-height: calc(100svh - 42px);
+  width: min(820px, calc(100vw - 36px));
+  max-height: calc(100svh - 40px);
   overflow: auto;
   display: grid;
-  grid-template-columns: minmax(270px, .9fr) minmax(410px, 1.3fr);
-  gap: 16px;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+  padding: 20px 24px 18px;
+  border: 1px solid rgba(111, 164, 220, .3);
+  border-radius: 20px;
+  background: rgba(5, 15, 31, .9);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .5), inset 0 1px rgba(185, 218, 255, .06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 body.in-game .postgame-layout .result-banner,
 body.in-game .postgame-podium {
   min-width: 0;
-  border: 1px solid rgba(190, 224, 215, .2);
-  border-radius: 16px;
-  background: linear-gradient(145deg, rgba(18, 42, 54, .97), rgba(9, 24, 34, .97));
-  box-shadow: 0 18px 55px rgba(0, 0, 0, .36), inset 0 1px rgba(255, 255, 255, .035);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-body.in-game .postgame-layout .result-banner { padding: 24px; align-self: center; }
-body.in-game .postgame-layout .result-banner.loss { background: linear-gradient(145deg, rgba(54, 35, 43, .97), rgba(16, 28, 38, .97)); }
+body.in-game .postgame-layout .result-banner {
+  padding: 1px 4px 13px;
+  align-self: center;
+  border-bottom: 1px solid rgba(111, 164, 220, .2);
+}
+
+body.in-game .postgame-layout .result-banner.loss { background: transparent; }
+body.in-game .postgame-layout .result-banner .eyebrow { color: #8dbce8; }
+body.in-game .postgame-layout .result-banner h2 { color: #edf5ff; }
+body.in-game .postgame-layout .result-banner p { color: #b2c4d8; }
+body.in-game .postgame-layout .result-stats span { border-color: rgba(111, 164, 220, .22); color: #c0d3e8; }
 
 body.in-game .postgame-podium {
-  padding: 17px 17px 14px;
+  padding: 3px 4px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 body.in-game .postgame-podium header { text-align: center; }
-body.in-game .postgame-podium header .eyebrow { color: #75d3ba; letter-spacing: .13em; }
-body.in-game .postgame-podium h2 { margin: 2px 0 3px; color: #f0f8f6; font: 700 25px "Space Grotesk", sans-serif; }
-body.in-game .postgame-podium header p { margin: 0; color: #8da5a7; font-size: 10px; }
+body.in-game .postgame-podium header .eyebrow { color: #7fc7f7; letter-spacing: .13em; }
+body.in-game .postgame-podium h2 { margin: 2px 0 3px; color: #f0f6ff; font: 700 25px "Space Grotesk", sans-serif; }
+body.in-game .postgame-podium header p { margin: 0; color: #95abc4; font-size: 10px; }
 
 body.in-game .podium-places {
   display: grid;
@@ -50,30 +75,31 @@ body.in-game .podium-place.place-3 { order: 3; }
 body.in-game .podium-player { min-height: 148px; display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 4px; padding: 7px 4px 9px; }
 body.in-game .podium-place.place-1 .podium-player { min-height: 178px; }
 body.in-game .podium-place.place-3 .podium-player { min-height: 135px; }
-body.in-game .podium-rank { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; color: #0d2530; background: #86ddcf; font: 800 12px "DM Mono", monospace; box-shadow: 0 0 18px rgba(88, 214, 190, .23); }
+body.in-game .podium-rank { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; color: #102239; background: #a8c5e2; font: 800 12px "DM Mono", monospace; box-shadow: 0 0 18px rgba(109, 164, 221, .2); }
 body.in-game .place-1 .podium-rank { background: #f1c86f; box-shadow: 0 0 20px rgba(241, 200, 111, .3); }
 body.in-game .place-2 .podium-rank { background: #c0d6e4; }
 body.in-game .place-3 .podium-rank { background: #d59a74; }
 body.in-game .podium-player .board-pawn-avatar { width: 46px; height: 52px; filter: drop-shadow(0 5px 6px rgba(0, 0, 0, .3)); }
-body.in-game .podium-player b { max-width: 100%; overflow: hidden; color: #eef5f4; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
-body.in-game .podium-player strong { color: #75d3ba; font: 700 13px "DM Mono", monospace; }
-body.in-game .podium-player small { color: #9bb0b0; font-size: 8px; line-height: 1.35; }
-body.in-game .podium-step { display: grid; place-items: center; min-height: 45px; color: rgba(235, 249, 248, .8); border: 1px solid rgba(169, 214, 211, .22); border-bottom: 0; border-radius: 8px 8px 0 0; background: linear-gradient(180deg, rgba(47, 92, 99, .56), rgba(24, 50, 59, .8)); font: 800 19px "DM Mono", monospace; }
+body.in-game .podium-player b { max-width: 100%; overflow: hidden; color: #eef5ff; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+body.in-game .podium-player strong { color: #76cfff; font: 700 13px "DM Mono", monospace; }
+body.in-game .podium-player small { color: #9db2ca; font-size: 8px; line-height: 1.35; }
+body.in-game .podium-step { display: grid; place-items: center; min-height: 45px; color: rgba(229, 240, 255, .88); border: 1px solid rgba(111, 164, 220, .24); border-bottom: 0; border-radius: 8px 8px 0 0; background: linear-gradient(180deg, rgba(47, 91, 139, .58), rgba(20, 43, 70, .82)); font: 800 19px "DM Mono", monospace; }
 body.in-game .place-1 .podium-step { min-height: 68px; color: #f1d58b; border-color: rgba(241, 200, 111, .38); background: linear-gradient(180deg, rgba(133, 104, 47, .62), rgba(52, 49, 40, .86)); }
 body.in-game .place-2 .podium-step { min-height: 54px; }
-body.in-game .podium-empty { flex: 1; display: grid; place-content: center; min-height: 138px; color: #748c91; font-size: 10px; }
+body.in-game .podium-empty { flex: 1; display: grid; place-content: center; min-height: 138px; color: #839bb5; font-size: 10px; }
 body.in-game .podium-place.is-empty .podium-step { opacity: .45; }
 
-body.in-game .podium-actions { display: flex; justify-content: center; gap: 9px; padding-top: 11px; }
-body.in-game .podium-actions .btn { min-height: 38px; padding: 8px 12px; font-size: 10px; }
-body.in-game .podium-waiting { margin: 10px 0 0; color: #8fa6a8; text-align: center; font-size: 10px; }
-body.in-game .postgame-errors { grid-column: 1 / -1; max-height: 18svh; overflow: auto; padding: 10px 14px; border-color: rgba(190, 224, 215, .14); background: rgba(7, 20, 28, .84); }
+body.in-game .podium-actions { display: flex; justify-content: center; gap: 9px; padding-top: 10px; }
+body.in-game .podium-actions .btn { min-height: 40px; padding: 9px 14px; font-size: 11px; }
+body.in-game .podium-waiting { margin: 9px 0 0; color: #9bb1ca; text-align: center; font-size: 10px; }
+body.in-game .postgame-errors { grid-column: 1; max-height: 17svh; overflow: auto; padding: 10px 14px; border-color: rgba(111, 164, 220, .2); background: rgba(8, 21, 40, .58); }
 body.in-game .postgame-errors .section-title { margin-bottom: 4px; }
 body.in-game .postgame-errors .section-title h2 { font-size: 12px; }
 body.in-game .postgame-errors .section-title p,
 body.in-game .postgame-errors .inline-help { font-size: 9px; }
 
-body.in-game .victory-summary .postgame-podium { margin-top: 14px; padding: 12px 8px 9px; }
+/* The offline co-op victory summary keeps its existing compact podium beside the win sequence. */
+body.in-game .victory-summary .postgame-podium { margin-top: 14px; padding: 12px 8px 9px; border: 1px solid rgba(111, 164, 220, .2); border-radius: 12px; background: rgba(5, 15, 31, .74); }
 body.in-game .victory-summary .postgame-podium h2 { font-size: 19px; }
 body.in-game .victory-summary .postgame-podium header p { font-size: 8px; }
 body.in-game .victory-summary .podium-places { min-height: 173px; gap: 4px; padding-inline: 0; }
@@ -91,14 +117,15 @@ body.in-game .victory-summary .podium-empty { min-height: 98px; font-size: 8px; 
 body.in-game .victory-summary .podium-actions { flex-direction: column; }
 
 @media (max-width: 760px) {
-  body.in-game .postgame-layout { width: calc(100vw - 18px); max-height: calc(100svh - 18px); grid-template-columns: 1fr; gap: 9px; }
-  body.in-game .postgame-layout .result-banner { padding: 17px; }
-  body.in-game .postgame-podium { padding: 13px 10px 9px; }
-  body.in-game .podium-places { min-height: 195px; gap: 5px; }
-  body.in-game .podium-player { min-height: 128px; }
-  body.in-game .podium-place.place-1 .podium-player { min-height: 156px; }
-  body.in-game .podium-place.place-3 .podium-player { min-height: 118px; }
-  body.in-game .postgame-errors { max-height: 22svh; }
+  body.in-game .postgame-backdrop { padding: 8px; }
+  body.in-game .postgame-layout { width: calc(100vw - 16px); max-height: calc(100svh - 16px); gap: 7px; padding: 14px 12px 12px; border-radius: 16px; }
+  body.in-game .postgame-layout .result-banner { padding: 0 2px 9px; }
+  body.in-game .postgame-podium { padding-inline: 1px; }
+  body.in-game .podium-places { min-height: 190px; gap: 5px; }
+  body.in-game .podium-player { min-height: 124px; }
+  body.in-game .podium-place.place-1 .podium-player { min-height: 150px; }
+  body.in-game .podium-place.place-3 .podium-player { min-height: 114px; }
+  body.in-game .postgame-errors { max-height: 20svh; }
   body.in-game .podium-actions { flex-wrap: wrap; }
 }
 

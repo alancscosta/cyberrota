@@ -13,6 +13,15 @@ test('online launcher offers co-op, fixed 3v3, join-by-code, and custom deck sel
   assert.match(markup, /customDecks/);
 });
 
+test('home co-op illustration fills the mode-card artwork area with a readable defense scene', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  const homeMotion = await readFile(new URL('../dist/home-motion.css', import.meta.url), 'utf8');
+  const coOpArt = app.slice(app.indexOf("coop:'<svg"), app.indexOf("</svg>'};return '<div class=\"mode-art"));
+  assert.match(coOpArt, /viewBox="0 0 480 110"/);
+  assert.match(coOpArt, /stroke="#77c8f2"/);
+  assert.match(homeMotion, /#app \.mode-card \.mode-art svg\s*\{[\s\S]*width:\s*100%/);
+});
+
 test('lobby offers distinct buttons to copy the room code and share its link', async () => {
   const lobby = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
   assert.match(lobby, /data-room-copy-code/);
@@ -98,4 +107,25 @@ test('finished online rooms reuse the original 3D podium and room actions', asyn
   assert.match(app, /renderBoardPawnAvatar\(avatar,color\)/);
   assert.match(app, /data-action="room-next-match"/);
   assert.match(app, /data-action="room-close"/);
+});
+
+test('online postgame keeps the finished match behind a centered translucent navy podium', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  const podiumCss = await readFile(new URL('../dist/podium.css', import.meta.url), 'utf8');
+  assert.match(app, /function renderRoomPostgameOverlay\(/);
+  assert.match(app, /renderRaceGame\(\)\+\(game\.phase==='finished'&&game\.room\?renderRoomPostgameOverlay\(\):''\)/);
+  assert.match(app, /if\(forFinish\)\{game\.phase='finished';game\.room=\{hostPlayerId:snapshot\.hostPlayerId\};game\.localPlayerId=client\.player\?\.playerId;return renderGame\(\)\.replace\(/);
+  assert.match(podiumCss, /\.postgame-backdrop\s*\{/);
+  assert.match(podiumCss, /backdrop-filter:\s*blur\(/);
+  assert.match(podiumCss, /background:\s*rgba\(5,\s*15,\s*31,\s*\.9\)/);
+  assert.match(podiumCss, /grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+});
+
+test('room code is always labeled explicitly in the lobby, match, and finished-room states', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
+  const multiplayerUi = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
+  assert.match(app, /SALA COD: \$\{esc\(snapshot\.code\)\}/);
+  assert.match(roomClient, /SALA COD:<\/small>/);
+  assert.match(multiplayerUi, /SALA COD: \$\{esc\(snapshot\.code\)\} foi encerrada/);
 });

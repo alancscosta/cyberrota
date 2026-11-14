@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "tests/visual-contract.test.cjs": {
-    "mtime": 1794629796.1798375,
-    "seen": 1794630090.5697675,
-    "ast_hash": "495969b9a4acc2311827fd2db5ae334f",
+    "mtime": 1794633358.4939473,
+    "seen": 1794633375.8090186,
+    "ast_hash": "21c6988e1de3b2aa23214050e5e9f5be",
     "semantic_hash": ""
   },
   ".agents/skills/ui-art-direction/SKILL.md": {
@@ -852,9 +852,9 @@
     "semantic_hash": ""
   },
   "tests/multiplayer-ui.test.mjs": {
-    "mtime": 1794632555.4865913,
-    "seen": 1794632575.606674,
-    "ast_hash": "0668eb40d36d1104b302352f47393de8",
+    "mtime": 1794633326.8161674,
+    "seen": 1794633375.8070164,
+    "ast_hash": "8d9b79959b1fc601cdf7d0c95cb022d5",
     "semantic_hash": ""
   },
   "tests/room-client.test.mjs": {

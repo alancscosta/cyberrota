@@ -1,8 +1,8 @@
 {
   "app.js": {
-    "mtime": 1794632551.8203287,
-    "seen": 1794632579.4579966,
-    "ast_hash": "c9bd1dbdb30fe81975591e97c33c35e9",
+    "mtime": 1794633301.9268343,
+    "seen": 1794633384.220885,
+    "ast_hash": "42dc690cb10464e4e566c2cfaa8922e0",
     "semantic_hash": ""
   },
   "game-core.js": {
@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1794632496.457021,
-    "seen": 1794632531.7452462,
-    "ast_hash": "49cfbb2643adb4ab9e4240131f34027c",
+    "mtime": 1794633400.2415373,
+    "seen": 1794633413.1794004,
+    "ast_hash": "9c48f065bb9935c34d124b1f695f515a",
     "semantic_hash": ""
   },
   "assets/cyberrota-logo.svg": {
@@ -60,15 +60,15 @@
     "semantic_hash": ""
   },
   "multiplayer-ui.js": {
-    "mtime": 1794629077.4238603,
-    "seen": 1794632531.7452462,
-    "ast_hash": "c51106507b131bcb69e81df6577087a1",
+    "mtime": 1794633344.8288505,
+    "seen": 1794633384.220885,
+    "ast_hash": "ba602ad651ade8cccbf2331df6171966",
     "semantic_hash": ""
   },
   "room-client.js": {
-    "mtime": 1794628984.134598,
-    "seen": 1794632531.7452462,
-    "ast_hash": "85bb6f2ee64ef3cb5aa8744f7a1b1238",
+    "mtime": 1794633114.6156635,
+    "seen": 1794633384.220885,
+    "ast_hash": "a007b73c855e929a2d9b0e4b32cee8c2",
     "semantic_hash": ""
   },
   "vercel.json": {

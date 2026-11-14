@@ -28,7 +28,7 @@ function renderActive(root, client) {
   const modalRoot = document.getElementById('modal-root');
   if (snapshot.status === 'playing') { gameSurfaceActive = true; modalRoot.innerHTML = ''; if (window.CyberrotaOnlineRenderer?.render) { window.CyberrotaOnlineRenderer.render(snapshot, client); return; } appRoot.innerHTML = '<section class="room-lobby online-room-error">Não foi possível carregar a tela da partida. Atualize a página para tentar novamente.</section>'; return; }
   if (snapshot.status === 'finished') { gameSurfaceActive = true; modalRoot.innerHTML = ''; document.body.classList.add('in-game'); appRoot.innerHTML = window.CyberrotaOnlineRenderer?.finish ? window.CyberrotaOnlineRenderer.finish(snapshot, client) : '<section class="room-lobby online-room-error">A partida terminou. Atualize a página para abrir o resultado.</section>'; return; }
-  if (snapshot.status === 'closed') { client.destroy(); window.RoomClient.active = null; history.replaceState(null, '', location.pathname); if (gameSurfaceActive) { gameSurfaceActive = false; document.body.classList.remove('in-game'); modalRoot.innerHTML = ''; appRoot.innerHTML = `<section class="room-lobby online-room-closed"><p class="room-helper">A sala ${esc(snapshot.code)} foi encerrada.</p><button class="room-primary-button" data-room-home>Voltar ao painel</button></section>`; appRoot.querySelector('[data-room-home]')?.addEventListener('click', () => location.reload()); } else root.innerHTML = `<p class="room-helper">A sala ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; return; }
+  if (snapshot.status === 'closed') { client.destroy(); window.RoomClient.active = null; history.replaceState(null, '', location.pathname); if (gameSurfaceActive) { gameSurfaceActive = false; document.body.classList.remove('in-game'); modalRoot.innerHTML = ''; appRoot.innerHTML = `<section class="room-lobby online-room-closed"><p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada.</p><button class="room-primary-button" data-room-home>Voltar ao painel</button></section>`; appRoot.querySelector('[data-room-home]')?.addEventListener('click', () => location.reload()); } else root.innerHTML = `<p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; return; }
   if (gameSurfaceActive) { modalRoot.innerHTML = ''; document.body.classList.remove('in-game'); renderLobby(appRoot, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) }); bindLobbyActions(appRoot, client); return; }
   renderLobby(root, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) });
 }
@@ -82,7 +82,7 @@ function mount(container, { profile = 'Jogador convidado', customDecks = [], sta
       client.snapshot = result.snapshot; history.replaceState(null, '', `?sala=${encodeURIComponent(code)}`); renderActive(root, client);
     } catch (error) {
       window.RoomClient.active = null; client.destroy();
-      if (error.newCode) { joinForm.elements.code.value = error.newCode; errorBox.textContent = `O anfitrião trocou o código. O código novo é ${error.newCode}; tente entrar novamente.`; }
+      if (error.newCode) { joinForm.elements.code.value = error.newCode; errorBox.textContent = `O anfitrião trocou o código. SALA COD: ${error.newCode}; tente entrar novamente.`; }
       else errorBox.textContent = error.message;
     }
   });

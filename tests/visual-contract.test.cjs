@@ -408,7 +408,7 @@ test('multiplayer results show a human-only podium with avatar details and host 
   assert.ok(app.includes('renderBoardPawnAvatar(avatar,color)'), 'each place shows the participant’s selected pawn');
   assert.ok(app.includes('Fácil ') && app.includes('Média ') && app.includes('Difícil '), 'each podium place exposes correct answers by difficulty');
   assert.ok(app.includes('data-action="room-next-match"') && app.includes('data-action="room-close"'), 'the host can start another match or close the room');
-  assert.ok(app.includes("stage==='button'?renderMultiplayerPodium():''"), 'co-op reveals the podium after the victory sequence');
+  assert.ok(app.includes("stage==='button'&&!game.room?renderMultiplayerPodium():''"), 'offline co-op keeps its podium after the victory sequence while online rooms use the shared overlay');
   assert.ok(app.includes('postgame-podium') && app.includes('is-empty'), 'a short roster keeps empty positions visible');
   assert.ok(html.includes('podium.css'), 'the dedicated podium layout is loaded after the existing game styles');
 });
