@@ -79,6 +79,10 @@ test('online matches reuse the original game renderer and send its controls to t
   assert.match(app, /game\.answer/);
   assert.match(app, /TURN_INTRO_SECONDS/);
   assert.match(app, /game\.turnClock=onlineRendererState\.clock/);
+  const onlineClock = app.slice(app.indexOf('function syncOnlineTurnClock'), app.indexOf('function renderOnlineSnapshot'));
+  assert.match(onlineClock, /remote\.currentPlayerId,remote\.turnDeadlineAt/);
+  assert.match(onlineClock, /deadline-TURN_SECONDS\*1000/);
+  assert.doesNotMatch(onlineClock, /\.command\(/, 'online countdown never rolls or answers on behalf of the player');
   assert.match(app, /rankPodium/);
   assert.match(source, /CyberrotaOnlineRenderer\.render/);
   assert.doesNotMatch(source, /online-turn-card|function gameMarkup/);

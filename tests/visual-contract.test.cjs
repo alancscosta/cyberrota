@@ -324,18 +324,19 @@ test('turn prompts and dice use the active player color with readable light cont
   assert.ok(hackerCss.includes('turn-announcement-fade'), 'the turn prompt fades in and out');
 });
 
-test('each active turn gets a five-second non-blocking call and random answer fallback', () => {
+test('each active turn restores the animated 5-4-3-2-1 call and the 20-second clock', () => {
   assert.ok(app.includes('const TURN_INTRO_SECONDS=5') && app.includes('const TURN_SECONDS=20'), 'turn timing is centralized at five and twenty seconds');
   assert.ok(app.includes('function startPlayerTurnClock') && app.includes('function expirePlayerTurn'), 'turn clock starts and resolves timeout through dedicated handlers');
   assert.ok(app.includes('turn-clock-intro') && app.includes('turn-countdown-number') && app.includes('turn-clock-value'), 'the countdown and remaining-time clock have visible UI');
-  assert.ok(!app.includes('class="turn-start-overlay"'), 'the turn call does not cover the screen');
+  assert.ok(app.includes('class="turn-start-overlay"') && app.includes('VAMOS NESSA') && app.includes('· SUA VEZ'), 'the original full-screen turn call names the active player');
+  assert.ok(app.includes("number.classList.remove('countdown-tick')") && app.includes("number.classList.add('countdown-tick')"), 'each 5-4-3-2-1 tick replays its entrance animation');
   assert.ok(app.includes('Core.randomOptionIndex') && app.includes('resolveTimedAction'), 'an unanswered decision resolves automatically');
   assert.ok(app.includes('function resetQuestionClock()') && app.includes('function restartTurnActionClock()'), 'each new question or automatic choice gets a fresh five-second window');
   assert.ok(app.includes("game.phase==='walk'") && app.includes("game.phase==='choose-difficulty'") && app.includes("game.phase==='race-roll'"), 'idle turns advance through roll, difficulty and question stages');
   assert.ok(!app.includes("if(game?.turnClock?.stage==='countdown'&&!['leave-game','toggle-sound'].includes(action))return"), 'game actions remain enabled during the five-second call');
   assert.ok(app.includes('Core.skipCoopTurn(game.coop)') && app.includes('Core.skipRaceTurn(game.race)'), 'timeouts pass co-op and 3v3 turns without simulating wrong answers');
   assert.ok(app.includes('startPlayerTurnClock') && app.includes('TURN_INTRO_SECONDS'), 'new turns start with the intro before the answer timer');
-  assert.ok(!boardCss.includes('.turn-start-overlay{') && boardCss.includes('.turn-clock-intro'), 'the countdown uses the compact game clock without an overlay');
+  assert.ok(boardCss.includes('.turn-start-overlay{') && boardCss.includes('.turn-countdown-number.countdown-tick{') && boardCss.includes('.turn-clock-intro'), 'the original full-screen call and compact 20-second clock are styled');
   assert.ok(boardCss.includes('.turn-clock') && boardCss.includes('prefers-reduced-motion'), 'the remaining clock is styled accessibly and honors reduced motion');
   assert.ok(app.includes('function renderRouteGame(cp){const checkpoint=') && app.includes('const turnPlayer=cp,turnColor=cp.color||PLAYER_COLORS[game.currentPlayer%PLAYER_COLORS.length]'), 'the solo turn banner resolves its own player avatar and color');
 });

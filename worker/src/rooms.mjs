@@ -509,17 +509,18 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
     } else throw roomError('INVALID_GAME_PHASE', 'A partida ainda não está pronta para continuar.');
   } else {
     assertActiveTurn(room, game, actorPlayerId);
+    if (action !== 'game.skip' && Number(game.turnDeadlineAt) && Number(game.turnDeadlineAt) <= now) {
+      throw roomError('TURN_EXPIRED', 'O tempo da rodada terminou. Aguarde a próxima vez.');
+    }
     if (action === 'game.roll') {
       if (game.mode === 'coop' && game.phase === 'walk') {
         game.coopRoll = 1 + Math.floor(random() * 3);
         game.lastRoll = game.coopRoll;
         game.phase = 'choose-difficulty';
-        game.turnDeadlineAt = now + TURN_TOTAL_MS;
       } else if (game.mode === 'competitive' && game.phase === 'race-roll') {
         game.raceRoll = 1 + Math.floor(random() * 6);
         game.lastRoll = game.raceRoll;
         game.phase = 'question';
-        game.turnDeadlineAt = now + TURN_TOTAL_MS;
       } else throw roomError('INVALID_GAME_PHASE', 'Não é possível rolar o dado agora.');
       game.lastActorId = actor.playerId;
     } else if (action === 'game.choose-difficulty') {
@@ -527,7 +528,6 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
       const difficulty = Number(payload.difficulty);
       if (![1, 2, 3].includes(difficulty)) throw roomError('INVALID_DIFFICULTY', 'Escolha uma dificuldade válida.');
       selectCoopQuestion(game, difficulty, random);
-      game.turnDeadlineAt = now + TURN_TOTAL_MS;
       game.lastActorId = actor.playerId;
     } else if (action === 'game.answer') {
       if (game.phase !== 'question') throw roomError('INVALID_GAME_PHASE', 'Não há pergunta aguardando resposta.');
