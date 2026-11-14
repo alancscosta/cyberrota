@@ -1,9 +1,11 @@
 import { RoomClient, renderLobby } from './room-client.js';
+import { onlineBoardMarkup } from './online-board.js';
 
 const CODE = /^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/;
 const attached = new WeakSet();
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const colors = ['#43d6ff', '#769bff', '#ffbd68', '#d49bff', '#72e0b3', '#ff8e9b'];
+let gameSurfaceActive = false;
 
 function readSavedCode() { return new URL(location.href).searchParams.get('sala')?.trim().toUpperCase() || ''; }
 
@@ -46,7 +48,12 @@ function gameMarkup(snapshot, client) {
   else if (['feedback','race-feedback','race-shutdown'].includes(game.phase) && feedback) center = `<h2>${feedback.correct ? 'Resposta correta!' : 'Resposta incorreta'}</h2><p>${esc(feedback.answer || '')}</p><p>${esc(feedback.card?.explanation || '')}</p><button class="room-primary-button" data-game-action="game.continue" ${!myTurn && snapshot.hostPlayerId !== player?.playerId ? 'disabled' : ''}>Continuar</button>`;
   else if (game.phase === 'finished') return renderPodium(snapshot, client);
   else center = `<h2>Partida em andamento</h2><p>${myTurn ? 'Sua vez.' : `Aguardando ${esc(active?.name || 'outro jogador')}.`}</p>`;
-  return `<section class="online-game"><header><div><span class="room-eyebrow">SALA ${esc(snapshot.code)} · ${snapshot.mode === 'competitive' ? 'CORRIDA 3V3' : 'DEFESA COOPERATIVA'}</span><h1>${snapshot.mode === 'competitive' ? 'Desligue o Servidor' : 'Defenda a Rede'}</h1></div><span class="online-turn-pill">${esc(active?.name || 'Aguardando')}</span></header><div class="online-game-layout"><aside><h2>Jogadores</h2><ul>${livePlayers(snapshot).map((entry) => `<li>${playerPawn(entry)}<span>${esc(entry.name)}${entry.playerId === game.currentPlayerId ? ' · vez' : ''}</span><b>${Number(entry.score)||0}</b></li>`).join('')}</ul>${game.mode === 'coop' ? `<div class="online-hacker-hp">Energia do invasor <b>${Number(game.coop?.hackerHp)||0}</b></div>` : ''}</aside><main>${center}</main></div></section>`;
+  const isRace = snapshot.mode === 'competitive';
+  const roster = livePlayers(snapshot).map((entry) => `<li>${playerPawn(entry)}<span>${esc(entry.name)}${entry.playerId === game.currentPlayerId ? ' · vez' : ''}</span><b>${Number(entry.score)||0}</b></li>`).join('');
+  const map = onlineBoardMarkup(snapshot, colors, esc);
+  const progress = isRace ? `TURNO ${Number(game.race?.turn || 0) + 1}/${Number(game.race?.maxTurns || 60)}` : `RODADA ${Number(game.coop?.round || 1)}/${Number(game.coop?.maxRounds || 24)} · HACKER ${Number(game.coop?.hackerHp) || 0} PV`;
+  const stats = isRace ? `<div class="online-network-stats"><span>Azul · ${game.race?.teams?.blue?.positions?.filter((position) => position >= 18).length || 0}/3 no estande</span><span>Vermelho · ${game.race?.teams?.red?.positions?.filter((position) => position <= 0).length || 0}/3 no estande</span></div>` : `<div class="online-network-stats">${Object.entries(game.coop?.servers || {}).map(([name, hp]) => `<span>${esc(name)} · ${hp}%</span>`).join('')}</div>`;
+  return `<div class="game-world online-board-world ${isRace ? 'race-board-world' : 'cooperative'}"><header class="game-hud"><div class="hud-brand"><img class="game-brand-logo" src="assets/cyberrota-logo.svg" alt="Cyber Rota"><span class="game-brand-mode"><small>${isRace ? 'DESLIGUE O SERVIDOR · 3V3' : 'DEFENDA A REDE · COOPERATIVO'}</small><small>SALA ${esc(snapshot.code)}</small></span></div><div class="hud-center"><span class="round-badge">${progress}</span></div><span class="online-turn-pill">${esc(active?.name || 'Aguardando')}</span></header><div class="game-layout"><section class="world-stage"><div class="world-title"><span>${isRace ? 'ROTA ATÉ O SERVIDOR RIVAL' : 'PROTEJA OS SERVIDORES · DERROTE O HACKER'}</span><b>${esc(active?.name || 'Aguardando jogador')}</b></div><div class="online-board-map-wrap">${map}</div><div class="world-footer"><span>⌖ ROTA DA REDE</span><span>${isRace ? '6 PEÕES · CORRIDA 3V3' : `CASA ${Number(game.coop?.position || 0)}/18`}</span><span>${esc(snapshot.code)}</span></div></section><aside class="game-control-dock"><div class="dock-top"><div><small>${isRace ? 'EQUIPES ONLINE' : 'EQUIPE DE DEFESA'}</small><h1>Jogadores</h1></div><span class="dock-live"><i></i> AO VIVO</span></div><ul class="online-fullscreen-roster">${roster}</ul>${stats}<section class="game-card online-turn-card"><div class="eyebrow">${myTurn ? 'SUA VEZ' : `VEZ DE ${esc(active?.name || 'OUTRO JOGADOR')}`}</div>${center}</section></aside></div></div>`;
 }
 
 function renderQuestion(card, myTurn) {
@@ -71,9 +78,12 @@ function renderActive(root, client) {
     const url = new URL(location.href);
     if (url.searchParams.get('sala') !== snapshot.code) { url.searchParams.set('sala', snapshot.code); history.replaceState(null, '', url); }
   }
-  if (snapshot.status === 'playing') { root.innerHTML = gameMarkup(snapshot, client); bindGame(root, client); return; }
-  if (snapshot.status === 'finished') { root.innerHTML = renderPodium(snapshot, client); bindLobbyActions(root, client); return; }
-  if (snapshot.status === 'closed') { client.destroy(); root.innerHTML = `<p class="room-helper">A sala ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; history.replaceState(null, '', location.pathname); return; }
+  const appRoot = document.getElementById('app');
+  const modalRoot = document.getElementById('modal-root');
+  if (snapshot.status === 'playing') { gameSurfaceActive = true; modalRoot.innerHTML = ''; document.body.classList.add('in-game'); appRoot.innerHTML = gameMarkup(snapshot, client); bindGame(appRoot, client); return; }
+  if (snapshot.status === 'finished') { gameSurfaceActive = true; modalRoot.innerHTML = ''; document.body.classList.add('in-game'); appRoot.innerHTML = `<div class="game-world online-finish-world"><header class="game-hud"><span class="game-brand-mode"><small>PARTIDA ENCERRADA · SALA ${esc(snapshot.code)}</small></span></header><main class="online-finish-content">${renderPodium(snapshot, client)}</main></div>`; bindLobbyActions(appRoot, client); return; }
+  if (snapshot.status === 'closed') { client.destroy(); window.RoomClient.active = null; history.replaceState(null, '', location.pathname); if (gameSurfaceActive) { gameSurfaceActive = false; document.body.classList.remove('in-game'); modalRoot.innerHTML = ''; appRoot.innerHTML = `<section class="room-lobby online-room-closed"><p class="room-helper">A sala ${esc(snapshot.code)} foi encerrada.</p><button class="room-primary-button" data-room-home>Voltar ao painel</button></section>`; appRoot.querySelector('[data-room-home]')?.addEventListener('click', () => location.reload()); } else root.innerHTML = `<p class="room-helper">A sala ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; return; }
+  if (gameSurfaceActive) { modalRoot.innerHTML = ''; document.body.classList.remove('in-game'); renderLobby(appRoot, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) }); bindLobbyActions(appRoot, client); return; }
   renderLobby(root, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) });
 }
 

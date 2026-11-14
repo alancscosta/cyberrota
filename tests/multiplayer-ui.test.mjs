@@ -65,3 +65,15 @@ test('online race UI shows the room code, roster, and active turn', () => {
   assert.match(markup, /snapshot\.players/);
   assert.match(markup, /Rolar dado/);
 });
+
+test('a started room leaves the modal lobby and renders the existing full-screen board', async () => {
+  const board = await readFile(new URL('../dist/online-board.js', import.meta.url), 'utf8');
+  assert.match(board, /function onlineBoardMarkup\(/);
+  assert.match(board, /RaceMode\.boardScene\(/);
+  assert.match(board, /function cooperativeBoardMarkup\(/);
+  assert.match(source, /gameSurfaceActive/);
+  assert.match(source, /document\.body\.classList\.add\('in-game'\)/);
+  assert.match(source, /document\.getElementById\('app'\)/);
+  assert.match(source, /game-layout/);
+  assert.match(source, /data-room-root/);
+});
