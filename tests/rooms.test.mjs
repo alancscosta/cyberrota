@@ -136,6 +136,20 @@ test('the server controls turn order, rolls, question selection, answer validati
   assert.equal(room.gameState.phase, 'choose-difficulty', 'the next co-op player can roll after the prior answer is continued');
 });
 
+test('co-op victory snapshots carry a shared visual sequence start time', () => {
+  let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { config: { deck }, random: () => 0, now: 1_000 });
+  room.gameState.coop.position = 18;
+  room.gameState.coop.hackerHp = 1;
+  room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0, now: 2_000 });
+  room = applyGameCommand(room, 'host-1', 'game.choose-difficulty', { difficulty: 2 }, { random: () => 0, now: 3_000 });
+  room = applyGameCommand(room, 'host-1', 'game.answer', { answer: 0 }, { random: () => 0, now: 4_000 });
+  assert.equal(room.gameState.phase, 'finished');
+  assert.deepEqual(room.gameState.coop.victorySequence, { stage: 'explosion', startedAt: 4_000 });
+  assert.deepEqual(publicRoomSnapshot(room).gameState.coop.victorySequence, { stage: 'explosion', startedAt: 4_000 });
+});
+
 test('co-op roles modify the shared question and are accepted only from the active player', () => {
   const roleDeck = [0, 1].map((id) => ({
     id: `role-card-${id}`, theme: 'rede', chapter: 'Endereçamento', difficulty: 2,

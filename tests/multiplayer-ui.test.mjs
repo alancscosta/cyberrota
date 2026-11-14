@@ -144,6 +144,24 @@ test('Defenda a Rede online renders the difficulty phase without local-only fiel
   assert.doesNotMatch(app, /game\.currentPlayerData\.usedPing/);
 });
 
+test('online co-op feedback restores the original laser and plays each pawn movement once', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /const combatFx=!!feedbackKey&&Date\.now\(\)<onlineRendererState\.combatFxUntil\|\|!!victoryFx/);
+  assert.match(app, /game\.combatFx&&game\.phase==='feedback'&&game\.feedback\?\.correct/);
+  assert.match(app, /game\.combatFx=stage==='explosion'/);
+  assert.match(app, /lastCoopMoveKey/);
+  assert.match(app, /moveAnimationPlayed=true/);
+});
+
+test('online turn-change notice finishes before the next player announcement appears', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /function scheduleOnlineTurnAnnouncement\(/);
+  assert.match(app, /2200-\(onlineNow\(\)-Number\(notice\.at\)\)/);
+  assert.match(app, /onlineTurnNoticeRemaining\(\)>0/);
+  assert.match(app, /state\.snapshot\?\.revision!==revision/);
+  assert.match(app, /onlineTurnNoticeRemaining\(\)>0\?'TROCA DE TURNO'/);
+});
+
 test('the online turn announcement uses the centered full-screen treatment', async () => {
   const styles = await readFile(new URL('../dist/hacker-visual.css', import.meta.url), 'utf8');
   assert.match(styles, /body\.in-game \.online-turn-announcement\s*\{[^}]*position:\s*fixed;[^}]*inset:\s*0;[^}]*place-content:\s*center/s);

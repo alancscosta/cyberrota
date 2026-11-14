@@ -1,8 +1,8 @@
 {
   "app.js": {
-    "mtime": 1794638496.095891,
-    "seen": 1794638557.0726624,
-    "ast_hash": "121bcd0c1c3774d93fe90cad17494ef9",
+    "mtime": 1794639465.6778753,
+    "seen": 1794639506.0444703,
+    "ast_hash": "decd81150b9b4e72866a8884a26c9e6c",
     "semantic_hash": ""
   },
   "game-core.js": {
@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1794638305.6511016,
-    "seen": 1794638557.0726624,
-    "ast_hash": "264190e1bedcec9250f6ef3f0dfa5ae8",
+    "mtime": 1794639411.9974947,
+    "seen": 1794639506.0444703,
+    "ast_hash": "6dc7de5ca518e7e2ea8cc23aab06270e",
     "semantic_hash": ""
   },
   "assets/cyberrota-logo.svg": {

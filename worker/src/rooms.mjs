@@ -232,6 +232,7 @@ function resolveGameAnswer(room, game, player, answer, { forcedCorrect, random =
     game.attackTheme = GAME_THEMES.filter((theme) => game.coop.servers[theme.id] > 0)[Math.floor(random() * Math.max(1, GAME_THEMES.filter((theme) => game.coop.servers[theme.id] > 0).length))]?.id || GAME_THEMES[0].id;
     game.phase = game.coop.outcome ? 'finished' : 'feedback';
     game.outcome = game.coop.outcome;
+    if (game.coop.outcome === 'win') game.coop.victorySequence = { stage: 'explosion', startedAt: now };
   } else {
     game.race = Core.resolveRaceTurn(game.race, { correct, roll: game.raceRoll });
     game.raceLast = game.race.log[0];

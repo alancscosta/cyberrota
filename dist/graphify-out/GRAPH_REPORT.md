@@ -1,17 +1,17 @@
 # Graph Report - dist  (2026-11-14)
 
 ## Corpus Check
-- 8 files · ~17,567 words
+- 8 files · ~17,589 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 17 file(s) not represented in the graph (top: .css 13, .woff2 4)
 
 ## Summary
-- 234 nodes · 665 edges · 17 communities (14 shown, 3 thin omitted)
+- 236 nodes · 674 edges · 17 communities (14 shown, 3 thin omitted)
 - Extraction: 91% EXTRACTED · 9% INFERRED · 0% AMBIGUOUS · INFERRED: 62 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1f8f0549`
+- Built from commit: `f8363d58`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -63,28 +63,28 @@
 ## Communities (17 total, 3 thin omitted)
 
 ### Community 0 - "renderDeckEditorCards"
-Cohesion: 0.23
-Nodes (12): attachPageEvents(), editProfile(), finishSession(), init(), loadCustomCard(), openDeckEditor(), profileButtons(), renderDeckEditorCards() (+4 more)
+Cohesion: 0.17
+Nodes (15): attachPageEvents(), editProfile(), finishSession(), init(), loadCustomCard(), mountOnlineRoomLauncher(), openDeckEditor(), openSetup() (+7 more)
 
 ### Community 1 - "game-core.js"
 Cohesion: 0.15
 Nodes (10): checkAnswer(), clone(), normalizeText(), racePairing(), resolveCoopTurn(), resolveRaceTurn(), skipCoopTurn(), skipRaceTurn() (+2 more)
 
 ### Community 2 - "renderCoopVictory"
-Cohesion: 0.32
-Nodes (8): persistActiveGame(), renderCoopVictory(), renderErrorRows(), renderErrors(), renderMultiplayerPodium(), renderResult(), renderRoomPostgameOverlay(), scheduleRaceVictoryFinish()
+Cohesion: 0.47
+Nodes (6): renderCoopVictory(), renderErrorRows(), renderErrors(), renderMultiplayerPodium(), renderResult(), renderRoomPostgameOverlay()
 
 ### Community 3 - "render"
-Cohesion: 0.17
-Nodes (40): advancePlayer(), answerText(), chooseDifficulty(), clearErrors(), clearPlayerTurnClock(), continueAfterAnswer(), continueRace(), continueSpecial() (+32 more)
+Cohesion: 0.16
+Nodes (42): advancePlayer(), answerText(), chooseDifficulty(), clearErrors(), clearPlayerTurnClock(), continueAfterAnswer(), continueRace(), continueSpecial() (+34 more)
 
 ### Community 4 - "app.js"
 Cohesion: 0.13
 Nodes (13): download(), exportDeck(), renderBossTargetCard(), renderHeroBoardArt(), renderHome(), renderModeArt(), renderModeCards(), renderModeLandmarks() (+5 more)
 
 ### Community 5 - "esc"
-Cohesion: 0.25
-Nodes (11): difficultyButtons(), esc(), renderCoopActions(), renderFeedback(), renderOnlineTurnBanner(), renderQuestion(), renderQuestionPanel(), renderSetup() (+3 more)
+Cohesion: 0.29
+Nodes (10): difficultyButtons(), esc(), renderCoopActions(), renderFeedback(), renderQuestion(), renderQuestionPanel(), renderSetup(), renderStats() (+2 more)
 
 ### Community 6 - "room-client.js"
 Cohesion: 0.18
@@ -95,16 +95,16 @@ Cohesion: 0.20
 Nodes (4): credentialsKey(), roomApiBase(), RoomClient, roomWebSocketUrl()
 
 ### Community 8 - "renderBoardPawnAvatar"
-Cohesion: 0.33
-Nodes (7): coopPosition(), mountOnlineRoomLauncher(), openSetup(), renderBoardPawnAvatar(), renderCoopPlayerRoster(), renderCoopTurn(), renderPlayerSetupFields()
+Cohesion: 0.67
+Nodes (4): coopPosition(), renderBoardPawnAvatar(), renderCoopPlayerRoster(), renderCoopTurn()
 
 ### Community 9 - "account-client.js"
 Cohesion: 0.28
 Nodes (16): applyProgress(), avatarMarkup(), clearLegacyProgress(), deleteAccount(), exportAccount(), init(), legacyProgress(), loadGoogleScript() (+8 more)
 
 ### Community 10 - "renderOnlineSnapshot"
-Cohesion: 0.28
-Nodes (9): animateCountdownTick(), decorateOnlineRoomCode(), handleOnlineGameAction(), onlineNow(), renderOnlineSnapshot(), renderTurnClock(), renderTurnNotice(), renderTurnWarning() (+1 more)
+Cohesion: 0.23
+Nodes (12): animateCountdownTick(), decorateOnlineRoomCode(), handleOnlineGameAction(), onlineNow(), onlineTurnNoticeRemaining(), renderOnlineSnapshot(), renderOnlineTurnBanner(), renderTurnClock() (+4 more)
 
 ### Community 12 - "renderBoardScene"
 Cohesion: 0.21
@@ -135,4 +135,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `app.js` be split into smaller, more focused modules?**
   _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
 - **Why does `esc()` connect `esc` to `renderDeckEditorCards`, `renderCoopVictory`, `render`, `app.js`, `renderBoardPawnAvatar`, `renderOnlineSnapshot`, `renderBoardScene`, `renderBoardPawnAvatar`, `renderGame`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._

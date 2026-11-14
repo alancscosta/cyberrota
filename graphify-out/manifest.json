@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "tests/visual-contract.test.cjs": {
-    "mtime": 1794637583.7207913,
-    "seen": 1794637717.2680466,
-    "ast_hash": "8b1863244fd6a57fbead37d887b584b9",
+    "mtime": 1794639481.7385414,
+    "seen": 1794639498.5486794,
+    "ast_hash": "5f5d289c1b92daae44cf7ed393a628a7",
     "semantic_hash": ""
   },
   ".agents/skills/ui-art-direction/SKILL.md": {
@@ -852,9 +852,9 @@
     "semantic_hash": ""
   },
   "tests/multiplayer-ui.test.mjs": {
-    "mtime": 1794638582.2434492,
-    "seen": 1794638591.585574,
-    "ast_hash": "b9f0fa3b69e78c47f55b494b757a6742",
+    "mtime": 1794639346.9828017,
+    "seen": 1794639498.5476782,
+    "ast_hash": "a858085e5ab98233794bf2296d6f4872",
     "semantic_hash": ""
   },
   "tests/room-client.test.mjs": {
@@ -870,9 +870,9 @@
     "semantic_hash": ""
   },
   "tests/rooms.test.mjs": {
-    "mtime": 1794638019.8195508,
-    "seen": 1794638551.64392,
-    "ast_hash": "feebb359e020c4283aad99e95469c952",
+    "mtime": 1794639162.3155768,
+    "seen": 1794639498.5486794,
+    "ast_hash": "dbd08ff91de92e9e78c7c44ace9b0b1a",
     "semantic_hash": ""
   },
   "tests/worker-api.test.mjs": {
@@ -888,9 +888,9 @@
     "semantic_hash": ""
   },
   "worker/src/rooms.mjs": {
-    "mtime": 1794638305.25148,
-    "seen": 1794638551.645921,
-    "ast_hash": "6f50c8b2142a076d8d20e86d4bac4f8d",
+    "mtime": 1794639257.9848437,
+    "seen": 1794639498.5496802,
+    "ast_hash": "95e171506f146fb7b9ca5a5afb8225b5",
     "semantic_hash": ""
   },
   "specs/accounts-storage-sdd.md": {
@@ -900,9 +900,9 @@
     "semantic_hash": ""
   },
   "specs/online-rooms-sdd.md": {
-    "mtime": 1794638361.7054312,
-    "seen": 1794638551.6519263,
-    "ast_hash": "ab067ee24747044346602251cab6fba9",
+    "mtime": 1794639357.9889035,
+    "seen": 1794639498.558688,
+    "ast_hash": "055a917affd97026c39e922e5146005a",
     "semantic_hash": ""
   },
   "specs/podium-sdd.md": {
@@ -930,9 +930,9 @@
     "semantic_hash": ""
   },
   "specs/gameplay-flow-audit.md": {
-    "mtime": 1794638496.0988934,
-    "seen": 1794638551.6519263,
-    "ast_hash": "a8433a0d807efc0a1abbec3d806386c1",
+    "mtime": 1794639411.9984949,
+    "seen": 1794639498.558688,
+    "ast_hash": "e708c49db0e4fbab8a20db0a55291e36",
     "semantic_hash": ""
   },
   "package-lock.json": {

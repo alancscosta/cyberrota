@@ -348,7 +348,7 @@ test('larger route platforms and the victory message fade in and out', () => {
 
 test('the co-op victory reuses the 3v3 full-screen title after the Hacker explosion', () => {
   assert.ok(app.includes('function renderCoopVictory()'), 'co-op victory has a dedicated board-preserving scene');
-  assert.ok(app.includes('Core.coopVictoryStage(sequence.startedAt)'), 'the final message waits for the tested slow-motion stage progression');
+  assert.ok(app.includes('const victoryNow=game.onlineRoom?onlineNow():Date.now();')&&app.includes('Core.coopVictoryStage(sequence.startedAt,victoryNow)'), 'the final message uses one synchronized timeline in online rooms and the local clock offline');
   assert.ok(app.includes("stage==='button'&&!game.room?'<button class=\"coop-victory-return\" data-action=\"finish-session\">Ir ao menu</button>':''"), 'the menu button only exists after the victory title fades out and stays hidden for online rooms');
   assert.ok(app.includes("victorySequence={stage:'explosion',startedAt:Date.now()}"), 'the explosion timing starts with the winning hit');
   assert.ok(app.includes('class="race-victory-overlay coop-victory-overlay"') && app.includes('VITÓRIA<br>DA EQUIPE'), 'the final win uses the 3v3 full-screen victory structure');

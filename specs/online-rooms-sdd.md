@@ -43,3 +43,7 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 
 - Em produção no Vercel, WebSocket conecta diretamente ao Worker Cloudflare; o polling HTTP permanece ativo como recuperação caso WebSocket falhe.
 - Na fase choose-difficulty do COOP, a tela online usa attackTheme e campos autoritativos do snapshot, nunca estruturas exclusivas do fluxo local. Ping online é comando do servidor, custa um ponto e prepara uma dica para a próxima pergunta; cada jogador pode usar uma vez por partida.
+
+- Efeitos de combate online derivam do snapshot de feedback: feixe do ataque, resposta do Hacker, impacto e queda/reparo de armadura são reproduzidos no cliente e limpos após a janela visual. O movimento do peão é reproduzido uma vez por resposta.
+- A sequência de vitória COOP usa timestamp autoritativo do Worker para que todos vejam explosão e pódio no mesmo compasso.
+- Quando um turno expira, “FULANO PASSOU A VEZ” termina antes de revelar a pessoa seguinte. Enquanto esse aviso estiver ativo, o aviso central e o texto lateral mostram apenas a troca de turno.
