@@ -43,7 +43,25 @@ node --test tests/game-core.test.cjs
 npm run build
 ```
 
-As regras do motor têm testes automatizados. O build usa Vite. O projeto ainda é local e pass-and-play, sem sincronização online.
+As regras do motor, o fluxo das salas, as contas e os contratos visuais têm testes automatizados. O build usa Vite.
+
+## Multiplayer e contas online
+
+O app pode ser publicado em um Cloudflare Worker com Assets, D1 e Durable Objects. A configuração usa o banco gratuito `cyberrota-db`. As cotas gratuitas atuais incluem 100 mil requisições do Worker por dia, 5 milhões de linhas lidas e 100 mil gravadas no D1 por dia, 5 GB no D1, além de 100 mil requisições e 13 mil GB-s diários para Durable Objects SQLite. Não há assinatura paga dentro dessas cotas; ao exceder um limite diário, as operações daquele tipo falham até a renovação da cota.
+
+Antes de iniciar o Worker localmente, copie `.dev.vars.example` para `.dev.vars` e substitua `SESSION_SECRET` por um segredo aleatório. Para habilitar login Google, configure `GOOGLE_CLIENT_ID` no `wrangler.jsonc` e cadastre a origem final do app no Google OAuth. O jogo e salas continuam disponíveis como convidado sem essa configuração.
+
+```sh
+npm install
+npm test
+npm run build
+npx wrangler deploy --dry-run
+npm run dev:worker
+```
+
+O schema D1 está em `server/migrations/0001_accounts.sql`. Para um banco local, use `npm run db:migrate:local`; para aplicar uma nova migration no D1 remoto, use `npm run db:migrate:remote`. O primeiro schema deste projeto já foi aplicado no banco remoto criado para Cyber Rota.
+
+Para publicar a aplicação depois de configurar `SESSION_SECRET` como segredo do Worker (`npx wrangler secret put SESSION_SECRET`) e definir o OAuth Client ID, execute `npm run deploy`. Antes da primeira publicação, confirme o nome do Worker e o domínio `workers.dev` ou domínio próprio no Cloudflare.
 
 ## Graphify
 

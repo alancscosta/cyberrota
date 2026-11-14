@@ -8,10 +8,14 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "node --test tests/game-core.test.cjs tests/visual-contract.test.cjs",
+    "test": "node --test tests/game-core.test.cjs tests/visual-contract.test.cjs tests/rooms.test.mjs tests/room-client.test.mjs tests/room-do.test.mjs tests/multiplayer-ui.test.mjs tests/worker-api.test.mjs server/test/accounts.test.cjs",
     "dev": "vite --config vite.config.js",
     "build": "vite build --config vite.config.js",
-    "preview": "vite preview --config vite.config.js"
+    "preview": "vite preview --config vite.config.js",
+    "dev:worker": "npm run build && npm run db:migrate:local && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply cyberrota-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply cyberrota-db --remote"
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,7 @@
   },
   "homepage": "https://github.com/alancscosta/cyberrota#readme",
   "devDependencies": {
-    "vite": "^8.3.6"
+    "vite": "^8.3.6",
+    "wrangler": "^4.162.0"
   }
 }

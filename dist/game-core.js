@@ -241,6 +241,12 @@
     return clone(deck);
   }
 
+  function randomOptionIndex(length, random = Math.random) {
+    if (!Number.isInteger(length) || length < 1) return null;
+    const sample = Math.min(1 - Number.EPSILON, Math.max(0, Number(random()) || 0));
+    return Math.floor(sample * length);
+  }
+
   function winner(players) {
     const eligible = players.filter((player) => player.seals.length === 5 && player.position >= DESTINATION);
     if (!eligible.length) return null;
@@ -249,5 +255,22 @@
     return leaders.length === 1 ? leaders[0] : { tie: leaders };
   }
 
-  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, newCoopState, resolveCoopTurn, skipCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceTurn, skipRaceTurn, hackerPhase, coopVictoryStage, snapshotDeck, winner, normalizeText };
+  function rankPodium(players = []) {
+    const difficultyKeys = ['easy', 'medium', 'hard'];
+    const weights = { easy: 1, medium: 2, hard: 3 };
+    return (Array.isArray(players) ? players : [])
+      .map((player, inputOrder) => {
+        const correctByDifficulty = Object.fromEntries(difficultyKeys.map((key) => [key, Math.max(0, Math.floor(Number(player?.correctByDifficulty?.[key]) || 0))]));
+        const correctAnswers = Math.max(0, Math.floor(Number(player?.correctAnswers) || Object.values(correctByDifficulty).reduce((sum, count) => sum + count, 0)));
+        const wrongAnswers = Math.max(0, Math.floor(Number(player?.wrongAnswers) || 0));
+        const points = difficultyKeys.reduce((sum, key) => sum + correctByDifficulty[key] * weights[key], 0);
+        return { ...player, correctByDifficulty, correctAnswers, wrongAnswers, points, inputOrder };
+      })
+      .filter((player) => !player.isBot && player.kind !== 'bot')
+      .sort((a, b) => b.points - a.points || b.correctAnswers - a.correctAnswers || a.wrongAnswers - b.wrongAnswers || (Number(a.seat) || 0) - (Number(b.seat) || 0) || a.inputOrder - b.inputOrder)
+      .slice(0, 3)
+      .map(({ inputOrder, ...player }, index) => ({ ...player, place: index + 1 }));
+  }
+
+  return { THEMES, CHECKPOINTS, DESTINATION, HEALING_SPACES, advanceOnRoute, pickCard, checkAnswer, randomOptionIndex, newCoopState, resolveCoopTurn, skipCoopTurn, useCoopHealingNode, newRaceState, racePairing, resolveRaceTurn, skipRaceTurn, hackerPhase, coopVictoryStage, snapshotDeck, winner, rankPodium, normalizeText };
 });

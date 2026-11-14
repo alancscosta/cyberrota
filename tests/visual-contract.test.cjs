@@ -22,6 +22,18 @@ test('the interface bundles IBM Plex Sans locally and overrides legacy font rule
   assert.ok(fs.existsSync(path.join(root, 'dist/assets/IBMPlexSans-latin.woff2')));
 });
 
+test('the browser tab uses the brand name and the SVG symbol as its favicon', () => {
+  assert.match(html, /<title>Cyber Rota<\/title>/);
+  assert.match(html, /<link rel="icon" type="image\/svg\+xml" href="assets\/cyberrota-symbol\.svg">/);
+  assert.ok(fs.existsSync(path.join(root, 'dist/assets/cyberrota-symbol.svg')));
+});
+
+test('the brand mark is copied into the production assets used by the game header', () => {
+  assert.match(app, /src="assets\/cyberrota-logo\.svg"/);
+  assert.match(html, /src="assets\/cyberrota-logo\.svg"/);
+  assert.ok(fs.existsSync(path.join(root, 'dist/public/assets/cyberrota-logo.svg')), 'Vite copies the runtime logo into the build output');
+});
+
 test('the Hacker stays on the centerline of the external relay', () => {
   assert.match(hackerCss, /datacenter-scene \.boss-model\s*\{[^}]*transform-origin:\s*0 0;[^}]*translate:\s*none !important;[^}]*scale:\s*none !important;/s);
   assert.ok(app.includes('class="defense-hub" transform="translate(500 322)"'), 'the defense hub remains centered and clear of the route');
@@ -227,7 +239,7 @@ test('turn and victory notices are large centered overlays over the gameplay', (
 
 test('restored co-op saves derive armor damage stages from their recorded hits', () => {
   assert.ok(app.includes("restored.coop.armorStage=Math.max(Number(restored.coop.armorStage)||0,restored.coop.log.filter((event)=>event.outcome==='correct').length)"), 'older saved games restore missing armor stages from the combat log');
-  assert.ok(html.includes('game-core.js?v=16'), 'the browser reloads the current damage, turn skip, and victory logic');
+  assert.ok(html.includes('game-core.js?v=17'), 'the browser reloads the current damage, turn skip, and victory logic');
 });
 
 test('damage visor uses two separated eye slits rather than a connecting line', () => {
@@ -272,6 +284,39 @@ test('the Defense board keeps a clear square footprint, classic traces, and alig
   assert.ok(app.includes('class="hub-lift-beams"'), 'light beams make the floating base cap visibly separate from its foundation');
 });
 
+test('the Solo route follows the board perimeter without overlapping platforms', () => {
+  const route = JSON.parse(app.match(/const coords=(\[\[[^;]+\]\]);/)?.[1] || '[]');
+  assert.equal(route.length, 19, 'the Solo route keeps all 19 positions');
+  for (const [x, y] of route) assert.ok(Math.abs(x-500)/440 + Math.abs(y-280)/238 <= .96, `Solo platform at ${x},${y} stays within the board margin`);
+  for (let first=0; first<route.length; first++) for (let second=first+2; second<route.length; second++) {
+    const distance=Math.hypot(route[first][0]-route[second][0],route[first][1]-route[second][1]);
+    assert.ok(distance>=62, `Solo platforms ${first} and ${second} do not collide`);
+  }
+  assert.ok(app.includes('const checkpointByPosition=Object.fromEntries(Core.CHECKPOINTS.map((pos,index)=>[pos,Core.THEMES[index]]))'), 'the route keeps its thematic checkpoints');
+  assert.ok(route[18][0] < route[17][0] && route[18][1] > route[17][1], 'the route approaches its exit terminal along the perimeter');
+  assert.ok(app.includes('function renderSoloGateway()') && app.includes('Gateway de saída para a Internet') && app.includes('INTERNET'), 'the destination is a recognizable gateway attached to the route');
+  assert.ok(app.includes("coop?'CENTRAL DE DEFESA':'INTERNET · GATEWAY'"), 'the Solo arrival label names the network exit');
+  assert.ok(app.includes('function renderSoloTopology()') && app.includes('solo-topology'), 'the center reads as a connected network without a freestanding pedestal');
+  assert.ok(!app.includes('renderSoloNexus') && !app.includes('destination-crown'), 'the isolated hub and floating crown are removed');
+  assert.ok(app.includes('transform="translate(${x-29} ${y})"'), 'each Solo platform is centered on the route coordinate shared by the pawn and road');
+  assert.ok(boardCss.includes('body.in-game .board-svg.board-solo .board-top{fill:#10283c'), 'the Solo map shares the site navy and cyan palette');
+  assert.ok(finishCss.includes('body.in-game .game-control-dock .route-console{') && finishCss.includes('background:linear-gradient(145deg,#122a3e,#0e2234)'), 'Solo turn notices use the game palette instead of a white paper panel');
+  assert.ok(finishCss.includes('body .alert-box { color: #c5dceb; background: #10263b;'), 'warnings use the dark navy and cyan interface palette');
+});
+
+test('the Solo pawn keeps a visible palette color and hops across every space it moves', () => {
+  assert.ok(app.includes('safeColor=PLAYER_COLORS.includes(player.color)?player.color:PLAYER_COLORS[offset%PLAYER_COLORS.length]'), 'old or invalid saved colors fall back to a visible player color');
+  assert.ok(app.includes('game.playerMove={from:previousPosition,to:player.position,startedAt:Date.now()}'), 'a route roll remembers the spaces the pawn must travel');
+  assert.ok(app.includes('motionValues=[];if(isMoving){'), 'the solo pawn builds a path through each intermediate house');
+  assert.ok(app.includes("class=\"player-pawn solo '+(isMoving?'is-moving':''"), 'the moving piece uses its own animation class');
+  assert.ok(app.includes('calcMode="spline" fill="freeze"'), 'the pawn follows the same eased hop animation as the co-op pieces');
+  assert.ok(boardCss.includes('.player-pawn.is-moving{'), 'Solo hops are visibly styled on each route space');
+  assert.ok(hackerCss.includes('body.in-game .board-solo .player-pawn .pawn-base-top { fill: var(--pawn-color);'), 'the Solo pawn paints its base, body, and head with the selected color');
+  assert.ok(app.includes('localX=offset===0?0:((offset%3)-1)*17,localY=offset===0?0:offset>2?-9:8'), 'a solo pawn is centered over its platform rather than using a team formation offset');
+  assert.ok(app.includes('<g transform="scale(1.2)"><ellipse cy="19"') && app.includes('renderBoardPawn(avatarIndex,safeColor)'), 'only the pawn illustration scales, not its route coordinate');
+  assert.ok(boardCss.includes('.board-svg.board-solo .player-pawn{scale:1!important}'), 'the route coordinate group stays at the exact SVG house position');
+});
+
 test('turn prompts and dice use the active player color with readable light contrast', () => {
   assert.ok(app.includes('const PLAYER_COLORS = [') && app.includes('style="--turn-color:${turnColor}"'), 'the active player color is shared with the die');
   assert.ok(app.includes('class="turn-announcement"') && app.includes('SUA VEZ!!!'), 'the current player gets a clear turn announcement');
@@ -279,13 +324,18 @@ test('turn prompts and dice use the active player color with readable light cont
   assert.ok(hackerCss.includes('turn-announcement-fade'), 'the turn prompt fades in and out');
 });
 
-test('each active turn gets a five-second fade countdown and a 20-second actionable clock', () => {
+test('each active turn gets a five-second non-blocking call and random answer fallback', () => {
   assert.ok(app.includes('const TURN_INTRO_SECONDS=5') && app.includes('const TURN_SECONDS=20'), 'turn timing is centralized at five and twenty seconds');
   assert.ok(app.includes('function startPlayerTurnClock') && app.includes('function expirePlayerTurn'), 'turn clock starts and resolves timeout through dedicated handlers');
-  assert.ok(app.includes('VAMOS NESSA') && app.includes('turn-countdown-number') && app.includes('turn-clock-value'), 'the countdown and remaining-time clock have visible UI');
+  assert.ok(app.includes('turn-clock-intro') && app.includes('turn-countdown-number') && app.includes('turn-clock-value'), 'the countdown and remaining-time clock have visible UI');
+  assert.ok(!app.includes('class="turn-start-overlay"'), 'the turn call does not cover the screen');
+  assert.ok(app.includes('Core.randomOptionIndex') && app.includes('resolveTimedAction'), 'an unanswered decision resolves automatically');
+  assert.ok(app.includes('function resetQuestionClock()') && app.includes('function restartTurnActionClock()'), 'each new question or automatic choice gets a fresh five-second window');
+  assert.ok(app.includes("game.phase==='walk'") && app.includes("game.phase==='choose-difficulty'") && app.includes("game.phase==='race-roll'"), 'idle turns advance through roll, difficulty and question stages');
+  assert.ok(!app.includes("if(game?.turnClock?.stage==='countdown'&&!['leave-game','toggle-sound'].includes(action))return"), 'game actions remain enabled during the five-second call');
   assert.ok(app.includes('Core.skipCoopTurn(game.coop)') && app.includes('Core.skipRaceTurn(game.race)'), 'timeouts pass co-op and 3v3 turns without simulating wrong answers');
   assert.ok(app.includes('startPlayerTurnClock') && app.includes('TURN_INTRO_SECONDS'), 'new turns start with the intro before the answer timer');
-  assert.ok(boardCss.includes('.turn-start-overlay') && boardCss.includes('turn-announcement-fade'), 'the large countdown uses the existing turn fade language');
+  assert.ok(!boardCss.includes('.turn-start-overlay{') && boardCss.includes('.turn-clock-intro'), 'the countdown uses the compact game clock without an overlay');
   assert.ok(boardCss.includes('.turn-clock') && boardCss.includes('prefers-reduced-motion'), 'the remaining clock is styled accessibly and honors reduced motion');
   assert.ok(app.includes('function renderRouteGame(cp){const checkpoint=') && app.includes('const turnPlayer=cp,turnColor=cp.color||PLAYER_COLORS[game.currentPlayer%PLAYER_COLORS.length]'), 'the solo turn banner resolves its own player avatar and color');
 });
@@ -299,7 +349,7 @@ test('larger route platforms and the victory message fade in and out', () => {
 test('the co-op victory reuses the 3v3 full-screen title after the Hacker explosion', () => {
   assert.ok(app.includes('function renderCoopVictory()'), 'co-op victory has a dedicated board-preserving scene');
   assert.ok(app.includes('Core.coopVictoryStage(sequence.startedAt)'), 'the final message waits for the tested slow-motion stage progression');
-  assert.ok(app.includes("stage==='button'?'<button class=\"coop-victory-return\" data-action=\"finish-session\">Ir ao menu</button>':''"), 'the menu button only exists after the victory title fades out');
+  assert.ok(app.includes("stage==='button'&&!game.room?'<button class=\"coop-victory-return\" data-action=\"finish-session\">Ir ao menu</button>':''"), 'the menu button only exists after the victory title fades out and stays hidden for online rooms');
   assert.ok(app.includes("victorySequence={stage:'explosion',startedAt:Date.now()}"), 'the explosion timing starts with the winning hit');
   assert.ok(app.includes('class="race-victory-overlay coop-victory-overlay"') && app.includes('VITÓRIA<br>DA EQUIPE'), 'the final win uses the 3v3 full-screen victory structure');
   assert.ok(app.includes("${bossDefeated?'boss-defeated ':''}"), 'the Hacker is hidden after the final explosion');
@@ -328,7 +378,7 @@ test('the panel uses the game board and all six available SVG avatars as its her
 });
 
 test('legacy light and recovery surfaces resolve to the same navy game palette', () => {
-  assert.ok(html.includes('cyberrota-finish.css?v=8'), 'the final palette is loaded after every legacy theme');
+  assert.ok(html.includes('cyberrota-finish.css?v=11'), 'the final palette is loaded after every legacy theme');
   assert.ok(finishCss.includes('body.in-game .game-control-dock .heal-node-button'), 'the recovery action receives the current game palette');
   assert.ok(finishCss.includes('background: linear-gradient(135deg,#103629,#123b31)'), 'healing remains green-coded without the former pale card');
   assert.ok(finishCss.includes('body:not(.in-game) .metric-strip') && finishCss.includes('body:not(.in-game) .mode-card'), 'dashboard surfaces use the same dark navy system');
@@ -349,4 +399,15 @@ test('the final Hacker attacks do not roll beyond the destination', () => {
   assert.ok(app.includes("data-action=\"${roll||atFinish?'coop-ready':'roll'}\""), 'the arrived team answers directly instead of rolling again');
   assert.ok(app.includes("if(!game.coopRoll&&game.coop.position<Core.DESTINATION)break"), 'the final attack does not require a die value');
   assert.ok(app.includes('Atacar Hacker'), 'the action tells players they are resolving the final attack');
+});
+
+test('multiplayer results show a human-only podium with avatar details and host room controls', () => {
+  assert.ok(app.includes('function renderMultiplayerPodium()'), 'co-op and 3v3 results share the podium renderer');
+  assert.ok(app.includes('Core.rankPodium(game.players||[])'), 'the podium uses the tested difficulty-weighted ranking');
+  assert.ok(app.includes('renderBoardPawnAvatar(avatar,color)'), 'each place shows the participant’s selected pawn');
+  assert.ok(app.includes('Fácil ') && app.includes('Média ') && app.includes('Difícil '), 'each podium place exposes correct answers by difficulty');
+  assert.ok(app.includes('data-action="room-next-match"') && app.includes('data-action="room-close"'), 'the host can start another match or close the room');
+  assert.ok(app.includes("stage==='button'?renderMultiplayerPodium():''"), 'co-op reveals the podium after the victory sequence');
+  assert.ok(app.includes('postgame-podium') && app.includes('is-empty'), 'a short roster keeps empty positions visible');
+  assert.ok(html.includes('podium.css'), 'the dedicated podium layout is loaded after the existing game styles');
 });

@@ -197,21 +197,32 @@ body.immersive-menu #app{height:100dvh;min-height:100dvh;padding:0;overflow:hidd
 .race-player-chip>span{display:grid;gap:2px}.race-player-chip small{color:#96afc3;font:600 8px/1 "IBM Plex Sans",sans-serif;letter-spacing:.04em}.race-player-chip.is-active{outline:2px solid #f2ca69;outline-offset:1px}.race-roll-card>p{margin:12px 0;color:#a9bfd1}
 .race-result-card:not(.damage) .race-damage{border-color:rgba(101,218,156,.3);background:rgba(42,129,91,.16);color:#b7f0d1}.race-result-card.damage .race-damage{border-color:rgba(255,115,124,.3);background:rgba(117,42,54,.2);color:#ffc2c5}
 
-/* Turn intro and answer clock */
-.turn-start-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;pointer-events:none;background:rgba(3,12,23,.72);backdrop-filter:blur(3px);animation:turn-start-enter 240ms ease-out both}
-.turn-start-content{display:grid;justify-items:center;gap:8px;color:#e9f8ff;text-align:center;text-shadow:0 0 32px rgba(67,214,255,.3)}
-.turn-start-content>span{font:800 clamp(17px,2vw,25px)/1 "IBM Plex Sans",sans-serif;letter-spacing:.18em;color:#8de8ff}
-.turn-start-content>small{font:600 clamp(14px,1.5vw,18px)/1.3 "IBM Plex Sans",sans-serif;color:#b9d4e3}
-.turn-countdown-number{font:900 clamp(112px,24vw,220px)/.88 "IBM Plex Sans",sans-serif;color:#f5fbff;font-variant-numeric:tabular-nums;opacity:0}
-.turn-countdown-number.countdown-tick{animation:turn-announcement-fade 950ms ease both}
+/* The turn call stays in the HUD so the board and its controls remain active. */
 .turn-clock{position:fixed;top:68px;right:20px;z-index:32;display:flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid rgba(117,215,247,.28);border-radius:10px;background:rgba(8,27,44,.94);color:#e6f7ff;box-shadow:0 8px 22px rgba(0,0,0,.24);font-family:"IBM Plex Sans",sans-serif;pointer-events:none}
 .turn-clock>span{font-size:10px;font-weight:700;letter-spacing:.09em;color:#a9c6d8}
 .turn-clock>strong{min-width:44px;text-align:right;font-size:16px;font-variant-numeric:tabular-nums;color:#81e3ff}
-.turn-clock-intro{opacity:.72}
+.turn-clock-intro{border-color:rgba(67,214,255,.42);background:#102b42;opacity:1}
+.turn-clock-intro>strong{min-width:32px;color:#8de8ff}
 .turn-clock-urgent>strong{color:#ff8290}
-@keyframes turn-start-enter{from{opacity:0}to{opacity:1}}
-@media(max-width:720px){.turn-clock{top:60px;right:10px;gap:6px;padding:7px 9px}.turn-clock>span{font-size:9px}.turn-clock>strong{font-size:14px}.turn-start-content>span{letter-spacing:.12em}}
-@media(prefers-reduced-motion:reduce){.turn-start-overlay{animation:none;opacity:1}.turn-countdown-number.countdown-tick{animation:none;opacity:1}}
+@media(max-width:720px){.turn-clock{top:60px;right:10px;gap:6px;padding:7px 9px}.turn-clock>span{font-size:9px}.turn-clock>strong{font-size:14px}}
+
+/* Solo board: dark network surface, distinct route tiles, and a clear central hub. */
+body.in-game .board-svg.board-solo .board-top{fill:#10283c;stroke:#39769a}
+body.in-game .board-svg.board-solo .board-side{fill:#0b1927;stroke:#28516d}
+body.in-game .board-svg.board-solo .board-grid{fill:#0d2234;stroke:rgba(104,198,232,.2)}
+body.in-game .board-svg.board-solo .board-circuit{stroke:#47add0;opacity:.2}
+body.in-game .board-svg.board-solo .road-shadow{stroke:#06111d;opacity:.76}
+body.in-game .board-svg.board-solo .road-bed{stroke:#132e43}
+body.in-game .board-svg.board-solo .road-center{stroke:#71a7c2}
+body.in-game .board-svg.board-solo .tile-face{fill:#173858;stroke:#63bbe9}
+body.in-game .board-svg.board-solo .iso-tile[style*="#e6ad51"] .tile-face{fill:#49371f;stroke:#f3bd70}
+body.in-game .board-svg.board-solo .tile-fisica .tile-face{fill:#123b3d;stroke:#70d6c0}
+body.in-game .board-svg.board-solo .tile-rede .tile-face{fill:#173858;stroke:#7ca9ff}
+body.in-game .board-svg.board-solo .tile-transporte .tile-face{fill:#43331f;stroke:#f3bd70}
+body.in-game .board-svg.board-solo .tile-aplicacao .tile-face{fill:#38294a;stroke:#d39bea}
+body.in-game .board-svg.board-solo .tile-seguranca .tile-face{fill:#482b35;stroke:#fb8e87}
+body.in-game .board-svg.board-solo .tile-current .tile-face{stroke:#f4fcff;stroke-width:3;filter:drop-shadow(0 0 8px #55cfffaa)}
+body.in-game .board-svg.board-solo .solo-nexus{filter:drop-shadow(0 8px 10px #020b16a8)}
 
 /* Dedicated 3v3 tabletop: the die lives in the board stage, and both servers have visible power connections. */
 .race-world-stage{position:relative;min-width:0;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#153450 0,transparent 67%),#091a2b}
@@ -271,3 +282,10 @@ body.immersive-menu #app{height:100dvh;min-height:100dvh;padding:0;overflow:hidd
 @media(prefers-reduced-motion:reduce){.race-server-stand *,.race-board-pawn{animation-duration:.01ms!important;animation-iteration-count:1!important}.race-victory-overlay,.race-victory-content strong{animation:none!important;opacity:1!important;translate:none!important;scale:1!important}}
 
 .race-active-avatar{display:grid;place-items:center;flex:none;width:40px;height:42px;border:1px solid #345b7c;border-radius:10px;background:#10273d;box-shadow:inset 0 1px 0 #70cfff22}.race-active-avatar .board-pawn-avatar{width:28px;height:34px;filter:drop-shadow(0 2px 2px #020914)}.player-color-choice .board-pawn-avatar{display:block;width:30px;height:34px}
+
+.player-pawn.is-moving{animation:none!important;filter:drop-shadow(0 0 8px rgba(119,226,255,.75)) drop-shadow(0 6px 2px rgba(1,8,14,.55))}
+@media(prefers-reduced-motion:reduce){.player-pawn.is-moving{animation:none!important}}
+
+.board-svg.board-solo .player-pawn{scale:1!important}
+
+body.in-game .board-svg.board-solo .solo-topology{pointer-events:none}.board-svg.board-solo .mesh-trace{fill:none;stroke:#4296b8;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.32}.board-svg.board-solo .mesh-trace-dim{opacity:.17}.board-svg.board-solo .mesh-node{fill:#63cbe4;stroke:#10283c;stroke-width:2;opacity:.55}.board-svg.board-solo .mesh-caption{fill:#65a5bd;text-anchor:middle;font:600 8px "DM Mono",monospace;letter-spacing:1.6px;opacity:.48}.board-svg.board-solo .solo-gateway{pointer-events:none;filter:drop-shadow(0 5px 8px #020b16a8)}.board-svg.board-solo .gateway-shadow{fill:#020a12;opacity:.55}.board-svg.board-solo .gateway-deck{fill:#102b3d;stroke:#4a9ab7;stroke-width:2}.board-svg.board-solo .gateway-deck-line{fill:none;stroke:#54c6df;stroke-width:1.5;opacity:.8}.board-svg.board-solo .gateway-halo{fill:#54d7f5;opacity:.09;stroke:#65dcf5;stroke-width:2}.board-svg.board-solo .gateway-arch{fill:#16445d;stroke:#72dcf4;stroke-width:2.5;stroke-linejoin:round}.board-svg.board-solo .gateway-core{fill:#38b9d3;stroke:#d5faff;stroke-width:1.5}.board-svg.board-solo .gateway-signal{fill:#e6fbff;filter:drop-shadow(0 0 4px #80e8ff)}.board-svg.board-solo .gateway-beam{fill:none;stroke:#65d8ee;stroke-width:2;stroke-linecap:round;opacity:.85}.board-svg.board-solo .gateway-label-plate{fill:#12344a;stroke:#83dff1;stroke-width:1.5}.board-svg.board-solo .gateway-label{fill:#d9faff;text-anchor:middle;font:700 8px "DM Mono",monospace;letter-spacing:1px}.board-svg.board-solo .gateway-caption{fill:#83bdd0;text-anchor:middle;font:600 5.5px "DM Mono",monospace;letter-spacing:.65px}

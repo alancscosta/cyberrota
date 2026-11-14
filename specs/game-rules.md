@@ -49,6 +49,6 @@ Os modos jogados no mesmo dispositivo são Treino Solo, Desligue o Servidor 3v3 
 
 - Progresso, baralhos, erros, preferências e estado ativo da partida são locais. Recarregar permite retomar sem repetir uma resposta/efeito já registrado; encerrar partida limpa apenas o estado ativo.
 - Sala é pass-and-play local, sem convite online nesta etapa.
-- Cada turno começa com uma chamada central de 5 segundos em fade, no estilo “Vamos nessa”; depois inicia um limite contínuo de 20 segundos para rolar o dado e responder. Se o tempo acabar em qualquer etapa, a vez é pulada. No co-op e 3v3 isso não conta como resposta errada, nem causa dano ou movimento.
+- Cada etapa do turno começa com uma chamada de 5 segundos em um relógio compacto, sem cobrir ou desfocar o tabuleiro; rolar, escolher rota/dificuldade, selecionar e confirmar continuam disponíveis. Se não houver ação, o jogo avança com uma escolha aleatória; perguntas de alternativas recebem uma alternativa aleatória. Perguntas abertas mantêm a expiração atual.
 - A partida abre em tabuleiro de tela cheia, com painel compacto para pergunta, vida, selos e controles. Relevo, gradientes, sombras, peças e efeitos dão volume 3D à arte 2D; a interface permanece legível e operável por teclado/toque.
 - Nenhuma informação essencial depende só de cor, som ou animação; há legendas/feedback textual para efeitos, som pode ser silenciado, movimento reduzido é respeitado e controles têm foco visível.

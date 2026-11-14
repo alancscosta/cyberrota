@@ -2,6 +2,38 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const Core = require('../dist/game-core.js');
 
+test('random option selection stays within the available choices', () => {
+  assert.equal(Core.randomOptionIndex(4, () => 0), 0);
+  assert.equal(Core.randomOptionIndex(4, () => 0.74), 2);
+  assert.equal(Core.randomOptionIndex(4, () => 0.999), 3);
+  assert.equal(Core.randomOptionIndex(0, () => 0.5), null);
+});
+
+test('multiplayer podium ranks weighted correct answers, then answer count, errors, and seat order', () => {
+  const ranked = Core.rankPodium([
+    { id: 'hard', name: 'Duda', seat: 0, correctByDifficulty: { easy: 0, medium: 0, hard: 1 }, correctAnswers: 1, wrongAnswers: 0 },
+    { id: 'many', name: 'Bia', seat: 1, correctByDifficulty: { easy: 3, medium: 0, hard: 0 }, correctAnswers: 3, wrongAnswers: 1 },
+    { id: 'few-errors', name: 'Caio', seat: 2, correctByDifficulty: { easy: 0, medium: 1, hard: 0 }, correctAnswers: 1, wrongAnswers: 1 },
+    { id: 'seat-tie', name: 'Ana', seat: 3, correctByDifficulty: { easy: 0, medium: 1, hard: 0 }, correctAnswers: 1, wrongAnswers: 1 },
+  ]);
+
+  assert.deepEqual(ranked.map((player) => player.id), ['many', 'hard', 'few-errors']);
+  assert.equal(ranked[0].points, 3);
+  assert.deepEqual(ranked[0].correctByDifficulty, { easy: 3, medium: 0, hard: 0 });
+  assert.equal(ranked[0].place, 1);
+  assert.equal(ranked[2].place, 3);
+});
+
+test('multiplayer podium excludes bots and supports fewer than three real players', () => {
+  const ranked = Core.rankPodium([
+    { id: 'human', name: 'Ana', seat: 0, correctByDifficulty: { easy: 1, medium: 0, hard: 0 }, correctAnswers: 1, wrongAnswers: 0 },
+    { id: 'bot', name: 'Bot 1', seat: 1, isBot: true, correctByDifficulty: { easy: 0, medium: 0, hard: 3 }, correctAnswers: 3, wrongAnswers: 0 },
+  ]);
+
+  assert.equal(ranked.length, 1);
+  assert.equal(ranked[0].name, 'Ana');
+});
+
 test('route movement stops at the next unearned checkpoint', () => {
   assert.equal(Core.advanceOnRoute(1, 3, [3, 6, 9, 12, 15], 18), 3);
   assert.equal(Core.advanceOnRoute(3, 3, [6, 9, 12, 15], 18), 6);

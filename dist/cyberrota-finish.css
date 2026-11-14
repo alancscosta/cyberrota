@@ -47,7 +47,8 @@ body:not(.in-game) .error-card, body:not(.in-game) .progress-card {
   color: var(--cr-ink); background: var(--cr-panel); border-color: var(--cr-line); box-shadow: none;
 }
 body:not(.in-game) .card-list { background: transparent; }
-body:not(.in-game) .alert-box { color: #d4c59f; background: #28291f; border-color: #62583a; }
+body .alert-box { color: #c5dceb; background: #10263b; border-color: #24506b; }
+body .alert-box b { color: #8de8ff; }
 body:not(.in-game) .pill { color: #bcecff; background: #15344a; border: 1px solid #2b526d; }
 body:not(.in-game) table { color: #dceefa; border-color: #2a4861; }
 body:not(.in-game) thead, body:not(.in-game) th { color: #9fc6df; background: #112a3e; }
@@ -171,6 +172,9 @@ body.in-game .feedback-card .result-mark.good { color: #b5ffd0; background: #123
 body.in-game .feedback-card .question-actions small { color: #9ab4c8; }
 body.in-game .race-result-card:not(.damage) .race-damage{border:1px solid rgba(101,218,156,.3);background:rgba(42,129,91,.16);color:#b7f0d1;font:600 13px "IBM Plex Sans",sans-serif}
 body.in-game .race-result-card.damage .race-damage{border:1px solid rgba(255,115,124,.3);background:rgba(117,42,54,.2);color:#ffc2c5;font:600 13px "IBM Plex Sans",sans-serif}
+body.in-game .game-control-dock .route-console{border:1px solid #24445d;border-radius:14px;background:linear-gradient(145deg,#122a3e,#0e2234);color:#d9e9f5;box-shadow:0 12px 26px #020b1640}
+body.in-game .game-control-dock .route-console .turn-action-copy b{color:#e7f5ff}
+body.in-game .game-control-dock .route-console .turn-action-copy small{color:#9db8cb}
 
 /* Home polish: stronger artwork depth, clear controls, and a clean initial canvas. */
 body:not(.in-game) #app:focus { outline: none; }

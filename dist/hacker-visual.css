@@ -407,6 +407,15 @@ body.in-game .board-pawn-avatar .pawn-head-highlight { fill: none; stroke: #ffff
 body.in-game .coop-turn-card .turn-token.turn-player-avatar { display: grid; width: 40px; height: 44px; padding: 1px; place-items: center; overflow: visible; }
 body.in-game .coop-turn-card .turn-token.turn-player-avatar .board-pawn-avatar { width: 100%; height: 100%; overflow: visible; }
 
+/* Solo uses the same colored pawn treatment as co-op and the player roster. */
+body.in-game .board-solo .player-pawn .pawn-shadow { fill: #020b14; opacity: .7; }
+body.in-game .board-solo .player-pawn .pawn-base-side { fill: color-mix(in srgb, var(--pawn-color) 53%, #071320); stroke: #06111d; stroke-width: 1.5; }
+body.in-game .board-solo .player-pawn .pawn-base-top { fill: var(--pawn-color); stroke: #e9f8ff; stroke-width: 1.2; }
+body.in-game .board-solo .player-pawn .pawn-stem { fill: color-mix(in srgb, var(--pawn-color) 74%, #10283d); stroke: #071521; stroke-width: 1.5; stroke-linejoin: round; }
+body.in-game .board-solo .player-pawn .pawn-stem-highlight { fill: none; stroke: #ffffffc9; stroke-width: 1.15; stroke-linecap: round; }
+body.in-game .board-solo .player-pawn .pawn-head { fill: var(--pawn-color); stroke: #f1fbff; stroke-width: 1.5; stroke-linejoin: round; filter: drop-shadow(0 1px 1px #020914); }
+body.in-game .board-solo .player-pawn .pawn-head-highlight { fill: none; stroke: #ffffffd9; stroke-width: 1.1; stroke-linecap: round; }
+
 /* O dado usa o mesmo azul profundo do tabuleiro, com detalhes na cor da rodada. */
 body.in-game .dice-tray-active .dice-tray-mark{background:#102b42!important;box-shadow:inset 0 1px 3px #73d8ff18!important}
 body.in-game .dice-tray-active .dice-face{background:linear-gradient(145deg,#173b59,#0c2237)!important;color:#dff7ff!important;box-shadow:inset 0 1px 2px #8be4ff22,0 3px 8px #020a14a8!important}
