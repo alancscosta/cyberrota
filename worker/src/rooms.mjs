@@ -5,9 +5,9 @@ const ROOM_CODE_LETTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 const ROOM_CODE_DIGITS = '23456789';
 const GAME_THEMES = Core.THEMES;
 const ROOM_TTL_MS = 24 * 60 * 60 * 1000;
-const TURN_INTRO_MS = 5_000;
 const TURN_ACTIVE_MS = 20_000;
-const TURN_TOTAL_MS = TURN_INTRO_MS + TURN_ACTIVE_MS;
+const TURN_TOTAL_MS = TURN_ACTIVE_MS;
+const RACE_SHUTDOWN_MS = 4_400;
 export const PLAYER_COLORS = Object.freeze([
   { index: 0, name: 'Ciano', value: '#43d6ff' },
   { index: 1, name: 'Azul', value: '#769bff' },
@@ -212,7 +212,7 @@ function summarizeAnswer(card, answer) {
   return String(answer ?? '');
 }
 
-function resolveGameAnswer(room, game, player, answer, { forcedCorrect, random = Math.random } = {}) {
+function resolveGameAnswer(room, game, player, answer, { forcedCorrect, random = Math.random, now = Date.now() } = {}) {
   const card = game.question;
   if (!card) throw roomError('NO_ACTIVE_QUESTION', 'Não há pergunta ativa.');
   const correct = typeof forcedCorrect === 'boolean' ? forcedCorrect : Core.checkAnswer(card, answer);
@@ -238,6 +238,7 @@ function resolveGameAnswer(room, game, player, answer, { forcedCorrect, random =
     game.turns = game.race.turn;
     game.phase = game.race.outcome && game.race.outcome !== 'draw' ? 'race-shutdown' : 'race-feedback';
     game.outcome = game.race.outcome;
+    if (game.phase === 'race-shutdown') game.raceVictoryStartedAt = now;
   }
   game.feedback = { correct, card: clone(card), points: correct ? Number(card.difficulty) || 1 : 0, answer: summarizeAnswer(card, answer), playerId: player.playerId };
   game.lastActorId = player.playerId;
@@ -450,9 +451,56 @@ function selectCoopQuestion(game, difficulty, random = Math.random) {
   card.difficulty = Number(difficulty);
   card.theme = card.theme || game.attackTheme;
   game.question = card;
+  if (game.pendingHint) {
+    const themeName = GAME_THEMES.find((theme) => theme.id === card.theme)?.name || card.theme;
+    game.question.hint ||= `Pense no papel de ${themeName} antes de escolher.`;
+    game.pendingHint = false;
+  }
   game.usedIds.push(card.id);
   game.phase = 'question';
   return game;
+}
+
+function applyCoopRole(game, role, random = Math.random) {
+  if (!['admin', 'analyst', 'engineer'].includes(role)) throw roomError('INVALID_ROLE', 'Escolha um papel válido.');
+  if (game.usedRoles.includes(role)) throw roomError('ROLE_USED', 'Este papel já foi usado nesta partida.');
+
+  const question = game.question;
+  let replacement = null;
+  if (role === 'admin') {
+    if (game.phase !== 'question' || !question) throw roomError('ROLE_UNAVAILABLE', 'O Admin só pode trocar uma pergunta ativa.');
+    replacement = chooseCard(game, { theme: question.theme, difficulty: question.difficulty, random });
+    if (!replacement || replacement.id === question.id) throw roomError('ROLE_UNAVAILABLE', 'Não há outra pergunta disponível para trocar.');
+  } else if (role === 'analyst') {
+    if (game.phase !== 'question' || !question || !Array.isArray(question.options) || question.options.length < 3 || !Number.isInteger(Number(question.answer))) {
+      throw roomError('ROLE_UNAVAILABLE', 'O Analista precisa de uma pergunta de múltipla escolha com alternativas suficientes.');
+    }
+  } else if (question && game.phase !== 'question') {
+    throw roomError('ROLE_UNAVAILABLE', 'A dica só pode ser aplicada a uma pergunta ativa.');
+  }
+
+  if (role === 'admin') {
+    game.question = clone(replacement);
+    game.usedIds.push(replacement.id);
+    game.disabledOptions = [];
+    game.hintUsed = false;
+  } else if (role === 'analyst') {
+    const correct = Number(question.answer);
+    const distractors = question.options.map((_, index) => index).filter((index) => index !== correct);
+    const kept = distractors[Math.floor(random() * distractors.length)];
+    game.disabledOptions = distractors.filter((index) => index !== kept);
+  } else if (question) {
+    game.question.hint ||= `Observe a função de ${game.question.theme || game.attackTheme} antes de responder.`;
+    game.hintUsed = true;
+  } else {
+    game.pendingHint = true;
+  }
+
+  game.usedRoles.push(role);
+  const player = game.players.find((entry) => entry.playerId === game.currentPlayerId);
+  if (player && !player.usedRoles.includes(role)) player.usedRoles.push(role);
+  const coopPlayer = game.coop.players.find((entry) => entry.playerId === game.currentPlayerId);
+  if (coopPlayer && !coopPlayer.usedRoles.includes(role)) coopPlayer.usedRoles.push(role);
 }
 
 function continueGame(room, game, random = Math.random, now = Date.now()) {
@@ -534,10 +582,11 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
       if (payload.answer === undefined || payload.answer === null || payload.answer === '' || (Array.isArray(payload.answer) && !payload.answer.length)) {
         throw roomError('EMPTY_ANSWER', 'Escolha uma resposta antes de confirmar.');
       }
-      resolveGameAnswer(room, game, actor, payload.answer, { random });
+      resolveGameAnswer(room, game, actor, payload.answer, { random, now });
       if (room.mode === 'coop' && game.coop.outcome) room.status = 'finished';
       game.lastActorId = actor.playerId;
     } else if (action === 'game.skip') {
+      game.turnNotice = { type: 'passed', playerId: actor.playerId, playerName: actor.name, at: now };
       if (game.mode === 'coop' && ['walk', 'choose-difficulty', 'question'].includes(game.phase)) {
         game.coop = Core.skipCoopTurn(game.coop);
         game.turns = game.coop.round;
@@ -564,6 +613,10 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
       const healed = Core.useCoopHealingNode(game.coop, payload.nodeId);
       if (healed === game.coop) throw roomError('INVALID_HEALING_NODE', 'Esse nó não pode ser usado agora.');
       game.coop = healed;
+      game.lastActorId = actor.playerId;
+    } else if (action === 'game.role') {
+      if (game.mode !== 'coop') throw roomError('INVALID_GAME_MODE', 'Os papéis só estão disponíveis em Defenda a Rede.');
+      applyCoopRole(game, String(payload.role || ''), random);
       game.lastActorId = actor.playerId;
     } else throw roomError('UNKNOWN_GAME_ACTION', 'Ação de jogo desconhecida.');
   }
@@ -716,7 +769,10 @@ export class RoomDurableObject {
         const expiresAt = (Number(room.updatedAt) || Date.now()) + ROOM_TTL_MS;
         const botAt = Number(room.botDueAt) || Number.POSITIVE_INFINITY;
         const turnAt = Number(room.gameState?.turnDeadlineAt) || Number.POSITIVE_INFINITY;
-        await this.storage.setAlarm(Math.max(Date.now() + 500, Math.min(expiresAt, botAt, turnAt)));
+        const raceFinishAt = room.gameState?.phase === 'race-shutdown'
+          ? (Number(room.gameState.raceVictoryStartedAt) || Date.now()) + RACE_SHUTDOWN_MS
+          : Number.POSITIVE_INFINITY;
+        await this.storage.setAlarm(Math.max(Date.now() + 500, Math.min(expiresAt, botAt, turnAt, raceFinishAt)));
       }
     }
   }
@@ -870,6 +926,19 @@ export class RoomDurableObject {
     }
     if (room.status !== 'playing') { await this.saveRoom(room); return; }
     const game = room.gameState;
+    if (game?.phase === 'race-shutdown') {
+      const finishAt = (Number(game.raceVictoryStartedAt) || Date.now()) + RACE_SHUTDOWN_MS;
+      if (finishAt <= Date.now()) {
+        continueGame(room, game, Math.random, Date.now());
+        room.updatedAt = Date.now();
+        room.revision += 1;
+        await this.saveRoom(room);
+        await this.broadcast(room);
+        return;
+      }
+      await this.saveRoom(room);
+      return;
+    }
     if (Number(game?.turnDeadlineAt) && game.turnDeadlineAt <= Date.now()) {
       const active = currentPlayer(room, game);
       if (active && !active.isBot) {

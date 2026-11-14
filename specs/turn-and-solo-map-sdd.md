@@ -8,8 +8,8 @@ Manter o tabuleiro utilizável durante a chamada de início do turno, dar uma sa
 
 - A chamada de cinco segundos fica em um relógio compacto dentro da interface do jogo; não escurece, desfoca nem intercepta cliques na tela.
 - Rolar, escolher rota/dificuldade, selecionar e confirmar continuam disponíveis durante a chamada.
-- Cada etapa de decisão reinicia a chamada de cinco segundos. Se ninguém agir, o jogo rola o dado ou escolhe aleatoriamente a rota, dificuldade ou alternativa, e segue para a próxima etapa. Uma alternativa já selecionada é confirmada ao fim dos cinco segundos.
-- Se o limite ativo de resposta expirar em uma pergunta com alternativas, o sistema também escolhe e registra uma alternativa aleatória. Formatos de resposta livre mantêm a regra atual de expiração.
+- O turno tem vinte segundos totais para todas as decisões. Nos cinco segundos finais, um aviso animado conta 5–1 sem blur ou bloqueio; ações intermediárias não reiniciam o prazo.
+- Se o prazo expirar, o turno é pulado sem selecionar/registrar resposta aleatória, sem dano por erro e sem efeitos de combate; a próxima pessoa recebe a própria chamada e janela.
 - A rota Solo mantém as 19 posições e os checkpoints existentes. As casas seguem o perímetro do tabuleiro em ordem, respeitam sua margem e deixam espaço visível entre plataformas vizinhas; nenhum segmento do percurso cruza outro segmento não adjacente.
 - Avisos e relógios do Treino usam a paleta azul-marinho/ciano do jogo, sem superfícies brancas isoladas.
 - Peões de partidas salvas usam uma cor válida da paleta atual; uma cor antiga ou inválida não pode virar uma peça preta.
@@ -23,7 +23,7 @@ Manter o tabuleiro utilizável durante a chamada de início do turno, dar uma sa
 ## TDD
 
 - `tests/game-core.test.cjs` cobre seleção aleatória de alternativa com fonte determinística.
-- `tests/visual-contract.test.cjs` cobre relógio compacto sem overlay/desfoque, ações automáticas nas etapas do turno, cores do aviso e geometria/ordem da trilha Solo.
+- `tests/visual-contract.test.cjs` cobre relógio compacto sem overlay/desfoque, prazo único sem ações automáticas nas etapas do turno, cores do aviso e geometria/ordem da trilha Solo.
 - `tests/visual-contract.test.cjs` cobre a recuperação de cores antigas e os saltos do peão pelas casas percorridas.
 - `tests/visual-contract.test.cjs` cobre o centramento do peão solo e a cópia do logo para os assets públicos de produção.
 - `tests/visual-contract.test.cjs` cobre o gateway na última casa e a remoção do pedestal e da coroa flutuantes.

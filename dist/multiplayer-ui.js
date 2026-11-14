@@ -1,12 +1,15 @@
-import { RoomClient, renderLobby } from './room-client.js?v=5';
+import { RoomClient, renderLobby, roomUrlWithoutCode, canReuseActiveRoom, canAutoResumeRoom } from './room-client.js?v=6';
 
 const CODE = /^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/;
 const attached = new WeakSet();
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const colors = ['#43d6ff', '#769bff', '#ffbd68', '#d49bff', '#72e0b3', '#ff8e9b'];
 let gameSurfaceActive = false;
+let autoResumeAttempt = 0;
 
 function readSavedCode() { return new URL(location.href).searchParams.get('sala')?.trim().toUpperCase() || ''; }
+function clearRoomCodeFromUrl() { history.replaceState(null, '', roomUrlWithoutCode(location.href)); }
+function leaveActiveRoom() { window.RoomClient?.leaveActiveRoom?.(); gameSurfaceActive = false; clearRoomCodeFromUrl(); }
 
 function launchMarkup(profile, customDecks, selectedMode = 'coop') {
   const code = readSavedCode();
@@ -28,7 +31,7 @@ function renderActive(root, client) {
   const modalRoot = document.getElementById('modal-root');
   if (snapshot.status === 'playing') { gameSurfaceActive = true; modalRoot.innerHTML = ''; if (window.CyberrotaOnlineRenderer?.render) { window.CyberrotaOnlineRenderer.render(snapshot, client); return; } appRoot.innerHTML = '<section class="room-lobby online-room-error">Não foi possível carregar a tela da partida. Atualize a página para tentar novamente.</section>'; return; }
   if (snapshot.status === 'finished') { gameSurfaceActive = true; modalRoot.innerHTML = ''; document.body.classList.add('in-game'); appRoot.innerHTML = window.CyberrotaOnlineRenderer?.finish ? window.CyberrotaOnlineRenderer.finish(snapshot, client) : '<section class="room-lobby online-room-error">A partida terminou. Atualize a página para abrir o resultado.</section>'; return; }
-  if (snapshot.status === 'closed') { client.destroy(); window.RoomClient.active = null; history.replaceState(null, '', location.pathname); if (gameSurfaceActive) { gameSurfaceActive = false; document.body.classList.remove('in-game'); modalRoot.innerHTML = ''; appRoot.innerHTML = `<section class="room-lobby online-room-closed"><p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada.</p><button class="room-primary-button" data-room-home>Voltar ao painel</button></section>`; appRoot.querySelector('[data-room-home]')?.addEventListener('click', () => location.reload()); } else root.innerHTML = `<p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; return; }
+  if (snapshot.status === 'closed') { client.destroy(); window.RoomClient.active = null; clearRoomCodeFromUrl(); if (gameSurfaceActive) { gameSurfaceActive = false; document.body.classList.remove('in-game'); modalRoot.innerHTML = ''; appRoot.innerHTML = `<section class="room-lobby online-room-closed"><p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada.</p><button class="room-primary-button" data-room-home>Voltar ao painel</button></section>`; appRoot.querySelector('[data-room-home]')?.addEventListener('click', () => location.reload()); } else root.innerHTML = `<p class="room-helper">A SALA COD: ${esc(snapshot.code)} foi encerrada pelo anfitrião.</p>`; return; }
   if (gameSurfaceActive) { modalRoot.innerHTML = ''; document.body.classList.remove('in-game'); renderLobby(appRoot, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) }); bindLobbyActions(appRoot, client); return; }
   renderLobby(root, snapshot, client.player?.playerId, client, { onClosed: () => renderActive(root, client) });
 }
@@ -40,6 +43,8 @@ function bindLobbyActions(root, client) {
 
 function mount(container, { profile = 'Jogador convidado', customDecks = [], standardDeck = [], initialMode = 'coop' } = {}) {
   if (!container) return;
+  const active = window.RoomClient.active;
+  if (active && !canReuseActiveRoom(active, initialMode)) leaveActiveRoom();
   if (!container.innerHTML) container.innerHTML = launchMarkup(profile, customDecks, initialMode);
   const root = container.querySelector('[data-room-root]');
   if (!root) return;
@@ -90,14 +95,28 @@ function mount(container, { profile = 'Jogador convidado', customDecks = [], sta
   if (initialCode && CODE.test(initialCode)) {
     const saved = new RoomClient({ code: initialCode, onEvent: () => renderActive(root, saved) });
     if (saved.savedPlayer()) {
-      window.RoomClient.use(saved);
-      saved.resume().then((result) => { saved.snapshot = result.snapshot; renderActive(root, saved); }).catch(() => { window.RoomClient.active = null; });
+      const attempt = ++autoResumeAttempt;
+      saved.request(`/api/rooms/${encodeURIComponent(initialCode)}`).then((current) => {
+        if (attempt !== autoResumeAttempt) return null;
+        if (!canAutoResumeRoom(current.snapshot, initialMode)) {
+          clearRoomCodeFromUrl();
+          const codeInput = container.querySelector('[data-join-online-room] input[name="code"]');
+          if (codeInput) codeInput.value = '';
+          return null;
+        }
+        window.RoomClient.use(saved);
+        return saved.resume();
+      }).then((result) => {
+        if (attempt !== autoResumeAttempt || !result) return;
+        saved.snapshot = result.snapshot;
+        renderActive(root, saved);
+      }).catch(() => { if (window.RoomClient.active === saved) window.RoomClient.active = null; });
     }
   }
 }
 
 export { launchMarkup, mount };
 if (typeof window !== 'undefined') {
-  window.CyberrotaRooms = { mount };
+  window.CyberrotaRooms = { mount, leaveActiveRoom };
   window.dispatchEvent(new Event('cyberrota:rooms-ready'));
 }

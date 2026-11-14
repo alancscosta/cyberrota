@@ -41,8 +41,8 @@ test('lobby host can rotate the room code and choose characters with pawn icons'
 test('room client exports the API consumed by the multiplayer controls module', async () => {
   const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
   const controls = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
-  assert.match(controls, /import\s*\{\s*RoomClient\s*,\s*renderLobby\s*\}\s*from\s*['"]\.\/room-client\.js\?v=5['"]/);
-  assert.match(roomClient, /export\s*\{[^}]*\bRoomClient\b[^}]*\brenderLobby\b[^}]*\}/s);
+  assert.match(controls, /import\s*\{[^}]*\bcanReuseActiveRoom\b[^}]*\}\s*from\s*['"]\.\/room-client\.js\?v=6['"]/);
+  assert.match(roomClient, /export\s*\{[^}]*\bRoomClient\b[^}]*\bcanReuseActiveRoom\b[^}]*\}/s);
 });
 
 test('online room setup reports a module load failure instead of staying on an infinite loader', async () => {
@@ -82,8 +82,10 @@ test('a started room leaves the modal lobby and renders the existing full-screen
 
 test('a room opened from a saved link keeps rendering websocket snapshots after resuming', async () => {
   const ui = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
-  assert.match(ui, /from '\.\/room-client\.js\?v=5'/);
+  assert.match(ui, /from '\.\/room-client\.js\?v=6'/);
   assert.match(ui, /new RoomClient\(\{\s*code: initialCode,\s*onEvent: \(\) => renderActive\(root, saved\)\s*\}\)/);
+  assert.match(ui, /canAutoResumeRoom\(current\.snapshot, initialMode\)/);
+  assert.match(ui, /saved\.request\(`\/api\/rooms\/\$\{encodeURIComponent\(initialCode\)\}`\)/);
 });
 
 test('online matches reuse the original game renderer and send its controls to the room server', async () => {
@@ -92,11 +94,14 @@ test('online matches reuse the original game renderer and send its controls to t
   assert.match(app, /renderRaceDiceTray/);
   assert.match(app, /game\.roll/);
   assert.match(app, /game\.answer/);
-  assert.match(app, /TURN_INTRO_SECONDS/);
+  assert.match(app, /TURN_WARNING_SECONDS/);
+  assert.match(app, /function renderOnlineTurnBanner\(/);
+  const raceMode = await readFile(new URL('../dist/race-mode.js', import.meta.url), 'utf8');
+  assert.match(raceMode, /VEZ DE \$\{ui\.esc\(player\)\}/);
   assert.match(app, /game\.turnClock=onlineRendererState\.clock/);
   const onlineClock = app.slice(app.indexOf('function syncOnlineTurnClock'), app.indexOf('function renderOnlineSnapshot'));
   assert.match(onlineClock, /remote\.currentPlayerId,remote\.turnDeadlineAt/);
-  assert.match(onlineClock, /deadline-TURN_SECONDS\*1000/);
+  assert.match(onlineClock, /deadline-onlineNow\(\)/);
   assert.match(app, /serverOffsetMs/);
   assert.match(onlineClock, /remote\.mode==='competitive'/, 'the timeout fallback is limited to 3v3 and leaves co-op gameplay alone');
   assert.match(onlineClock, /command\('game\.skip'/, 'the active player cannot be left at zero if a room alarm is delayed');
@@ -120,11 +125,20 @@ test('online postgame keeps the finished match behind a centered translucent nav
   const podiumCss = await readFile(new URL('../dist/podium.css', import.meta.url), 'utf8');
   assert.match(app, /function renderRoomPostgameOverlay\(/);
   assert.match(app, /renderRaceGame\(\)\+\(game\.phase==='finished'&&game\.room\?renderRoomPostgameOverlay\(\):''\)/);
-  assert.match(app, /if\(forFinish\)\{game\.phase='finished';game\.room=\{hostPlayerId:snapshot\.hostPlayerId\};game\.localPlayerId=client\.player\?\.playerId;return renderGame\(\)\.replace\(/);
+  assert.match(app, /if\(forFinish\)\{game\.phase='finished';game\.room=\{hostPlayerId:snapshot\.hostPlayerId,hostConnected:[^}]+\};game\.localPlayerId=client\.player\?\.playerId;return renderGame\(\)\.replace\(/);
   assert.match(podiumCss, /\.postgame-backdrop\s*\{/);
   assert.match(podiumCss, /backdrop-filter:\s*blur\(/);
   assert.match(podiumCss, /background:\s*rgba\(5,\s*15,\s*31,\s*\.9\)/);
   assert.match(podiumCss, /grid-template-columns:\s*minmax\(0,\s*1fr\)/);
+});
+
+test('online postgame gives every player a way out and explains when the host left', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /hostConnected:!!snapshot\.players\?\.find\(\(player\)=>player\.playerId===snapshot\.hostPlayerId\)\?\.connected/);
+  assert.match(app, /O anfitrião saiu\. Esta partida foi finalizada\./);
+  assert.match(app, /data-action="room-home">Voltar ao início/);
+  assert.match(app, /hostConnected===false\?'/);
+  assert.ok(app.includes("case'room-home':clearPlayerTurnClock();window.CyberrotaRooms?.leaveActiveRoom?.();stopBackgroundMusic();game=null;page='home';render();break;"));
 });
 
 test('room code is always labeled explicitly in the lobby, match, and finished-room states', async () => {
@@ -134,4 +148,23 @@ test('room code is always labeled explicitly in the lobby, match, and finished-r
   assert.match(app, /SALA COD: \$\{esc\(snapshot\.code\)\}/);
   assert.match(roomClient, /SALA COD:<\/small>/);
   assert.match(multiplayerUi, /SALA COD: \$\{esc\(snapshot\.code\)\} foi encerrada/);
+});
+
+test('leaving a match and switching modes discards the stale active room and URL code', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  const ui = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
+  const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
+  assert.match(app, /window\.CyberrotaRooms\?\.leaveActiveRoom\?\.\(\)/);
+  assert.match(ui, /if \(active && !canReuseActiveRoom\(active, initialMode\)\) leaveActiveRoom\(\)/);
+  assert.match(roomClient, /searchParams\.delete\('sala'\)/);
+  assert.match(ui, /window\.CyberrotaRooms = \{ mount, leaveActiveRoom \}/);
+});
+
+test('online cooperative controls send role actions and hide healing outside the walk phase', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /role:'game\.role'/);
+  assert.match(app, /payload=\{role:control\.dataset\.role\}/);
+  assert.match(app, /function renderHealingNodes\(\)\{if\(game\.phase!==['"]walk['"]\)return ['"]['"]/);
+  assert.match(app, /data-node-id="\$\{index\}"/);
+  assert.match(app, /function useRole\(role\)/);
 });

@@ -1,7 +1,7 @@
 {
   "0": "renderDeckEditorCards",
   "1": "game-core.js",
-  "2": "renderGame",
+  "2": "renderCoopVictory",
   "3": "render",
   "4": "app.js",
   "5": "difficultyName",
@@ -15,5 +15,6 @@
   "13": "race-mode.js",
   "14": "renderBoardPawnAvatar",
   "15": "home-motion.js",
-  "16": "renderRaceGame"
+  "16": "renderGame",
+  "17": "renderOnlineSnapshot"
 }

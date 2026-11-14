@@ -1,17 +1,17 @@
 # Graph Report - cyberrota  (2026-11-14)
 
 ## Corpus Check
-- 54 files · ~47,710 words
+- 55 files · ~51,279 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 21 file(s) not represented in the graph (top: .pptx 12, .ndjson 5, (none) 2)
 
 ## Summary
-- 476 nodes · 737 edges · 23 communities (20 shown, 3 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 21 edges (avg confidence: 0.85)
+- 487 nodes · 753 edges · 25 communities (22 shown, 3 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `669d0cf6`
+- Built from commit: `04f0f832`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -30,28 +30,34 @@
 - index.mjs
 - accounts.js
 - build_design.mjs
+- RoomDurableObject
 - build_short.mjs
 - Turnos sem bloqueio e rota Solo — SDD
 - Worker API: spec-driven development
 - Contas e persistência — SDD
 - Salas online — SDD
 - Pódio multiplayer — SDD
+- Auditoria dos fluxos de jogo — inventário SDD/TDD
 - room-do.test.mjs
 - vercel.json
 
 ## God Nodes (most connected - your core abstractions)
-1. `roomError()` - 25 edges
-2. `clone()` - 18 edges
+1. `roomError()` - 26 edges
+2. `clone()` - 19 edges
 3. `RoomDurableObject` - 16 edges
 4. `UI Design` - 16 edges
 5. `Common generated-interface tells` - 15 edges
-6. `applyGameCommand()` - 12 edges
+6. `applyGameCommand()` - 13 edges
 7. `UI Art Direction` - 12 edges
 8. `Final UI review` - 12 edges
 9. `SDD — Vitória do Hacker e tabuleiro de Defesa` - 11 edges
 10. `routeRoom()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `Lacunas confirmadas` --references--> `resolveGameAnswer()`  [INFERRED]
+  specs/gameplay-flow-audit.md → worker/src/rooms.mjs
+- `Lacunas confirmadas` --references--> `selectCoopQuestion()`  [INFERRED]
+  specs/gameplay-flow-audit.md → worker/src/rooms.mjs
 - `CyberrotaWorkerRoom` --inherits--> `RoomDurableObject`  [EXTRACTED]
   worker/src/index.mjs → worker/src/rooms.mjs
 - `routeRoom()` --calls--> `generateRoomCode()`  [EXTRACTED]
@@ -60,7 +66,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (23 total, 3 thin omitted)
+## Communities (25 total, 3 thin omitted)
 
 ### Community 0 - "README.md"
 Cohesion: 0.06
@@ -83,8 +89,8 @@ Cohesion: 0.09
 Nodes (21): Aceitação TDD, Aditivo SDD — Espaçamento dos racks, peões e ataque do Hacker, Avatares e leitura imediata da partida — SDD, Contexto, Contrato espacial, Contratos TDD, Direção visual, Especificação (+13 more)
 
 ### Community 5 - "rooms.mjs"
-Cohesion: 0.10
-Nodes (48): deck, host, accountRoomRows(), applyGameCommand(), assertActiveTurn(), assertHost(), assignTeam(), availableColorIndex() (+40 more)
+Cohesion: 0.13
+Nodes (44): Lacunas confirmadas, deck, host, applyCoopRole(), applyGameCommand(), assertActiveTurn(), assertHost(), assignTeam() (+36 more)
 
 ### Community 6 - "Cyber Rota: Defenda a Rede"
 Cohesion: 0.29
@@ -114,6 +120,10 @@ Nodes (32): asArray(), authenticateGoogleCredential(), base64UrlDecode(), base64
 Cohesion: 0.05
 Nodes (46): add(), build, C, candidate, contentSlide(), finalPath, footer(), out (+38 more)
 
+### Community 15 - "RoomDurableObject"
+Cohesion: 0.29
+Nodes (6): accountRoomRows(), jsonResponse(), publicRoomConfig(), publicRoomSnapshot(), randomToken(), RoomDurableObject
+
 ### Community 16 - "build_short.mjs"
 Cohesion: 0.24
 Nodes (13): add(), build, bullets(), C, candidate, content(), finalPath, footer() (+5 more)
@@ -138,6 +148,10 @@ Nodes (4): Objetivo, Regras e contrato, Salas online — SDD, TDD e aceite
 Cohesion: 0.40
 Nodes (4): Objetivo, Pódio multiplayer — SDD, Regras, TDD
 
+### Community 22 - "Auditoria dos fluxos de jogo — inventário SDD/TDD"
+Cohesion: 0.22
+Nodes (8): Auditoria dos fluxos de jogo — inventário SDD/TDD, Cobertura já presente (não é garantia de E2E), Divergências nas especificações resolvidas, Estado, Fila de investigação para fechar o inventário, Objetivo e sequência, Resultado da primeira regressão, Superfícies analisadas
+
 ### Community 25 - "room-do.test.mjs"
 Cohesion: 0.20
 Nodes (3): deck, MemoryState, MemoryStorage
@@ -148,17 +162,17 @@ Nodes (3): deck, MemoryState, MemoryStorage
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `RoomDurableObject` connect `rooms.mjs` to `room-do.test.mjs`, `index.mjs`?**
-  _High betweenness centrality (0.019) - this node is a cross-community bridge._
+- **Why does `Lacunas confirmadas` connect `rooms.mjs` to `Auditoria dos fluxos de jogo — inventário SDD/TDD`?**
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Should `README.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
-- **Why does `UI Design` connect `UI Design` to `Product-specific creative direction`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `RoomDurableObject` connect `RoomDurableObject` to `room-do.test.mjs`, `index.mjs`, `rooms.mjs`?**
+  _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Should `Plano de execução — SDD/TDD` be split into smaller, more focused modules?**
   _Cohesion score 0.06439393939393939 - nodes in this community are weakly interconnected._
+- **Why does `Auditoria dos fluxos de jogo — inventário SDD/TDD` connect `Auditoria dos fluxos de jogo — inventário SDD/TDD` to `rooms.mjs`?**
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Should `visual-contract.test.cjs` be split into smaller, more focused modules?**
   _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
 - **Should `SDD — Vitória do Hacker e tabuleiro de Defesa` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
-- **Should `rooms.mjs` be split into smaller, more focused modules?**
-  _Cohesion score 0.10343061955965181 - nodes in this community are weakly interconnected._

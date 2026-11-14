@@ -21,7 +21,7 @@
 - **HUD:** durante a partida, o tabuleiro ocupa a área principal e o painel compacto apresenta pergunta, vida e controles essenciais.
 - **Acessibilidade:** teclado/toque funcionam; nomes/símbolos distinguem Azul/Vermelho e eventos; jogo é compreensível sem áudio e sem movimento contínuo.
 - **Persistência:** recarregar retoma estado sem reaplicar efeitos e sair oferece encerrar ou continuar.
-- **Tempo por turno:** cada jogador vê a chamada central animada de 5, 4, 3, 2, 1 e “SUA VEZ”; em seguida, recebe um único prazo de 20 segundos para rolar, escolher dificuldade e responder. Ações intermediárias não reiniciam o relógio. Expirar pula a vez sem registrar resposta errada; o prazo reinicia para a pessoa seguinte.
+- **Tempo por turno:** cada jogador recebe um único prazo total de 20 segundos para rolar, escolher dificuldade e responder. Nos últimos 5 segundos, uma chamada central animada conta 5, 4, 3, 2, 1 sem desfocar o mapa nem bloquear ações. A pessoa ativa vê “SUA VEZ”; nos demais clientes online aparece “VEZ DE [nome]”. Ações intermediárias não reiniciam o relógio. Ao expirar, todos veem “[nome] PASSOU A VEZ” no aviso central; a vez é pulada sem registrar erro.
 - **Modo local:** validar co-op com salas de 1, 2, 3 e 6 participantes, alternância de turno, dado e movimento; a sala é pass-and-play no mesmo dispositivo e não há sincronização online entre aparelhos.
 
 ## Revisão visual e multiplayer — aceite

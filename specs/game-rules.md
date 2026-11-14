@@ -48,7 +48,7 @@ Os modos jogados no mesmo dispositivo são Treino Solo, Desligue o Servidor 3v3 
 ## Persistência, acessibilidade e interface
 
 - Progresso, baralhos, erros, preferências e estado ativo da partida são locais. Recarregar permite retomar sem repetir uma resposta/efeito já registrado; encerrar partida limpa apenas o estado ativo.
-- Sala é pass-and-play local, sem convite online nesta etapa.
-- Cada etapa do turno começa com uma chamada de 5 segundos em um relógio compacto, sem cobrir ou desfocar o tabuleiro; rolar, escolher rota/dificuldade, selecionar e confirmar continuam disponíveis. Se não houver ação, o jogo avança com uma escolha aleatória; perguntas de alternativas recebem uma alternativa aleatória. Perguntas abertas mantêm a expiração atual.
+- Salas multijogador entre aparelhos usam estado autoritativo do servidor; o Treino Solo permanece local. No 3v3 local, se disponível, a passagem de dispositivo oculta a resposta anterior.
+- Cada turno tem um único prazo total de 20 segundos. Nos cinco segundos finais, um aviso animado conta 5–1 sem desfocar nem bloquear o mapa. Quem joga vê “SUA VEZ”; outros clientes veem “VEZ DE [nome]”. Rolar, escolher dificuldade, selecionar e confirmar usam o mesmo prazo. Ao expirar, a vez passa sem resposta aleatória nem penalidade por erro, com aviso “[nome] PASSOU A VEZ”.
 - A partida abre em tabuleiro de tela cheia, com painel compacto para pergunta, vida, selos e controles. Relevo, gradientes, sombras, peças e efeitos dão volume 3D à arte 2D; a interface permanece legível e operável por teclado/toque.
 - Nenhuma informação essencial depende só de cor, som ou animação; há legendas/feedback textual para efeitos, som pode ser silenciado, movimento reduzido é respeitado e controles têm foco visível.

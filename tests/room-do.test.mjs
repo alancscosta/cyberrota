@@ -85,6 +85,89 @@ test('starting a match broadcasts the playing snapshot to every connected player
   assert.equal(visitorSnapshot.gameState.phase, 'walk');
 });
 
+test('co-op role commands update the same shared question snapshot delivered to visitors', async () => {
+  const state = new MemoryState();
+  const room = new RoomDurableObject(state, {});
+  await send(room, '/initialize', { method: 'POST', body: {
+    code: 'ABC234', mode: 'coop', capacity: 2,
+    config: { deck: [{ ...deck[0], options: ['A', 'B', 'C', 'D'] }] },
+    host: { playerId: 'host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
+  } });
+  const visitor = await send(room, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1 } });
+  let visitorSnapshot;
+  state.sockets.push({ send(message) { visitorSnapshot = JSON.parse(message).snapshot; } });
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'room.start' } });
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.roll' } });
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.choose-difficulty', payload: { difficulty: 2 } } });
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.role', payload: { role: 'analyst' } } });
+
+  assert.equal(visitorSnapshot.gameState.disabledOptions.length, 2);
+  assert.equal(visitorSnapshot.gameState.disabledOptions.includes(0), false);
+  assert.equal(visitorSnapshot.gameState.players.some((player) => player.playerId === visitor.body.player.playerId), true);
+});
+
+test('an expired turn broadcasts who passed their turn to every room client', async () => {
+  const state = new MemoryState();
+  const room = new RoomDurableObject(state, {});
+  await send(room, '/initialize', { method: 'POST', body: {
+    code: 'ABC234', mode: 'coop', capacity: 2, config: { deck },
+    host: { playerId: 'host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
+  } });
+  const visitor = await send(room, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1 } });
+  let visitorSnapshot;
+  state.sockets.push({ send(message) { visitorSnapshot = JSON.parse(message).snapshot; } });
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'room.start' } });
+  const timedRoom = await state.storage.get('room');
+  timedRoom.gameState.turnDeadlineAt = Date.now() - 1;
+  await state.storage.put('room', timedRoom);
+  await room.alarm();
+
+  const snapshot = await send(room, '/snapshot');
+  assert.equal(snapshot.body.snapshot.gameState.currentPlayerId, visitor.body.player.playerId);
+  assert.equal(snapshot.body.snapshot.gameState.turnNotice.playerName, 'Ana');
+  assert.equal(visitorSnapshot.gameState.turnNotice.playerName, 'Ana');
+});
+
+test('a winning 3v3 race shutdown finishes on the server after its cinematic window', async () => {
+  const state = new MemoryState();
+  const room = new RoomDurableObject(state, {});
+  await send(room, '/initialize', { method: 'POST', body: {
+    code: 'ABC234', mode: 'competitive', capacity: 6, config: { deck },
+    host: { playerId: 'host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
+  } });
+  const players = [];
+  for (let index = 1; index < 6; index += 1) {
+    const joined = await send(room, '/join', { method: 'POST', body: { name: `P${index}`, colorIndex: index } });
+    players.push(joined.body.player);
+  }
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'room.start' } });
+  const playing = await state.storage.get('room');
+  const blue = playing.players.filter((player) => player.team === 'blue');
+  playing.gameState.race.turn = 4;
+  playing.gameState.race.teams.blue.positions = [18, 18, 17];
+  playing.gameState.currentPlayerId = blue[2].playerId;
+  playing.gameState.phase = 'race-roll';
+  playing.gameState.question = structuredClone(deck[0]);
+  playing.gameState.turnDeadlineAt = Date.now() + 20_000;
+  await state.storage.put('room', playing);
+
+  await send(room, '/command', { method: 'POST', body: { resumeToken: blue[2].resumeToken, action: 'game.roll' } });
+  const winning = await send(room, '/command', { method: 'POST', body: { resumeToken: blue[2].resumeToken, action: 'game.answer', payload: { answer: 0 } } });
+  assert.equal(winning.body.snapshot.status, 'playing');
+  assert.equal(winning.body.snapshot.gameState.phase, 'race-shutdown');
+  assert.ok(Number.isFinite(winning.body.snapshot.gameState.raceVictoryStartedAt));
+  assert.ok(state.storage.alarmAt <= winning.body.snapshot.gameState.raceVictoryStartedAt + 4_500);
+
+  const cinematicEnded = await state.storage.get('room');
+  cinematicEnded.gameState.raceVictoryStartedAt = Date.now() - 5_000;
+  await state.storage.put('room', cinematicEnded);
+  await room.alarm();
+  const finished = await send(room, '/snapshot');
+  assert.equal(finished.body.snapshot.status, 'finished');
+  assert.equal(finished.body.snapshot.gameState.phase, 'finished');
+  assert.equal(finished.body.snapshot.gameState.outcome, 'blue-win');
+});
+
 test('room ownership can be transferred when an account is deleted', async () => {
   const room = new RoomDurableObject(new MemoryState(), {});
   await send(room, '/initialize', { method: 'POST', body: {

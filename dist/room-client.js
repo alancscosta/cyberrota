@@ -255,6 +255,20 @@ function roomShareUrl(code, currentUrl = globalThis.location?.href || 'http://lo
   return url.toString();
 }
 
+function roomUrlWithoutCode(currentUrl = globalThis.location?.href || 'http://localhost/') {
+  const url = new URL(currentUrl);
+  url.searchParams.delete('sala');
+  return url.toString();
+}
+
+function canReuseActiveRoom(client, mode) {
+  return Boolean(client && !client.closedByUser && client.snapshot?.mode === mode && ['lobby', 'playing'].includes(client.snapshot?.status));
+}
+
+function canAutoResumeRoom(snapshot, mode) {
+  return Boolean(snapshot && snapshot.mode === mode && snapshot.status !== 'closed');
+}
+
 function renderLobby(container, snapshot, localPlayerId, client, { onClosed = () => {} } = {}) {
   if (!container || !snapshot) return;
   const local = snapshot.players.find((player) => player.playerId === localPlayerId);
@@ -352,9 +366,10 @@ const api = {
   renderLobby,
   active: null,
   use(client) { this.active = client; return client; },
+  leaveActiveRoom() { const client = this.active; client?.destroy(); this.active = null; return client; },
   nextMatch() { return this.active?.nextMatch(); },
   closeRoom() { return this.active?.closeRoom(); },
 };
 
 if (typeof window !== 'undefined') window.RoomClient = api;
-export { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, renderLobby };
+export { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, roomUrlWithoutCode, canReuseActiveRoom, canAutoResumeRoom, renderLobby };

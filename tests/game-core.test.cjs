@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const Core = require('../dist/game-core.js');
+require('../dist/race-mode.js');
 
 test('random option selection stays within the available choices', () => {
   assert.equal(Core.randomOptionIndex(4, () => 0), 0);
@@ -210,6 +211,28 @@ test('3v3 turns alternate teams and rotate independently through each trio', () 
   const afterRed = Core.resolveRaceTurn(afterBlue, { correct: true, roll: 2 });
   assert.deepEqual(Core.racePairing(afterRed), { team: 'blue', player: 'A2', playerIndex: 1 });
   assert.deepEqual(afterRed.teams.red.positions, [16, 18, 18]);
+});
+
+test('3v3 feedback can render a server snapshot whose active question was cleared', () => {
+  const race = Core.newRaceState(['A1', 'A2', 'A3'], ['V1', 'V2', 'V3']);
+  const afterTurn = Core.resolveRaceTurn(race, { correct: true, roll: 2 });
+  const game = {
+    mode: 'competitive', phase: 'race-feedback', race: afterTurn, raceLast: afterTurn.log[0], raceRoll: null,
+    question: null, feedback: { card: { explanation: 'Resposta recebida e avaliada pelo servidor.' } },
+    players: [...race.teams.blue.players, ...race.teams.red.players].map((name, index) => ({ name, color: ['#43d6ff', '#769bff', '#ffbd68', '#d49bff', '#72e0b3', '#ff8e9b'][index] })),
+  };
+  const ui = {
+    playerColors: ['#43d6ff', '#769bff', '#ffbd68', '#d49bff', '#72e0b3', '#ff8e9b'],
+    esc: (value) => String(value ?? ''),
+    renderBoardPawnAvatar: () => '<svg></svg>',
+    renderRaceDiceTray: () => '',
+    renderBoardScene: () => '',
+    uiIcon: () => '',
+    soundMuted: false,
+  };
+
+  const rendered = globalThis.RaceMode.render(game, ui);
+  assert.match(rendered, /Resposta recebida e avaliada pelo servidor\./);
 });
 
 test('a timed-out 3v3 turn only passes to the next player without moving either team', () => {

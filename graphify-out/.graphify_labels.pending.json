@@ -14,12 +14,14 @@
   "12": "accounts.js",
   "13": "build_article.py",
   "14": "build_design.mjs",
+  "15": "RoomDurableObject",
   "16": "build_short.mjs",
   "17": "Turnos sem bloqueio e rota Solo — SDD",
   "18": "Worker API: spec-driven development",
   "19": "Contas e persistência — SDD",
   "20": "Salas online — SDD",
   "21": "Pódio multiplayer — SDD",
+  "22": "Auditoria dos fluxos de jogo — inventário SDD/TDD",
   "25": "room-do.test.mjs",
   "27": "vercel.json"
 }

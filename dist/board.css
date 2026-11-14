@@ -198,7 +198,7 @@ body.immersive-menu #app{height:100dvh;min-height:100dvh;padding:0;overflow:hidd
 .race-result-card:not(.damage) .race-damage{border-color:rgba(101,218,156,.3);background:rgba(42,129,91,.16);color:#b7f0d1}.race-result-card.damage .race-damage{border-color:rgba(255,115,124,.3);background:rgba(117,42,54,.2);color:#ffc2c5}
 
 /* Turn intro and answer clock */
-.turn-start-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;pointer-events:none;background:rgba(3,12,23,.72);backdrop-filter:blur(3px);animation:turn-start-enter 240ms ease-out both}
+.turn-start-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;pointer-events:none;background:transparent;animation:turn-start-enter 240ms ease-out both}
 .turn-start-content{display:grid;justify-items:center;gap:8px;color:#e9f8ff;text-align:center;text-shadow:0 0 32px rgba(67,214,255,.3)}
 .turn-start-content>span{font:800 clamp(17px,2vw,25px)/1 "IBM Plex Sans",sans-serif;letter-spacing:.18em;color:#8de8ff}
 .turn-start-content>small{font:600 clamp(14px,1.5vw,18px)/1.3 "IBM Plex Sans",sans-serif;color:#b9d4e3}
@@ -207,11 +207,20 @@ body.immersive-menu #app{height:100dvh;min-height:100dvh;padding:0;overflow:hidd
 .turn-clock{position:fixed;top:68px;right:20px;z-index:32;display:flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid rgba(117,215,247,.28);border-radius:10px;background:rgba(8,27,44,.94);color:#e6f7ff;box-shadow:0 8px 22px rgba(0,0,0,.24);font-family:"IBM Plex Sans",sans-serif;pointer-events:none}
 .turn-clock>span{font-size:10px;font-weight:700;letter-spacing:.09em;color:#a9c6d8}
 .turn-clock>strong{min-width:44px;text-align:right;font-size:16px;font-variant-numeric:tabular-nums;color:#81e3ff}
-.turn-clock-intro{opacity:.72}
 .turn-clock-urgent>strong{color:#ff8290}
+.online-turn-banner{display:flex;justify-content:center;margin:0 0 10px;padding:10px 14px;border:1px solid rgba(117,215,247,.25);border-radius:12px;background:rgba(13,36,57,.82);color:#8de8ff;font:800 14px/1.2 "IBM Plex Sans",sans-serif;letter-spacing:.06em;text-align:center}
+.turn-warning-overlay,.turn-notice-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;pointer-events:none;background:transparent}
+.turn-warning-content,.turn-notice-content{display:grid;justify-items:center;gap:8px;padding:18px 28px;border:1px solid rgba(117,215,247,.3);border-radius:18px;background:rgba(5,15,31,.78);color:#e9f8ff;text-align:center;text-shadow:0 0 28px rgba(67,214,255,.28);box-shadow:0 16px 48px rgba(0,0,0,.25);animation:turn-warning-enter 180ms ease-out both}
+.turn-warning-content>span,.turn-notice-content>span{font:800 clamp(14px,1.7vw,20px)/1.2 "IBM Plex Sans",sans-serif;letter-spacing:.1em;color:#ffb6a1}
+.turn-warning-content>strong{font:900 clamp(78px,15vw,140px)/.9 "IBM Plex Sans",sans-serif;color:#f5fbff;font-variant-numeric:tabular-nums}
+.turn-warning-content>strong.countdown-tick{animation:turn-announcement-fade 950ms ease both}
+.turn-notice-content>strong{font:900 clamp(24px,4vw,42px)/1.1 "IBM Plex Sans",sans-serif;color:#8de8ff}
+.turn-notice-overlay{animation:turn-notice-life 2200ms ease both}
+@keyframes turn-notice-life{0%,60%{opacity:1}100%{opacity:0}}
+@keyframes turn-warning-enter{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes turn-start-enter{from{opacity:0}to{opacity:1}}
 @media(max-width:720px){.turn-clock{top:60px;right:10px;gap:6px;padding:7px 9px}.turn-clock>span{font-size:9px}.turn-clock>strong{font-size:14px}.turn-start-content>span{letter-spacing:.12em}}
-@media(prefers-reduced-motion:reduce){.turn-start-overlay{animation:none;opacity:1}.turn-countdown-number.countdown-tick{animation:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.turn-start-overlay,.turn-warning-content,.turn-notice-overlay{animation:none;opacity:1}.turn-countdown-number.countdown-tick,.turn-warning-content>strong.countdown-tick{animation:none;opacity:1}}
 
 /* Solo board: dark network surface, distinct route tiles, and a clear central hub. */
 body.in-game .board-svg.board-solo .board-top{fill:#10283c;stroke:#39769a}

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as roomClient from '../dist/room-client.js';
-const { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl } = roomClient;
+const { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, roomUrlWithoutCode, canReuseActiveRoom, canAutoResumeRoom } = roomClient;
 
 test('lobby color options hide characters selected by other people', () => {
   const room = { players: [{ playerId: 'a', colorIndex: 0 }, { playerId: 'b', colorIndex: 1 }] };
@@ -15,6 +15,23 @@ test('lobby asks confirmation while seats remain and not after filling capacity'
 
 test('share link carries the room code in the URL while preserving existing parameters', () => {
   assert.equal(roomShareUrl('abc234', 'https://game.example/?from=friend'), 'https://game.example/?from=friend&sala=ABC234');
+});
+
+test('leaving a room removes only its code from the current URL', () => {
+  assert.equal(roomUrlWithoutCode('https://game.example/play?sala=ABC234&from=friend#board'), 'https://game.example/play?from=friend#board');
+});
+
+test('a different mode or a finished room cannot hijack the newly opened mode picker', () => {
+  assert.equal(canReuseActiveRoom({ closedByUser: false, snapshot: { mode: 'coop', status: 'playing' } }, 'coop'), true);
+  assert.equal(canReuseActiveRoom({ closedByUser: false, snapshot: { mode: 'coop', status: 'playing' } }, 'competitive'), false);
+  assert.equal(canReuseActiveRoom({ closedByUser: false, snapshot: { mode: 'coop', status: 'finished' } }, 'coop'), false);
+  assert.equal(canReuseActiveRoom({ closedByUser: true, snapshot: { mode: 'coop', status: 'lobby' } }, 'coop'), false);
+});
+
+test('a URL invite only auto-resumes a room when its mode matches the selected mode', () => {
+  assert.equal(canAutoResumeRoom({ mode: 'competitive', status: 'playing' }, 'competitive'), true);
+  assert.equal(canAutoResumeRoom({ mode: 'competitive', status: 'playing' }, 'coop'), false);
+  assert.equal(canAutoResumeRoom({ mode: 'coop', status: 'closed' }, 'coop'), false);
 });
 
 test('client refreshes changed room snapshots when a websocket event is missed', async () => {

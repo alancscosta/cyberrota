@@ -131,19 +131,78 @@ test('the server controls turn order, rolls, question selection, answer validati
   assert.equal(JSON.stringify(snapshot).includes('resumeToken'), false);
 });
 
-test('online turn has one 5 second callout and one 20 second window across every action', () => {
+test('co-op roles modify the shared question and are accepted only from the active player', () => {
+  const roleDeck = [0, 1].map((id) => ({
+    id: `role-card-${id}`, theme: 'rede', chapter: 'Endereçamento', difficulty: 2,
+    type: 'mcq', question: `Pergunta ${id}`, options: ['Certa', 'Errada 1', 'Errada 2', 'Errada 3'], answer: 0,
+    explanation: 'Explicação da carta.',
+  }));
+  let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, config: { deck: roleDeck }, host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { random: () => 0 });
+  room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0 });
+  room = applyGameCommand(room, 'host-1', 'game.choose-difficulty', { difficulty: 2 }, { random: () => 0 });
+  const originalCardId = room.gameState.question.id;
+  assert.throws(() => applyGameCommand(room, 'p2', 'game.role', { role: 'analyst' }), { code: 'NOT_ACTIVE_PLAYER' });
+
+  room = applyGameCommand(room, 'host-1', 'game.role', { role: 'analyst' }, { random: () => 0 });
+  assert.equal(room.gameState.disabledOptions.length, 2);
+  assert.equal(room.gameState.disabledOptions.includes(0), false, 'the correct option is never removed');
+  room = applyGameCommand(room, 'host-1', 'game.role', { role: 'engineer' });
+  assert.equal(room.gameState.hintUsed, true);
+  assert.ok(room.gameState.question.hint);
+  room = applyGameCommand(room, 'host-1', 'game.role', { role: 'admin' }, { random: () => 0 });
+  assert.notEqual(room.gameState.question.id, originalCardId);
+  assert.equal(room.gameState.usedRoles.length, 3);
+  assert.throws(() => applyGameCommand(room, 'host-1', 'game.role', { role: 'engineer' }), { code: 'ROLE_USED' });
+});
+
+test('invalid co-op roles do not consume their once-per-match use', () => {
+  let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { config: { deck }, random: () => 0 });
+  assert.throws(() => applyGameCommand(room, 'host-1', 'game.role', { role: 'admin' }), { code: 'ROLE_UNAVAILABLE' });
+  assert.throws(() => applyGameCommand(room, 'host-1', 'game.role', { role: 'analyst' }), { code: 'ROLE_UNAVAILABLE' });
+  assert.deepEqual(room.gameState.usedRoles, []);
+  assert.throws(() => applyGameCommand(room, 'host-1', 'game.role', { role: 'unknown' }), { code: 'INVALID_ROLE' });
+  assert.deepEqual(room.gameState.usedRoles, []);
+});
+
+test('co-op Engineer carries its prepared hint onto the next selected question', () => {
+  let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { config: { deck }, random: () => 0 });
+  room = applyGameCommand(room, 'host-1', 'game.role', { role: 'engineer' });
+  assert.equal(room.gameState.pendingHint, true);
+  room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0 });
+  room = applyGameCommand(room, 'host-1', 'game.choose-difficulty', { difficulty: 2 }, { random: () => 0 });
+  assert.ok(room.gameState.question.hint);
+  assert.equal(room.gameState.pendingHint, false);
+});
+
+test('co-op healing is rejected after the active player rolls', () => {
+  let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { config: { deck }, random: () => 0 });
+  room.gameState.coop.position = 2;
+  room.gameState.coop.servers.rede = 50;
+  room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0 });
+  assert.throws(() => applyGameCommand(room, 'host-1', 'game.heal', { nodeId: 0 }), { code: 'INVALID_GAME_PHASE' });
+});
+
+test('online turn has one 20 second deadline across every action', () => {
   let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, host });
   room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
   room = startRoom(room, 'host-1', { config: { deck }, random: () => 0, now: 1_000 });
-  assert.equal(room.gameState.turnDeadlineAt, 26_000);
+  assert.equal(room.gameState.turnDeadlineAt, 21_000);
   room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0, now: 6_000 });
-  assert.equal(room.gameState.turnDeadlineAt, 26_000);
+  assert.equal(room.gameState.turnDeadlineAt, 21_000);
   room = applyGameCommand(room, 'host-1', 'game.choose-difficulty', { difficulty: 2 }, { random: () => 0, now: 11_000 });
-  assert.equal(room.gameState.turnDeadlineAt, 26_000);
-  assert.throws(() => applyGameCommand(room, 'host-1', 'game.answer', { answer: 0 }, { now: 26_000 }), { code: 'TURN_EXPIRED' });
+  assert.equal(room.gameState.turnDeadlineAt, 21_000);
+  assert.throws(() => applyGameCommand(room, 'host-1', 'game.answer', { answer: 0 }, { now: 21_000 }), { code: 'TURN_EXPIRED' });
   room = applyGameCommand(room, 'host-1', 'game.answer', { answer: 0 }, { random: () => 0, now: 16_000 });
   room = applyGameCommand(room, 'host-1', 'game.continue', {}, { random: () => 0, now: 17_000 });
-  assert.equal(room.gameState.turnDeadlineAt, 42_000);
+  assert.equal(room.gameState.turnDeadlineAt, 37_000);
 });
 
 test('the server controls race roll/answer and advances to the paired participant', () => {
@@ -181,4 +240,7 @@ test('server timeout skips the current turn without recording an incorrect answe
   assert.equal(timedOut.gameState.players[0].wrongAnswers, 0);
   assert.equal(timedOut.gameState.currentPlayerId, 'p2');
   assert.equal(timedOut.gameState.phase, 'walk');
+  assert.equal(timedOut.gameState.turnNotice.type, 'passed');
+  assert.equal(timedOut.gameState.turnNotice.playerName, 'Ana');
+  assert.ok(Number.isFinite(timedOut.gameState.turnNotice.at));
 });
