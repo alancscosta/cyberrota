@@ -17,6 +17,21 @@ test('share link carries the room code in the URL while preserving existing para
   assert.equal(roomShareUrl('abc234', 'https://game.example/?from=friend'), 'https://game.example/?from=friend&sala=ABC234');
 });
 
+test('client refreshes changed room snapshots when a websocket event is missed', async () => {
+  const client = new RoomClient({ code: 'ABC234', storage: null });
+  client.snapshot = { code: 'ABC234', status: 'lobby', revision: 2 };
+  const previousFetch = global.fetch;
+  let received;
+  client.addEventListener('room', (event) => { received = event.detail; });
+  global.fetch = async () => Response.json({ snapshot: { code: 'ABC234', status: 'playing', revision: 3, gameState: { phase: 'walk' } } });
+  try {
+    await client.refreshSnapshot();
+    assert.equal(received.type, 'room.snapshot');
+    assert.equal(received.snapshot.status, 'playing');
+    assert.equal(client.snapshot.revision, 3);
+  } finally { global.fetch = previousFetch; client.destroy(); }
+});
+
 test('rotating the room code preserves the player seat and migrates saved credentials', async () => {
   const entries = new Map([['cyberrota-room-ABC234', JSON.stringify({ playerId: 'host', resumeToken: 'secret' })]]);
   const storage = { getItem: (key) => entries.get(key) || null, setItem: (key, value) => entries.set(key, value), removeItem: (key) => entries.delete(key) };

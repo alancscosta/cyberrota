@@ -15,7 +15,7 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 - Só o anfitrião pode iniciar. Se ainda houver vagas na capacidade configurada, a solicitação retorna `ROOM_NOT_FULL` com `requiresConfirmation`; a confirmação explícita permite iniciar.
 - Defesa da Rede começa com os participantes humanos presentes, respeitando mínimo de dois. A Corrida preenche seis assentos com bots quando confirmada incompleta; cada equipe continua com três participantes e cada ação de bot tem 50% de chance de acerto.
 - A próxima partida devolve a sala ao lobby com o mesmo código e os participantes humanos. Encerrar sala é ação exclusiva do anfitrião.
-- O estado autoritativo fica no Durable Object da sala e snapshots são transmitidos por WebSocket sem tokens de retomada.
+- O estado autoritativo fica no Durable Object da sala e snapshots são transmitidos por WebSocket sem tokens de retomada. O cliente também consulta o snapshot a cada 2 segundos para recuperar atualizações perdidas ou conexões WebSocket indisponíveis; snapshots com revisão repetida não provocam nova renderização.
 - Os comandos de jogo (`game.roll`, `game.choose-difficulty`, `game.answer`, `game.continue`, `game.skip`, `game.heal`) são aplicados pelo Durable Object com GameCore compartilhado; só o participante ativo pode rolar, escolher dificuldade, responder, pular ou curar.
 - Cada rodada online tem um único prazo: chamada visual central animada de 5 segundos com “SUA VEZ”, seguida por 20 segundos totais para rolar, escolher dificuldade e responder. Fases intermediárias não reiniciam o prazo; os comandos após o vencimento são rejeitados e o alarme do Durable Object pula a vez sem registrar resposta errada. Não há ações aleatórias automáticas no fim da chamada.
 - Deck e respostas corretas ficam em estado privado. Snapshots públicos removem o deck, gabarito, respostas aceitas, tokens de retomada e IDs de conta.
@@ -30,4 +30,4 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 - Testar autorização do anfitrião, aviso de início antecipado, mínimo cooperativo e composição 3v3 com bots.
 - Testar bots em fonte aleatória determinística, fechamento e retorno ao lobby sem apagar jogadores humanos.
 - Testar snapshot público sem gabarito, deck, tokens de retomada ou IDs de conta; testar deadlines sem registrar erro.
-- Testar snapshot público e eventos WebSocket de conexão/comando/atualização, além das linhas privadas de conta para create/join/transfer/close.
+- Testar snapshot público e eventos WebSocket de conexão/comando/atualização, transmissão do início a todos os jogadores, recuperação por consulta periódica e retomada de link com atualização visual, além das linhas privadas de conta para create/join/transfer/close.

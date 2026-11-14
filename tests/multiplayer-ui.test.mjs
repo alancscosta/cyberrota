@@ -80,6 +80,11 @@ test('a started room leaves the modal lobby and renders the existing full-screen
   assert.match(app, /function renderBoardScene\(/);
 });
 
+test('a room opened from a saved link keeps rendering websocket snapshots after resuming', async () => {
+  const ui = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
+  assert.match(ui, /new RoomClient\(\{\s*code: initialCode,\s*onEvent: \(\) => renderActive\(root, saved\)\s*\}\)/);
+});
+
 test('online matches reuse the original game renderer and send its controls to the room server', async () => {
   const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
   assert.match(app, /CyberrotaOnlineRenderer/);

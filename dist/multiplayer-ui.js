@@ -88,7 +88,7 @@ function mount(container, { profile = 'Jogador convidado', customDecks = [], sta
   });
   const initialCode = readSavedCode();
   if (initialCode && CODE.test(initialCode)) {
-    const saved = new RoomClient({ code: initialCode });
+    const saved = new RoomClient({ code: initialCode, onEvent: () => renderActive(root, saved) });
     if (saved.savedPlayer()) {
       window.RoomClient.use(saved);
       saved.resume().then((result) => { saved.snapshot = result.snapshot; renderActive(root, saved); }).catch(() => { window.RoomClient.active = null; });

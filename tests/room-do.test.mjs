@@ -68,6 +68,23 @@ test('a turn is accepted only from the active participant and completion persist
   assert.equal(accepted.body.snapshot.gameState.phase, 'choose-difficulty');
 });
 
+test('starting a match broadcasts the playing snapshot to every connected player', async () => {
+  const state = new MemoryState();
+  const room = new RoomDurableObject(state, {});
+  await send(room, '/initialize', { method: 'POST', body: {
+    code: 'ABC234', mode: 'coop', capacity: 2, config: { deck },
+    host: { playerId: 'host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
+  } });
+  await send(room, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1 } });
+  let visitorSnapshot;
+  state.sockets.push({ send(message) { visitorSnapshot = JSON.parse(message).snapshot; } });
+
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'room.start' } });
+
+  assert.equal(visitorSnapshot.status, 'playing');
+  assert.equal(visitorSnapshot.gameState.phase, 'walk');
+});
+
 test('room ownership can be transferred when an account is deleted', async () => {
   const room = new RoomDurableObject(new MemoryState(), {});
   await send(room, '/initialize', { method: 'POST', body: {

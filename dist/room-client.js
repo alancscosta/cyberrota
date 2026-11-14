@@ -56,6 +56,8 @@ class RoomClient extends EventTarget {
     this.closedByUser = false;
     this.snapshot = null;
     this.player = null;
+    this.pollTimer = null;
+    this.pollInFlight = false;
   }
 
   savePlayer(player) {
@@ -151,7 +153,9 @@ class RoomClient extends EventTarget {
   }
 
   connect() {
-    if (!this.code || !globalThis.WebSocket || this.closedByUser) return null;
+    if (!this.code || this.closedByUser) return null;
+    this.startPolling();
+    if (!globalThis.WebSocket) return null;
     const saved = this.player?.resumeToken ? this.player : this.savedPlayer();
     if (!saved?.resumeToken) return null;
     const url = new URL(`${roomApiBase(this.code, this.apiBase)}/ws`, globalThis.location?.href || 'http://localhost');
@@ -188,6 +192,27 @@ class RoomClient extends EventTarget {
     }, this.reconnectDelay);
   }
 
+  startPolling() {
+    if (this.pollTimer || this.closedByUser) return;
+    this.pollTimer = setInterval(() => { this.refreshSnapshot().catch(() => {}); }, 2000);
+  }
+
+  async refreshSnapshot() {
+    if (this.closedByUser || this.pollInFlight || !this.code) return this.snapshot;
+    this.pollInFlight = true;
+    try {
+      const result = await this.request(roomApiBase(this.code, this.apiBase), { method: 'GET' });
+      const next = result.snapshot;
+      const current = this.snapshot;
+      if (next && (!current || next.code !== current.code || Number(next.revision) > Number(current.revision))) {
+        this.snapshot = next;
+        this.dispatchEvent(new CustomEvent('room', { detail: { type: 'room.snapshot', snapshot: next } }));
+        this.onEvent({ type: 'room.snapshot', snapshot: next });
+      }
+      return this.snapshot;
+    } finally { this.pollInFlight = false; }
+  }
+
   async command(action, payload = {}) {
     const saved = this.player?.resumeToken ? this.player : this.savedPlayer();
     if (!saved?.resumeToken) throw new Error('Entre novamente na sala para continuar.');
@@ -210,7 +235,9 @@ class RoomClient extends EventTarget {
   destroy() {
     this.closedByUser = true;
     if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
+    if (this.pollTimer) clearInterval(this.pollTimer);
     this.reconnectTimer = null;
+    this.pollTimer = null;
     this.socket?.close(1000, 'client closed');
     this.socket = null;
   }
