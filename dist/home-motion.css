@@ -91,24 +91,64 @@ body:not(.in-game) .hero-actions .btn-secondary:focus-visible {
   background-image: radial-gradient(ellipse 130px 78px at var(--pointer-x, 50%) var(--pointer-y, 50%), #72dbffab 0%, #627fff7a 38%, transparent 76%);
 }
 
-body:not(.in-game) #app:has(.hero) .mode-card {
+body:not(.in-game) #app .mode-card {
+  position: relative;
+  isolation: isolate;
   background-color: #0b2033;
   background-image: none;
-  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
-body:not(.in-game) #app:has(.hero) .mode-card:nth-child(2) {
-  background-color: #0b2033;
+body:not(.in-game) #app .mode-card .mode-art {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  max-width: none;
+  height: 90px;
+  margin: 8px 0 0;
+  opacity: .82;
+  pointer-events: none;
+  transition: transform .24s ease, opacity .24s ease;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 100%);
 }
 
-body:not(.in-game) #app:has(.hero) .mode-card:nth-child(3) {
-  background-color: #0b2033;
+body:not(.in-game) #app .mode-card .mode-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-body:not(.in-game) #app:has(.hero) .mode-card:hover,
-body:not(.in-game) #app:has(.hero) .mode-card:focus-visible {
-  background-image: radial-gradient(ellipse 180px 130px at var(--pointer-x, 50%) var(--pointer-y, 50%), #39bafc82 0%, #597fff46 42%, transparent 78%);
-  box-shadow: inset 0 1px #d9f7ff20, 0 10px 24px #020b1666;
+body:not(.in-game) #app .mode-card .mode-top,
+body:not(.in-game) #app .mode-card h3,
+body:not(.in-game) #app .mode-card p,
+body:not(.in-game) #app .mode-card .mode-arrow {
+  position: relative;
+  z-index: 1;
+}
+
+body:not(.in-game) #app .mode-card h3,
+body:not(.in-game) #app .mode-card p {
+  max-width: 100%;
+}
+
+body:not(.in-game) #app .mode-card h3 {
+  margin-top: 12px;
+}
+
+body:not(.in-game) #app .mode-card:hover,
+body:not(.in-game) #app .mode-card:focus-visible {
+  transform: translateY(-2px) scale(1.015);
+  background-color: #102940;
+  border-color: #3e82a5;
+  box-shadow: 0 8px 20px #020b1655;
+}
+
+body:not(.in-game) #app .mode-card:hover .mode-art,
+body:not(.in-game) #app .mode-card:focus-visible .mode-art {
+  transform: scale(1.045);
+  opacity: 1;
 }
 
 @media (max-width: 760px) {
@@ -127,5 +167,6 @@ body:not(.in-game) #app:has(.hero) .mode-card:focus-visible {
 
   body:not(.in-game):has(.hero) .main-column::before { animation: none !important; }
   body:not(.in-game) .hero-actions .btn,
-  body:not(.in-game) #app:has(.hero) .mode-card { transition: none !important; }
+  body:not(.in-game) #app .mode-card,
+  body:not(.in-game) #app .mode-card .mode-art { transition: none !important; }
 }

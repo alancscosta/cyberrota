@@ -1,4 +1,4 @@
-const interactiveHomeItems = '.hero-actions .btn, .mode-card';
+const interactiveHomeItems = '.hero-actions .btn';
 
 document.addEventListener('pointermove', (event) => {
   if (event.pointerType !== 'mouse') return;
