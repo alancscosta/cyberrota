@@ -201,7 +201,13 @@ class RoomClient extends EventTarget {
     if (this.closedByUser || this.pollInFlight || !this.code) return this.snapshot;
     this.pollInFlight = true;
     try {
-      const result = await this.request(roomApiBase(this.code, this.apiBase), { method: 'GET' });
+      let result;
+      try { result = await this.request(roomApiBase(this.code, this.apiBase), { method: 'GET' }); }
+      catch (error) {
+        if (!error.newCode) throw error;
+        this.adoptRoomCode(error.newCode);
+        result = await this.request(roomApiBase(this.code, this.apiBase), { method: 'GET' });
+      }
       const next = result.snapshot;
       const current = this.snapshot;
       if (next && (!current || next.code !== current.code || Number(next.revision) > Number(current.revision))) {

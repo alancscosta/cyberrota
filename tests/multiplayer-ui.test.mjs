@@ -41,7 +41,7 @@ test('lobby host can rotate the room code and choose characters with pawn icons'
 test('room client exports the API consumed by the multiplayer controls module', async () => {
   const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
   const controls = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
-  assert.match(controls, /import\s*\{\s*RoomClient\s*,\s*renderLobby\s*\}\s*from\s*['"]\.\/room-client\.js['"]/);
+  assert.match(controls, /import\s*\{\s*RoomClient\s*,\s*renderLobby\s*\}\s*from\s*['"]\.\/room-client\.js\?v=5['"]/);
   assert.match(roomClient, /export\s*\{[^}]*\bRoomClient\b[^}]*\brenderLobby\b[^}]*\}/s);
 });
 
@@ -82,6 +82,7 @@ test('a started room leaves the modal lobby and renders the existing full-screen
 
 test('a room opened from a saved link keeps rendering websocket snapshots after resuming', async () => {
   const ui = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
+  assert.match(ui, /from '\.\/room-client\.js\?v=5'/);
   assert.match(ui, /new RoomClient\(\{\s*code: initialCode,\s*onEvent: \(\) => renderActive\(root, saved\)\s*\}\)/);
 });
 

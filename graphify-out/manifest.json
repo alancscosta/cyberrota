@@ -852,15 +852,15 @@
     "semantic_hash": ""
   },
   "tests/multiplayer-ui.test.mjs": {
-    "mtime": 1794633670.5827723,
-    "seen": 1794633748.0211122,
-    "ast_hash": "57677bf33f21dd6541fe615b1c03b02d",
+    "mtime": 1794633938.85108,
+    "seen": 1794633966.3595304,
+    "ast_hash": "927cc4ea892a327bcce466b28394cf87",
     "semantic_hash": ""
   },
   "tests/room-client.test.mjs": {
-    "mtime": 1794633667.2926128,
-    "seen": 1794633748.0211122,
-    "ast_hash": "010039c991a00a04718d863df451deea",
+    "mtime": 1794633914.1958506,
+    "seen": 1794633966.3595304,
+    "ast_hash": "8625f5f0ec141e28fa62ceb90d82b327",
     "semantic_hash": ""
   },
   "tests/room-do.test.mjs": {
@@ -900,9 +900,9 @@
     "semantic_hash": ""
   },
   "specs/online-rooms-sdd.md": {
-    "mtime": 1794633717.506662,
-    "seen": 1794633748.0371263,
-    "ast_hash": "023c10c78ad04a903dd8d5c73f1ef374",
+    "mtime": 1794633918.2074566,
+    "seen": 1794633966.3695393,
+    "ast_hash": "e812957efebef7b1e1a61576da98ebc4",
     "semantic_hash": ""
   },
   "specs/podium-sdd.md": {

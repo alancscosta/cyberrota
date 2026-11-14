@@ -1,4 +1,4 @@
-import { RoomClient, renderLobby } from './room-client.js';
+import { RoomClient, renderLobby } from './room-client.js?v=5';
 
 const CODE = /^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/;
 const attached = new WeakSet();

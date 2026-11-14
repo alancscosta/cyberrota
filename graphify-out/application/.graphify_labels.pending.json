@@ -9,9 +9,11 @@
   "7": "RoomClient",
   "8": "renderBoardPawnAvatar",
   "9": "account-client.js",
+  "10": "renderOnlineSnapshot",
   "11": "vercel.json",
   "12": "renderBoardScene",
   "13": "race-mode.js",
   "14": "renderBoardPawnAvatar",
-  "15": "home-motion.js"
+  "15": "home-motion.js",
+  "16": "renderRaceGame"
 }

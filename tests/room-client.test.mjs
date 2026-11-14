@@ -21,6 +21,7 @@ test('client refreshes changed room snapshots when a websocket event is missed',
   const client = new RoomClient({ code: 'ABC234', storage: null });
   client.snapshot = { code: 'ABC234', status: 'lobby', revision: 2 };
   const previousFetch = global.fetch;
+  const previousWebSocket = global.WebSocket;
   let received;
   client.addEventListener('room', (event) => { received = event.detail; });
   global.fetch = async () => Response.json({ snapshot: { code: 'ABC234', status: 'playing', revision: 3, gameState: { phase: 'walk' } } });
@@ -30,6 +31,30 @@ test('client refreshes changed room snapshots when a websocket event is missed',
     assert.equal(received.snapshot.status, 'playing');
     assert.equal(client.snapshot.revision, 3);
   } finally { global.fetch = previousFetch; client.destroy(); }
+});
+
+test('snapshot recovery follows a room code rotation when its websocket event was missed', async () => {
+  const entries = new Map([['cyberrota-room-ABC234', JSON.stringify({ playerId: 'host', resumeToken: 'secret' })]]);
+  const storage = { getItem: (key) => entries.get(key) || null, setItem: (key, value) => entries.set(key, value), removeItem: (key) => entries.delete(key) };
+  const client = new RoomClient({ code: 'ABC234', storage });
+  client.player = { playerId: 'host', resumeToken: 'secret' };
+  client.snapshot = { code: 'ABC234', status: 'lobby', revision: 2 };
+  const previousFetch = global.fetch;
+  const previousWebSocket = global.WebSocket;
+  global.WebSocket = undefined;
+  const requested = [];
+  global.fetch = async (url) => {
+    requested.push(url);
+    if (String(url).includes('/ABC234')) return Response.json({ error: 'ROOM_MOVED', message: 'Moved', newCode: 'DEF456' }, { status: 410 });
+    return Response.json({ snapshot: { code: 'DEF456', status: 'lobby', revision: 3 } });
+  };
+  try {
+    await client.refreshSnapshot();
+    assert.deepEqual(requested, ['/api/rooms/ABC234', '/api/rooms/DEF456']);
+    assert.equal(client.code, 'DEF456');
+    assert.equal(client.snapshot.code, 'DEF456');
+    assert.equal(entries.has('cyberrota-room-DEF456'), true);
+  } finally { global.fetch = previousFetch; client.destroy(); global.WebSocket = previousWebSocket; }
 });
 
 test('rotating the room code preserves the player seat and migrates saved credentials', async () => {

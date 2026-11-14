@@ -30,4 +30,4 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 - Testar autorização do anfitrião, aviso de início antecipado, mínimo cooperativo e composição 3v3 com bots.
 - Testar bots em fonte aleatória determinística, fechamento e retorno ao lobby sem apagar jogadores humanos.
 - Testar snapshot público sem gabarito, deck, tokens de retomada ou IDs de conta; testar deadlines sem registrar erro.
-- Testar snapshot público e eventos WebSocket de conexão/comando/atualização, transmissão do início a todos os jogadores, recuperação por consulta periódica e retomada de link com atualização visual, além das linhas privadas de conta para create/join/transfer/close.
+- Testar snapshot público e eventos WebSocket de conexão/comando/atualização, transmissão do início a todos os jogadores, recuperação por consulta periódica após falha de evento e troca de código, importação de módulo com cache versionado e retomada de link com atualização visual, além das linhas privadas de conta para create/join/transfer/close.
