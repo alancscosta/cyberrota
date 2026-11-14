@@ -31,6 +31,17 @@ body:not(.in-game):has(.hero) .main-column::before {
 
 body:not(.in-game):has(.hero) #app { background: transparent; }
 
+body:not(.in-game) #app:has(.hero) .hero {
+  background-size: 155% 155%, 100% 100%;
+  background-position: 60% 44%, 0 0;
+  animation: hero-gradient-drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes hero-gradient-drift {
+  from { background-position: 60% 44%, 0 0; }
+  to { background-position: 76% 58%, 0 0; }
+}
+
 @keyframes network-background-drift {
   to { background-position: 70px 42px, -55px 32px, 0 0, 0 0, 0 0, 0 0, 100% 90%, 8% 8%; }
 }
@@ -178,6 +189,7 @@ body:not(.in-game) #app .mode-card:focus-visible .mode-art {
   .hero-board-signal path { animation: none !important; }
 
   body:not(.in-game):has(.hero) .main-column::before { animation: none !important; }
+  body:not(.in-game) #app:has(.hero) .hero { animation: none !important; }
   body:not(.in-game) .hero-actions .btn,
   body:not(.in-game) #app .mode-card,
   body:not(.in-game) #app .mode-card .mode-art { transition: none !important; }
