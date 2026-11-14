@@ -96,6 +96,7 @@ body:not(.in-game) #app .mode-card {
   isolation: isolate;
   background-color: #0b2033;
   background-image: none;
+  border-top: 2px solid var(--mode-accent, #3e82a5);
   transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
@@ -103,15 +104,16 @@ body:not(.in-game) #app .mode-card .mode-art {
   position: relative;
   z-index: 0;
   width: 100%;
-  max-width: none;
-  height: 90px;
+  height: 132px;
   margin: 8px 0 0;
-  opacity: .82;
+  opacity: .92;
   pointer-events: none;
   transition: transform .24s ease, opacity .24s ease;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24%, #000 100%);
-  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 100%);
 }
+
+body:not(.in-game) #app .mode-card:nth-child(1) { --mode-accent: #55c6ee; }
+body:not(.in-game) #app .mode-card:nth-child(2) { --mode-accent: #f28c9e; }
+body:not(.in-game) #app .mode-card:nth-child(3) { --mode-accent: #72dec1; }
 
 body:not(.in-game) #app .mode-card .mode-art svg {
   display: block;
@@ -134,7 +136,7 @@ body:not(.in-game) #app .mode-card p {
 }
 
 body:not(.in-game) #app .mode-card h3 {
-  margin-top: 12px;
+  margin-top: 16px;
 }
 
 body:not(.in-game) #app .mode-card:hover,
