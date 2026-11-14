@@ -67,48 +67,48 @@ body:not(.in-game):has(.hero) #app { background: transparent; }
 
 /* The color highlight follows the pointer while preserving button contrast. */
 body:not(.in-game) .hero-actions .btn {
-  background-image:
-    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #91e7ff75 0%, #778aff32 32%, transparent 70%),
-    linear-gradient(125deg, #20a9e2 0%, #087ebc 48%, #155a91 100%);
-  background-size: 180% 180%, 100% 100%;
-  background-position: var(--pointer-x, 50%) var(--pointer-y, 50%), center;
-  transition: background-position .24s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  background-color: #087ebc;
+  background-image: none;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 body:not(.in-game) .hero-actions .btn-secondary {
-  background-image:
-    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #81dcff55 0%, #7d75ff2b 34%, transparent 72%),
-    linear-gradient(125deg, #1b3b57 0%, #142f49 58%, #10253b 100%);
+  background-color: #102c46;
 }
 
 body:not(.in-game) .hero-actions .btn:hover:not(:disabled),
 body:not(.in-game) .hero-actions .btn:focus-visible {
-  background-size: 220% 220%, 100% 100%;
-  box-shadow: inset 0 1px #ffffff42, 0 8px 22px #087ebc3d;
+  box-shadow: inset 0 1px #ffffff38, 0 7px 18px #087ebc42;
 }
 
-body:not(.in-game) .mode-card {
-  background-image:
-    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #50c6ff28 0%, #687cff12 36%, transparent 72%),
-    linear-gradient(145deg, #173a58 0%, #122e49 53%, #10263d 100%);
-  transition: background-position .25s ease, transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+body:not(.in-game) .hero-actions .btn-primary:hover:not(:disabled),
+body:not(.in-game) .hero-actions .btn-primary:focus-visible {
+  background-image: radial-gradient(ellipse 130px 78px at var(--pointer-x, 50%) var(--pointer-y, 50%), #8be8ffb8 0%, #47bde879 38%, transparent 76%);
 }
 
-body:not(.in-game) .mode-card:nth-child(2) {
-  background-image:
-    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #50c6ff28 0%, #687cff12 36%, transparent 72%),
-    linear-gradient(145deg, #163b5d 0%, #112e4c 54%, #10253e 100%);
+body:not(.in-game) .hero-actions .btn-secondary:hover:not(:disabled),
+body:not(.in-game) .hero-actions .btn-secondary:focus-visible {
+  background-image: radial-gradient(ellipse 130px 78px at var(--pointer-x, 50%) var(--pointer-y, 50%), #72dbffab 0%, #627fff7a 38%, transparent 76%);
 }
 
-body:not(.in-game) .mode-card:nth-child(3) {
-  background-image:
-    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #55e3cf24 0%, #7886ff12 36%, transparent 72%),
-    linear-gradient(145deg, #174052 0%, #123448 54%, #10283e 100%);
+body:not(.in-game) #app:has(.hero) .mode-card {
+  background-color: #0b2033;
+  background-image: none;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 
-body:not(.in-game) .mode-card:hover,
-body:not(.in-game) .mode-card:focus-visible {
-  background-size: 220% 220%, 100% 100%;
+body:not(.in-game) #app:has(.hero) .mode-card:nth-child(2) {
+  background-color: #0b2033;
+}
+
+body:not(.in-game) #app:has(.hero) .mode-card:nth-child(3) {
+  background-color: #0b2033;
+}
+
+body:not(.in-game) #app:has(.hero) .mode-card:hover,
+body:not(.in-game) #app:has(.hero) .mode-card:focus-visible {
+  background-image: radial-gradient(ellipse 180px 130px at var(--pointer-x, 50%) var(--pointer-y, 50%), #39bafc82 0%, #597fff46 42%, transparent 78%);
+  box-shadow: inset 0 1px #d9f7ff20, 0 10px 24px #020b1666;
 }
 
 @media (max-width: 760px) {
@@ -127,5 +127,5 @@ body:not(.in-game) .mode-card:focus-visible {
 
   body:not(.in-game):has(.hero) .main-column::before { animation: none !important; }
   body:not(.in-game) .hero-actions .btn,
-  body:not(.in-game) .mode-card { transition: none !important; }
+  body:not(.in-game) #app:has(.hero) .mode-card { transition: none !important; }
 }
