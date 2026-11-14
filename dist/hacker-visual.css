@@ -111,25 +111,26 @@ body.in-game .board-coop .boss-model.repairing.armor-stage-2 .armor-shoulder-rig
 body.in-game .board-coop .boss-model.repairing.armor-stage-3 .armor-forearm-left,
 body.in-game .board-coop .boss-model.repairing.armor-stage-3 .armor-forearm-right,
 body.in-game .board-coop .boss-model.repairing.armor-stage-4 .armor-chest { opacity: 0 !important; }
-body.in-game .board-coop .armor-debris-part { opacity: 1; transform-box: fill-box; transform-origin: center; }
-body.in-game .board-coop .armor-fragment { fill: url(#bossMetal); stroke: #ff8590; stroke-width: 4; stroke-linejoin: round; filter: drop-shadow(0 4px 4px #05070fcc); }
+body.in-game .board-coop .armor-debris-part { opacity: 1; }
+body.in-game .board-coop .armor-fragment { fill: url(#bossMetal); stroke: #ff8590; stroke-width: 4; stroke-linejoin: round; filter: drop-shadow(0 4px 4px #05070fcc); transform-box: fill-box; transform-origin: center; }
 body.in-game .board-coop .armor-debris-part.landed { opacity: 1 !important; animation: none !important; filter: drop-shadow(0 5px 5px #05070fcc); }
 body.in-game .board-coop .armor-debris-part.landed .armor-fragment { filter: drop-shadow(0 5px 5px #05070fcc) drop-shadow(0 0 2px #ff7485); }
 body.in-game .board-coop .antenna-left .armor-fragment,
 body.in-game .board-coop .antenna-right .armor-fragment { fill: none; stroke: #ff5367; stroke-width: 8; }
-body.in-game .board-coop .armor-debris-part.drop-now { animation: armor-fall-from-body 1.05s cubic-bezier(.16,.74,.25,1) both; }
-body.in-game .board-coop .armor-debris-part.return-now { animation: armor-return-to-body 1.05s cubic-bezier(.16,.74,.25,1) both; filter: drop-shadow(0 0 9px #ff6978); }
-@keyframes armor-fall-from-body {
-  0% { opacity: 0; transform: translate(0,0) rotate(0); }
-  12% { opacity: 1; }
-  69% { transform: translate(var(--fall-x),var(--fall-y)) rotate(var(--fall-angle)); }
-  83% { transform: translate(var(--fall-x),calc(var(--fall-y) - 10px)) rotate(var(--fall-angle)); }
-  100% { opacity: 1; transform: translate(var(--fall-x),var(--fall-y)) rotate(var(--fall-angle)); }
+body.in-game .board-coop .armor-debris-part.drop-now { animation: armor-debris-reveal 1.1s ease-out both; }
+body.in-game .board-coop .armor-debris-part.drop-now .armor-fragment { animation: armor-fragment-drop 1.1s cubic-bezier(.16,.74,.25,1) both; }
+body.in-game .board-coop .armor-debris-part.return-now { filter: drop-shadow(0 0 9px #ff6978); }
+body.in-game .board-coop .armor-debris-part.return-now .armor-fragment { animation: armor-return-to-body 1.05s cubic-bezier(.22,.74,.25,1) both; }
+@keyframes armor-debris-reveal { 0%,8% { opacity: 0; } 18%,100% { opacity: 1; } }
+@keyframes armor-fragment-drop {
+  0% { transform: translate(var(--fall-offset-x),var(--fall-offset-y)) rotate(var(--fall-angle-reverse)); }
+  58% { transform: translate(calc(var(--fall-offset-x) * .12),calc(var(--fall-offset-y) * .12)) rotate(var(--fall-angle-soft)); }
+  78% { transform: translate(0,-9px) rotate(3deg); }
+  88%,100% { transform: translate(0,0) rotate(0); }
 }
 @keyframes armor-return-to-body {
-  0% { opacity: 1; transform: translate(var(--fall-x),var(--fall-y)) rotate(var(--fall-angle)); }
-  18% { opacity: 1; }
-  100% { opacity: .1; transform: translate(0,0) rotate(0); }
+  0%,16% { transform: translate(0,0) rotate(0); }
+  100% { transform: translate(var(--fall-offset-x),var(--fall-offset-y)) rotate(var(--fall-angle-reverse)); }
 }
 body.in-game .board-coop .armor-repair-vfx { fill: none; stroke: #ff6978; stroke-width: 4; stroke-dasharray: 7 10; filter: drop-shadow(0 0 8px #fb3556); animation: armor-repair-pulse .7s ease-in-out 2; }
 body.in-game .board-coop .armor-repair-vfx circle { fill: #ffb95f; stroke: #fff0c2; stroke-width: 2; }

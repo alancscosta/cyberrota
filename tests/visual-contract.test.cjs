@@ -63,6 +63,9 @@ test('each armor stage renders its fragments in front of the Hacker until they l
   assert.ok(robot >= 0 && fragments > robot, 'detached armor is layered in front of the robot instead of being hidden behind it');
   assert.ok(app.includes("group:1,name:'back-left'") && app.includes("group:2,name:'antenna-left'") && app.includes("group:3,name:'shoulder-left'") && app.includes("group:4,name:'forearm-left'") && app.includes("group:5,name:'chest'"), 'five distinct hits detach armor in visible stages');
   assert.ok(hackerCss.includes('.armor-debris-part.landed'), 'fallen armor remains visible on the relay deck after its animation');
+  assert.ok(app.includes('class="armor-fragment" style="--fall-offset-x:${-part.x}px;--fall-offset-y:${-part.y}px;--fall-angle-reverse:${-part.angle}deg;--fall-angle-soft:${-part.angle*.14}deg"'), 'the fragment animates inside its positioned SVG wrapper');
+  assert.ok(hackerCss.includes('.armor-debris-part.drop-now .armor-fragment { animation: armor-fragment-drop'), 'the fragment moves from the Hacker body to its landing position');
+  assert.ok(!hackerCss.includes('.armor-debris-part.drop-now { animation: armor-fall-from-body'), 'the animation never overrides the wrapper transform that places it on the board');
 });
 
 test('the co-op board shows every player token and a persistent turn roster', () => {

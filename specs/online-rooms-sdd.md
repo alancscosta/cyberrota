@@ -47,3 +47,9 @@ Habilitar lobby e salas multijogador entre aparelhos, preservando as regras atua
 - Efeitos de combate online derivam do snapshot de feedback: feixe do ataque, resposta do Hacker, impacto e queda/reparo de armadura são reproduzidos no cliente e limpos após a janela visual. O movimento do peão é reproduzido uma vez por resposta.
 - A sequência de vitória COOP usa timestamp autoritativo do Worker para que todos vejam explosão e pódio no mesmo compasso.
 - Quando um turno expira, “FULANO PASSOU A VEZ” termina antes de revelar a pessoa seguinte. Enquanto esse aviso estiver ativo, o aviso central e o texto lateral mostram apenas a troca de turno.
+- No resultado online, o anfitrião mantém acesso imediato às ações da sala; visitantes veem a saída para o início bloqueada por cinco segundos, com contagem regressiva visível.
+- O participante anfitrião recebe uma etiqueta de coroa no lobby.
+- O áudio online acompanha uma única vez cada evento autoritativo de dado, resposta, ataque, dano e fim de partida. O motor de áudio é acordado por interação do navegador; a trilha ambiente inicia quando a partida abre e tem volume perceptível.
+- O resultado do dado e sua animação são deduplicados pela partida, rodada, jogador e valor; uma atualização do mesmo snapshot não reinicia o dado.
+- A tela COOP mostra o nome e a vida restante do Hacker acima da cabeça, com preenchimento vermelho que diminui conforme ele perde vida. O contra-ataque move o Hacker em direção ao alvo; o rack atingido também recua e pisca.
+- Cada peça de armadura destacada mantém o transform SVG do grupo que a posiciona no tabuleiro. A animação acontece no fragmento interno: ele parte do corpo do Hacker, cai até o ponto de pouso e permanece visível; reparar a armadura anima o retorno sem sobrescrever a posição da cena.

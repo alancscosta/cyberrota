@@ -132,3 +132,5 @@ body.in-game .victory-summary .podium-actions { flex-direction: column; }
 @media (prefers-reduced-motion: reduce) {
   body.in-game .podium-player .board-pawn-avatar { filter: none; }
 }
+
+.podium-actions button[data-room-home-gated]{opacity:.68;cursor:wait;filter:saturate(.72)}

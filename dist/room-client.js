@@ -310,7 +310,7 @@ function renderLobby(container, snapshot, localPlayerId, client, { onClosed = ()
   const title = snapshot.mode === 'competitive' ? 'Desligue o Servidor · 3v3' : 'Defenda a Rede';
   const teamName = (team) => team === 'blue' ? 'AZUL' : team === 'red' ? 'VERMELHO' : '';
   const roster = snapshot.players.map((player) => `<li class="room-player ${player.playerId === localPlayerId ? 'is-you' : ''} ${player.connected ? '' : 'is-away'}">
-      ${pawnAvatar(player)}<span class="room-player-copy"><b>${escapeHtml(player.name)}</b><small>${player.isBot ? 'BOT' : player.playerId === snapshot.hostPlayerId ? 'ANFITRIÃO' : 'JOGADOR'}${player.team ? ` · ${teamName(player.team)}` : ''}</small></span>
+      ${pawnAvatar(player)}<span class="room-player-copy"><b>${escapeHtml(player.name)}</b><small>${player.isBot ? 'BOT' : player.playerId === snapshot.hostPlayerId ? '<span class="room-host-badge"><svg class="room-host-crown" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 14 1.5 5l4.3 3.1L10 2l4.2 6.1L18.5 5 17 14zM3 16h14v2H3z"/></svg> ANFITRIÃO</span>' : 'JOGADOR'}${player.team ? ` · ${teamName(player.team)}` : ''}</small></span>
       <span class="room-player-status" aria-label="${player.connected ? 'Conectado' : 'Desconectado'}">${player.connected ? '●' : '○'}</span>
     </li>`).join('');
   const colorOptions = choices.map((color) => `<button type="button" class="room-color-choice ${color.index === selectedColor ? 'is-selected' : ''}" data-color-index="${color.index}" aria-label="${color.name}" aria-pressed="${color.index === selectedColor}" style="--player-color:${color.value}">${pawnAvatar({ colorIndex: color.index }, 'room-color-pawn')}<small>${color.name}</small></button>`).join('');

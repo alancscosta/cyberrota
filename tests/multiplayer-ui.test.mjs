@@ -95,7 +95,9 @@ test('the deployed room, game-core, and lobby style URLs load the updated versio
   assert.match(html, /game-core\.js\?v=18/);
   assert.match(html, /room-client\.js\?v=8/);
   assert.match(html, /multiplayer-ui\.js\?v=8/);
-  assert.match(html, /rooms\.css\?v=3/);
+  assert.match(html, /rooms\.css\?v=4/);
+  assert.match(html, /app\.js\?v=64/);
+  assert.match(html, /hacker-combat\.css\?v=18/);
 });
 
 test('a room opened from a saved link keeps rendering websocket snapshots after resuming', async () => {
@@ -182,7 +184,7 @@ test('online postgame keeps the finished match behind a centered translucent nav
   const podiumCss = await readFile(new URL('../dist/podium.css', import.meta.url), 'utf8');
   assert.match(app, /function renderRoomPostgameOverlay\(/);
   assert.match(app, /renderRaceGame\(\)\+\(game\.phase==='finished'&&game\.room\?renderRoomPostgameOverlay\(\):''\)/);
-  assert.match(app, /if\(forFinish\)\{game\.phase='finished';game\.room=\{hostPlayerId:snapshot\.hostPlayerId,hostConnected:[^}]+\};game\.localPlayerId=client\.player\?\.playerId;return renderGame\(\)\.replace\(/);
+  assert.match(app, /if\(forFinish\)\{game\.phase='finished';game\.room=\{hostPlayerId:snapshot\.hostPlayerId,hostConnected:[^}]+\};game\.localPlayerId=client\.player\?\.playerId;playOnlineSnapshotAudio\(snapshot,client,feedbackKey\);return renderGame\(\)\.replace\(/);
   assert.match(podiumCss, /\.postgame-backdrop\s*\{/);
   assert.match(podiumCss, /backdrop-filter:\s*blur\(/);
   assert.match(podiumCss, /background:\s*rgba\(5,\s*15,\s*31,\s*\.9\)/);
@@ -193,9 +195,10 @@ test('online postgame gives every player a way out and explains when the host le
   const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
   assert.match(app, /hostConnected:!!snapshot\.players\?\.find\(\(player\)=>player\.playerId===snapshot\.hostPlayerId\)\?\.connected/);
   assert.match(app, /O anfitrião saiu\. Esta partida foi finalizada\./);
-  assert.match(app, /data-action="room-home">Voltar ao início/);
+  assert.match(app, /renderRoomHomeButton\('btn btn-primary'\)/);
+  assert.match(app, /renderRoomHomeButton\('btn btn-secondary'\)/);
   assert.match(app, /hostConnected===false\?'/);
-  assert.ok(app.includes("case'room-home':clearPlayerTurnClock();window.CyberrotaRooms?.leaveActiveRoom?.();stopBackgroundMusic();game=null;page='home';render();break;"));
+  assert.ok(app.includes("case'room-home':clearPlayerTurnClock();if(onlineRendererState.roomHomeTimer)window.clearInterval(onlineRendererState.roomHomeTimer);onlineRendererState.roomHomeTimer=null;window.CyberrotaRooms?.leaveActiveRoom?.();stopBackgroundMusic();game=null;page='home';render();break;"));
 });
 
 test('room code is always labeled explicitly in the lobby, match, and finished-room states', async () => {
@@ -224,4 +227,51 @@ test('online cooperative controls send role actions and hide healing outside the
   assert.match(app, /function renderHealingNodes\(\)\{if\(game\.phase!==['"]walk['"]\)return ['"]['"]/);
   assert.match(app, /data-node-id="\$\{index\}"/);
   assert.match(app, /function useRole\(role\)/);
+});
+
+test('online guest return waits five seconds while the host keeps immediate room controls', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /function roomHomeWaitRemaining\(/);
+  assert.match(app, /roomHomeEnabledAt=Date\.now\(\)\+5000/);
+  assert.match(app, /data-room-home-gated/);
+  assert.match(app, /function updateRoomHomeCountdown\(/);
+  assert.match(app, /game\.localPlayerId===room\.hostPlayerId/);
+});
+
+test('lobby marks the host with a crown badge', async () => {
+  const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
+  const roomsCss = await readFile(new URL('../dist/rooms.css', import.meta.url), 'utf8');
+  assert.match(roomClient, /room-host-badge/);
+  assert.match(roomClient, /room-host-crown/);
+  assert.match(roomsCss, /\.room-host-badge/);
+  assert.match(roomsCss, /\.room-host-crown/);
+});
+
+test('online snapshots play combat, dice and match-end sounds after browser audio activation', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.match(app, /function wakeAudioContext\(/);
+  assert.match(app, /addEventListener\('pointerdown',wakeAudioContext/);
+  assert.match(app, /function playOnlineSnapshotAudio\(/);
+  assert.match(app, /playSfx\('charge'\)/);
+  assert.match(app, /playSfx\('hacker-scream'\)/);
+  assert.match(app, /'victory':'defeat'/);
+  assert.match(app, /playSfx\('roll'\)/);
+  assert.match(app, /startBackgroundMusic\(\);/);
+  assert.match(app, /lastDieKey/);
+  assert.match(app, /remote\.coop\?\.round\|\|remote\.race\?\.turn\|\|0/);
+  assert.doesNotMatch(app, /lastDieRevision/);
+});
+
+test('the Hacker gets a spaced floating health display and a lunge on counterattack', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  const combatCss = await readFile(new URL('../dist/hacker-combat.css', import.meta.url), 'utf8');
+  assert.match(app, /boss-health-hud/);
+  assert.match(app, /HACKER/);
+  assert.match(app, /\$\{game\.coop\.hackerHp\} \/ \$\{game\.coop\.startingHp\} PV/);
+  assert.match(app, /bossAttack\?\'hacker-attack/);
+  assert.match(app, /bossHit\?\'boss-hit/);
+  assert.match(app, /const impact=game\.combatFx&&game\.phase==='feedback'\?`impact-active/);
+  assert.match(combatCss, /\.impact-rack \.datacenter-rack\.server-hit/);
+  assert.match(combatCss, /\.boss-scene-figure\.hacker-attack\s*\{[^}]*animation:boss-charge/);
+  assert.match(combatCss, /\.board-coop \.boss-model\.hacker-attack\s*\{[^}]*animation:hacker-board-strike/);
 });
