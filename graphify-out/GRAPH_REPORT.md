@@ -1,7 +1,7 @@
 # Graph Report - cyberrota  (2026-11-14)
 
 ## Corpus Check
-- 54 files · ~47,061 words
+- 54 files · ~47,092 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 21 file(s) not represented in the graph (top: .pptx 12, .ndjson 5, (none) 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d3c2b16f`
+- Built from commit: `881adfff`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -46,8 +46,8 @@
 4. `UI Design` - 16 edges
 5. `Common generated-interface tells` - 15 edges
 6. `applyGameCommand()` - 12 edges
-7. `Final UI review` - 12 edges
-8. `UI Art Direction` - 12 edges
+7. `UI Art Direction` - 12 edges
+8. `Final UI review` - 12 edges
 9. `SDD — Vitória do Hacker e tabuleiro de Defesa` - 11 edges
 10. `routeRoom()` - 10 edges
 

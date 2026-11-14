@@ -661,6 +661,7 @@ function publicRoomConfig(config) {
 export function publicRoomSnapshot(roomState) {
   const room = clone(roomState);
   return {
+    serverTime: Date.now(),
     code: room.code,
     mode: room.mode,
     status: room.status,

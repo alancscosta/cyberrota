@@ -124,6 +124,7 @@ test('the server controls turn order, rolls, question selection, answer validati
   assert.equal(room.gameState.coop.position, 1);
   assert.equal(room.gameState.currentPlayerId, 'p2');
   const snapshot = publicRoomSnapshot(room);
+  assert.ok(Number.isFinite(snapshot.serverTime), 'snapshots include server time so clients can align their clocks');
   assert.equal(snapshot.gameState.question, null);
   assert.equal(snapshot.config.deck, undefined);
   assert.equal(snapshot.players.some((player) => player.accountId !== undefined), false);

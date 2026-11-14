@@ -852,9 +852,9 @@
     "semantic_hash": ""
   },
   "tests/multiplayer-ui.test.mjs": {
-    "mtime": 1794630030.5602322,
-    "seen": 1794630090.5687659,
-    "ast_hash": "420df34bcf17b0ad1163820f69308752",
+    "mtime": 1794632555.4865913,
+    "seen": 1794632575.606674,
+    "ast_hash": "0668eb40d36d1104b302352f47393de8",
     "semantic_hash": ""
   },
   "tests/room-client.test.mjs": {
@@ -870,9 +870,9 @@
     "semantic_hash": ""
   },
   "tests/rooms.test.mjs": {
-    "mtime": 1794629988.5681784,
-    "seen": 1794630090.5697675,
-    "ast_hash": "66404ba660c043c98593f5e7fc7e59c1",
+    "mtime": 1794632300.5299585,
+    "seen": 1794632521.8078685,
+    "ast_hash": "09541824004ed149937a2d2eb251935c",
     "semantic_hash": ""
   },
   "tests/worker-api.test.mjs": {
@@ -888,9 +888,9 @@
     "semantic_hash": ""
   },
   "worker/src/rooms.mjs": {
-    "mtime": 1794629977.1548889,
-    "seen": 1794630090.5717688,
-    "ast_hash": "7d95ebdc54db340ca85e4b6e8ecb4052",
+    "mtime": 1794632314.1944199,
+    "seen": 1794632521.8098702,
+    "ast_hash": "6a83d889875e19cd93c70987d1a79e64",
     "semantic_hash": ""
   },
   "specs/accounts-storage-sdd.md": {

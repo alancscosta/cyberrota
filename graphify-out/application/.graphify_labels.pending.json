@@ -1,11 +1,11 @@
 {
   "0": "esc",
   "1": "game-core.js",
-  "2": "esc",
+  "2": "renderGame",
   "3": "render",
   "4": "app.js",
   "5": "difficultyName",
-  "6": "multiplayer-ui.js",
+  "6": "renderOnlineSnapshot",
   "7": "RoomClient",
   "8": "renderBoardPawnAvatar",
   "9": "account-client.js",

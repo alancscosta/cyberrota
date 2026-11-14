@@ -82,7 +82,10 @@ test('online matches reuse the original game renderer and send its controls to t
   const onlineClock = app.slice(app.indexOf('function syncOnlineTurnClock'), app.indexOf('function renderOnlineSnapshot'));
   assert.match(onlineClock, /remote\.currentPlayerId,remote\.turnDeadlineAt/);
   assert.match(onlineClock, /deadline-TURN_SECONDS\*1000/);
-  assert.doesNotMatch(onlineClock, /\.command\(/, 'online countdown never rolls or answers on behalf of the player');
+  assert.match(app, /serverOffsetMs/);
+  assert.match(onlineClock, /remote\.mode==='competitive'/, 'the timeout fallback is limited to 3v3 and leaves co-op gameplay alone');
+  assert.match(onlineClock, /command\('game\.skip'/, 'the active player cannot be left at zero if a room alarm is delayed');
+  assert.doesNotMatch(onlineClock, /command\('game\.(roll|choose-difficulty|answer)'/, 'online countdown never rolls or answers on behalf of the player');
   assert.match(app, /rankPodium/);
   assert.match(source, /CyberrotaOnlineRenderer\.render/);
   assert.doesNotMatch(source, /online-turn-card|function gameMarkup/);
