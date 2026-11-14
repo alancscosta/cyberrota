@@ -33,11 +33,11 @@ test('Durable Object initializes, joins, stores the game server-side, and filter
   const state = new MemoryState();
   const room = new RoomDurableObject(state, {});
   const created = await send(room, '/initialize', { method: 'POST', body: {
-    code: 'ABCD2345', mode: 'coop', capacity: 2, host: { playerId: 'host', accountId: 'acct-host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
+    code: 'ABC234', mode: 'coop', capacity: 2, host: { playerId: 'host', accountId: 'acct-host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
   } });
   assert.equal(created.status, 200);
   assert.equal(created.body.player.resumeToken, 'host-secret');
-  assert.deepEqual(created.body.accountRooms, [{ accountId: 'acct-host', roomCode: 'ABCD2345', playerId: 'host', isHost: true }]);
+  assert.deepEqual(created.body.accountRooms, [{ accountId: 'acct-host', roomCode: 'ABC234', playerId: 'host', isHost: true }]);
   assert.equal(state.storage.alarmAt !== null, true);
   await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'room.configure', payload: { config: { deck } } } });
   const joined = await send(room, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1, accountId: 'acct-bia' } });
@@ -56,7 +56,7 @@ test('a turn is accepted only from the active participant and completion persist
   const state = new MemoryState();
   const room = new RoomDurableObject(state, {});
   await send(room, '/initialize', { method: 'POST', body: {
-    code: 'ABCD2345', mode: 'coop', capacity: 2, config: { deck },
+    code: 'ABC234', mode: 'coop', capacity: 2, config: { deck },
     host: { playerId: 'host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
   } });
   const joined = await send(room, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1 } });
@@ -71,7 +71,7 @@ test('a turn is accepted only from the active participant and completion persist
 test('room ownership can be transferred when an account is deleted', async () => {
   const room = new RoomDurableObject(new MemoryState(), {});
   await send(room, '/initialize', { method: 'POST', body: {
-    code: 'ABCD2345', mode: 'coop', capacity: 2,
+    code: 'ABC234', mode: 'coop', capacity: 2,
     host: { playerId: 'host', accountId: 'account-a', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
   } });
   const joined = await send(room, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1, accountId: 'account-b' } });
@@ -79,5 +79,5 @@ test('room ownership can be transferred when an account is deleted', async () =>
   assert.equal(result.newHostId, joined.body.player.playerId);
   assert.equal(result.snapshot.players.length, 2);
   assert.equal(result.snapshot.players[0].name, 'Jogador');
-  assert.deepEqual(result.accountRooms, [{ accountId: 'account-b', roomCode: 'ABCD2345', playerId: joined.body.player.playerId, isHost: true }]);
+  assert.deepEqual(result.accountRooms, [{ accountId: 'account-b', roomCode: 'ABC234', playerId: joined.body.player.playerId, isHost: true }]);
 });

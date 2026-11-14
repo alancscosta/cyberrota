@@ -1,17 +1,17 @@
-# Graph Report - cyberrota  (2026-11-10)
+# Graph Report - cyberrota  (2026-11-13)
 
 ## Corpus Check
-- 20 files · ~20,281 words
+- 53 files · ~43,922 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 2 file(s) not represented in the graph (top: (none) 2)
+- Unclassified: 21 file(s) not represented in the graph (top: .pptx 12, .ndjson 5, (none) 2)
 
 ## Summary
-- 203 nodes · 196 edges · 14 communities (13 shown, 1 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- 464 nodes · 718 edges · 28 communities (24 shown, 4 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 21 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5de6f650`
+- Built from commit: `2dca0be2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,47 +21,63 @@
 - visual-contract.test.cjs
 - Proposta de regras para o protótipo
 - SDD — Vitória do Hacker e tabuleiro de Defesa
-- UI Design
+- rooms.mjs
 - Cyber Rota: Defenda a Rede
 - Product-specific creative direction
-- Common generated-interface tells
+- UI Design
 - UI Art Direction
 - adr-3d-engine.md
-- Final UI review
-- Critérios de aceitação
-- Regras de jogo — Cyber Rota
+- index.mjs
+- accounts.js
+- build_design.mjs
+- RoomDurableObject
+- build_short.mjs
+- Turnos sem bloqueio e rota Solo — SDD
+- Worker API: spec-driven development
+- Contas e persistência — SDD
+- Salas online — SDD
+- Pódio multiplayer — SDD
+- build_official_title.mjs
+- build_professional.mjs
+- build_presentation.mjs
+- room-do.test.mjs
+- ref_node_fs
+- vercel.json
 
 ## God Nodes (most connected - your core abstractions)
-1. `UI Design` - 16 edges
-2. `Common generated-interface tells` - 15 edges
-3. `UI Art Direction` - 12 edges
-4. `Final UI review` - 12 edges
-5. `SDD — Vitória do Hacker e tabuleiro de Defesa` - 11 edges
-6. `Plano de implementação — Desligue o Servidor 3v3 e Defenda a Rede` - 8 edges
-7. `Regras de jogo — Cyber Rota` - 7 edges
-8. `Cyber Rota: Defenda a Rede` - 6 edges
-9. `scripts` - 5 edges
-10. `5. Structure before decoration` - 5 edges
+1. `roomError()` - 25 edges
+2. `clone()` - 18 edges
+3. `RoomDurableObject` - 16 edges
+4. `UI Design` - 16 edges
+5. `Common generated-interface tells` - 15 edges
+6. `applyGameCommand()` - 12 edges
+7. `UI Art Direction` - 12 edges
+8. `Final UI review` - 12 edges
+9. `SDD — Vitória do Hacker e tabuleiro de Defesa` - 11 edges
+10. `routeRoom()` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
-- None detected - all connections are within the same source files.
+- `CyberrotaWorkerRoom` --inherits--> `RoomDurableObject`  [EXTRACTED]
+  worker/src/index.mjs → worker/src/rooms.mjs
+- `routeRoom()` --calls--> `generateRoomCode()`  [EXTRACTED]
+  worker/src/index.mjs → worker/src/rooms.mjs
 
 ## Import Cycles
 - None detected.
 
-## Communities (14 total, 1 thin omitted)
+## Communities (28 total, 4 thin omitted)
 
 ### Community 0 - "README.md"
-Cohesion: 0.09
-Nodes (17): Decisões que precisam permanecer iguais entre tela e mesa, Estado da entrega digital, Etapas para a versão impressa (Print & Play), Arquitetura, Cyber Rota — desenvolvimento e estado atual, Modos implementados, Próximas etapas recomendadas, Regras e decisões (+9 more)
+Cohesion: 0.06
+Nodes (29): Decisões que precisam permanecer iguais entre tela e mesa, Estado da entrega digital, Etapas para a versão impressa (Print & Play), Arquitetura, Cyber Rota — desenvolvimento e estado atual, Modos implementados, Próximas etapas recomendadas, Regras e decisões (+21 more)
 
 ### Community 1 - "Plano de execução — SDD/TDD"
-Cohesion: 0.08
-Nodes (25): author, bugs, url, description, devDependencies, vite@^8.3.6, directories, doc (+17 more)
+Cohesion: 0.06
+Nodes (31): author, bugs, url, description, devDependencies, vite@^8.3.6, wrangler@^4.162.0, directories (+23 more)
 
 ### Community 2 - "visual-contract.test.cjs"
-Cohesion: 0.09
-Nodes (15): assert, test, app, assert, boardCss, css, finishCss, fs (+7 more)
+Cohesion: 0.13
+Nodes (13): app, assert, boardCss, css, finishCss, fs, hackerCss, html (+5 more)
 
 ### Community 3 - "Proposta de regras para o protótipo"
 Cohesion: 0.18
@@ -71,55 +87,99 @@ Nodes (10): Critérios de conclusão, Defenda a Rede, Desligue o Servidor 3v3, D
 Cohesion: 0.09
 Nodes (21): Aceitação TDD, Aditivo SDD — Espaçamento dos racks, peões e ataque do Hacker, Avatares e leitura imediata da partida — SDD, Contexto, Contrato espacial, Contratos TDD, Direção visual, Especificação (+13 more)
 
-### Community 5 - "UI Design"
-Cohesion: 0.10
-Nodes (20): 10. Use motion as feedback and explanation, 11. Treat copy as part of the interface, 12. Keep implementation disciplined, 13. Visually verify material UI changes, 14. When existing UI looks AI-generated, 15. Final response, 1. Establish design authority, 2. Understand the product before styling (+12 more)
+### Community 5 - "rooms.mjs"
+Cohesion: 0.13
+Nodes (42): deck, host, applyGameCommand(), assertActiveTurn(), assertHost(), assignTeam(), availableColorIndex(), botCorrectness() (+34 more)
 
 ### Community 6 - "Cyber Rota: Defenda a Rede"
 Cohesion: 0.29
 Nodes (6): Direção de arte e critérios de qualidade, GDevelop, Genex Desktop — recomendação para este repositório, Godot, Opções avaliadas, Pesquisa: recursos gratuitos para criar jogos com IA
 
 ### Community 7 - "Product-specific creative direction"
-Cohesion: 0.12
-Nodes (12): Anti-slop reference, Distinctiveness test, 1. Locate the real product signal, 2. Consider three fundamentally different organizing ideas, 3. Reject generic or costly concepts, 4. Commit to one practical visual thesis, Background, Cross-check with UI craft (+4 more)
+Cohesion: 0.05
+Nodes (39): 10. Design-system amnesia, 11. Dashboard-by-default, 12. Decorative emptiness, 13. Individually spaced fields, 14. Scattered actions, 1. Cardification, 2. Decorative gradients and glow, 3. Generic hero recipe (+31 more)
 
-### Community 8 - "Common generated-interface tells"
-Cohesion: 0.13
-Nodes (15): 10. Design-system amnesia, 11. Dashboard-by-default, 12. Decorative emptiness, 13. Individually spaced fields, 14. Scattered actions, 1. Cardification, 2. Decorative gradients and glow, 3. Generic hero recipe (+7 more)
+### Community 8 - "UI Design"
+Cohesion: 0.10
+Nodes (20): 10. Use motion as feedback and explanation, 11. Treat copy as part of the interface, 12. Keep implementation disciplined, 13. Visually verify material UI changes, 14. When existing UI looks AI-generated, 15. Final response, 1. Establish design authority, 2. Understand the product before styling (+12 more)
 
 ### Community 9 - "UI Art Direction"
 Cohesion: 0.15
 Nodes (12): 1. Respect design authority and scope, 2. Build a product-specific creative brief, 3. Develop three different concepts, not three skins, 4. Challenge the concepts before choosing one, 5. Turn the winning concept into a buildable direction, 6. Apply expression in proportion to the surface, 7. Translate the concept into real UI, 8. Review what was actually built (+4 more)
 
-### Community 11 - "Final UI review"
-Cohesion: 0.17
-Nodes (12): Accessibility, Anti-slop, Color and surfaces, Components and states, Creative direction (when a new direction was requested), Final UI review, Hierarchy and layout, Motion (+4 more)
+### Community 11 - "index.mjs"
+Cohesion: 0.12
+Nodes (22): assert, encodePart(), signGoogleToken(), test, assert, test, CyberrotaWorkerRoom, doRoomRequest() (+14 more)
 
-### Community 12 - "Critérios de aceitação"
-Cohesion: 0.40
-Nodes (4): Critérios de aceitação, Derrota final do Hacker e tabuleiro de Defesa — SDD, Revisão visual e multiplayer — aceite, Verificação TDD
+### Community 12 - "accounts.js"
+Cohesion: 0.12
+Nodes (32): asArray(), authenticateGoogleCredential(), base64UrlDecode(), base64UrlEncode(), clearSessionCookie(), createGuestSessionToken(), createSessionToken(), decodeJsonPart() (+24 more)
 
-### Community 13 - "Regras de jogo — Cyber Rota"
+### Community 14 - "build_design.mjs"
+Cohesion: 0.21
+Nodes (12): add(), build, C, candidate, contentSlide(), finalPath, footer(), out (+4 more)
+
+### Community 15 - "RoomDurableObject"
 Cohesion: 0.29
-Nodes (7): Cartas, dificuldade e baralhos, Defenda a Rede — cooperativo contra o Hacker, Desligue o Servidor — 3v3, Modos e temas, Persistência, acessibilidade e interface, Regras de jogo — Cyber Rota, Treino Solo
+Nodes (6): accountRoomRows(), jsonResponse(), publicRoomConfig(), publicRoomSnapshot(), randomToken(), RoomDurableObject
+
+### Community 16 - "build_short.mjs"
+Cohesion: 0.24
+Nodes (13): add(), build, bullets(), C, candidate, content(), finalPath, footer() (+5 more)
+
+### Community 17 - "Turnos sem bloqueio e rota Solo — SDD"
+Cohesion: 0.40
+Nodes (4): Objetivo, Regras, TDD, Turnos sem bloqueio e rota Solo — SDD
+
+### Community 18 - "Worker API: spec-driven development"
+Cohesion: 0.29
+Nodes (6): Account acceptance criteria, Deployment, Purpose, Room acceptance criteria, TDD scenarios, Worker API: spec-driven development
+
+### Community 19 - "Contas e persistência — SDD"
+Cohesion: 0.40
+Nodes (4): Contas e persistência — SDD, Objetivo, Regras, TDD
+
+### Community 20 - "Salas online — SDD"
+Cohesion: 0.40
+Nodes (4): Objetivo, Regras e contrato, Salas online — SDD, TDD e aceite
+
+### Community 21 - "Pódio multiplayer — SDD"
+Cohesion: 0.40
+Nodes (4): Objetivo, Pódio multiplayer — SDD, Regras, TDD
+
+### Community 22 - "build_official_title.mjs"
+Cohesion: 0.23
+Nodes (12): add(), build, C, candidate, contentSlide(), finalPath, footer(), out (+4 more)
+
+### Community 23 - "build_professional.mjs"
+Cohesion: 0.23
+Nodes (12): build, bulletRows(), C, candidate, contentSlide(), finalPath, out, pres (+4 more)
+
+### Community 24 - "build_presentation.mjs"
+Cohesion: 0.17
+Nodes (9): buildDir, C, candidate, content, finalPath, outDir, pres, root (+1 more)
+
+### Community 25 - "room-do.test.mjs"
+Cohesion: 0.20
+Nodes (3): deck, MemoryState, MemoryStorage
 
 ## Knowledge Gaps
-- **1 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `UI Design` connect `UI Design` to `Product-specific creative direction`?**
-  _High betweenness centrality (0.048) - this node is a cross-community bridge._
+- **Why does `RoomDurableObject` connect `RoomDurableObject` to `room-do.test.mjs`, `index.mjs`, `rooms.mjs`?**
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **Should `README.md` be split into smaller, more focused modules?**
-  _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._
-- **Why does `Common generated-interface tells` connect `Common generated-interface tells` to `Product-specific creative direction`?**
-  _High betweenness centrality (0.038) - this node is a cross-community bridge._
+  _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
+- **Why does `UI Design` connect `UI Design` to `Product-specific creative direction`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Should `Plano de execução — SDD/TDD` be split into smaller, more focused modules?**
-  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._
-- **Why does `Anti-slop reference` connect `Product-specific creative direction` to `Common generated-interface tells`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+  _Cohesion score 0.06439393939393939 - nodes in this community are weakly interconnected._
 - **Should `visual-contract.test.cjs` be split into smaller, more focused modules?**
-  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
 - **Should `SDD — Vitória do Hacker e tabuleiro de Defesa` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
+- **Should `rooms.mjs` be split into smaller, more focused modules?**
+  _Cohesion score 0.13429951690821257 - nodes in this community are weakly interconnected._

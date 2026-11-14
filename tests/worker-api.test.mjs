@@ -28,7 +28,7 @@ test('room creation ignores caller account ids and initializes a private host se
   const request = new Request('https://cyberrota.test/api/rooms', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ mode: 'coop', capacity: 4, name: 'Mila', colorIndex: 0, accountId: 'spoofed' }) });
   const response = await handleApiRequest(request, { SESSION_SECRET: 'a-valid-test-secret-with-at-least-32-characters', ROOMS: namespace });
   assert.equal(response.status, 200);
-  assert.match(initialization.code, /^[A-HJ-NP-Z2-9]{8}$/);
+  assert.match(initialization.code, /^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/);
   assert.equal(initialization.host.accountId, null);
   assert.equal(initialization.host.name, 'Mila');
   assert.ok(initialization.host.resumeToken.length >= 32);

@@ -1,6 +1,6 @@
 import { RoomClient, renderLobby } from './room-client.js';
 
-const CODE = /^[A-HJ-NP-Z2-9]{8}$/;
+const CODE = /^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/;
 const attached = new WeakSet();
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const colors = ['#43d6ff', '#769bff', '#ffbd68', '#d49bff', '#72e0b3', '#ff8e9b'];
@@ -12,7 +12,7 @@ function launchMarkup(profile, customDecks, selectedMode = 'coop') {
   const decks = [{ name: 'Padrão', value: 'standard' }, ...(customDecks || []).map((deck, index) => ({ name: deck.name, value: String(index) }))];
   return `<section class="online-rooms-panel"><div class="online-rooms-heading"><div><span class="room-eyebrow">JOGUE COM OUTRAS PESSOAS</span><h2>Salas online</h2><p>Crie uma sala e compartilhe o código ou entre na sala de alguém.</p></div><span class="online-free-tag">GRATUITO</span></div>
     <div class="online-rooms-grid"><form data-create-online-room><h3>Criar sala</h3><label>Seu nome<input name="name" maxlength="20" required value="${esc(profile || 'Jogador convidado')}"></label><label>Modo<select name="mode"><option value="coop" ${selectedMode === 'coop' ? 'selected' : ''}>Defenda a Rede · cooperativo</option><option value="competitive" ${selectedMode === 'competitive' ? 'selected' : ''}>Desligue o Servidor · 3v3</option></select></label><label data-capacity-field>Vagas<select name="capacity">${[2,3,4,5,6].map((n) => `<option value="${n}" ${n === 2 ? 'selected' : ''}>${n} jogadores</option>`).join('')}</select></label><label>Baralho<select name="deck">${decks.map((deck) => `<option value="${esc(deck.value)}">${esc(deck.name)}</option>`).join('')}</select></label><button class="room-primary-button" type="submit">Criar e abrir lobby</button><p data-room-error role="status"></p></form>
-    <form data-join-online-room><h3>Entrar em uma sala</h3><label>Código da sala<input name="code" maxlength="8" minlength="8" autocomplete="off" placeholder="8 letras ou números" value="${esc(code)}" required></label><label>Seu nome<input name="name" maxlength="20" required value="${esc(profile || 'Jogador convidado')}"></label><button class="room-secondary-button" type="submit">Entrar no lobby</button><p data-join-error role="status"></p></form></div>
+    <form data-join-online-room><h3>Entrar em uma sala</h3><label>Código da sala<input name="code" maxlength="6" minlength="6" autocomplete="off" placeholder="3 letras e 3 números" value="${esc(code)}" required></label><label>Seu nome<input name="name" maxlength="20" required value="${esc(profile || 'Jogador convidado')}"></label><button class="room-secondary-button" type="submit">Entrar no lobby</button><p data-join-error role="status"></p></form></div>
     <div data-room-root></div></section>`;
 }
 
@@ -120,7 +120,7 @@ function mount(container, { profile = 'Jogador convidado', customDecks = [], sta
   });
   joinForm.addEventListener('submit', async (event) => {
     event.preventDefault(); const errorBox = joinForm.querySelector('[data-join-error]'); errorBox.textContent = '';
-    const code = joinForm.elements.code.value.trim().toUpperCase(); if (!CODE.test(code)) { errorBox.textContent = 'Informe um código válido de oito caracteres.'; return; }
+    const code = joinForm.elements.code.value.trim().toUpperCase(); if (!CODE.test(code)) { errorBox.textContent = 'O código precisa ter 3 letras e 3 números.'; return; }
     client = new RoomClient({ code, onEvent: () => renderActive(root, client) }); window.RoomClient.use(client);
     try {
       const saved = client.savedPlayer();

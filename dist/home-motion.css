@@ -1,0 +1,131 @@
+/* A soft signal moving along the route, kept behind the dashboard copy. */
+body:not(.in-game) .hero-art {
+  opacity: .38;
+  transition: opacity .35s ease;
+}
+
+body:not(.in-game):has(.hero) .main-column {
+  position: relative;
+  isolation: isolate;
+}
+
+body:not(.in-game):has(.hero) .main-column::before {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  inset: 68px 0 0 248px;
+  pointer-events: none;
+  opacity: .2;
+  background-image:
+    radial-gradient(circle at 18% 23%, #65ddff 0 1px, transparent 2px),
+    radial-gradient(circle at 72% 61%, #81a4ff 0 1px, transparent 2px),
+    linear-gradient(135deg, transparent 0 47%, #38b8e52b 47.1% 47.2%, transparent 47.3% 100%),
+    linear-gradient(35deg, transparent 0 64%, #558ffb24 64.1% 64.2%, transparent 64.3% 100%),
+    repeating-linear-gradient(0deg, transparent 0 74px, #5db5da0c 75px 76px),
+    repeating-linear-gradient(90deg, transparent 0 74px, #5db5da0c 75px 76px),
+    radial-gradient(ellipse at 22% 22%, #147db522, transparent 48%),
+    radial-gradient(ellipse at 82% 70%, #384bba1c, transparent 43%);
+  background-size: 420px 360px, 520px 460px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 140% 140%, 140% 140%;
+  animation: network-background-drift 32s ease-in-out infinite alternate;
+}
+
+body:not(.in-game):has(.hero) #app { background: transparent; }
+
+@keyframes network-background-drift {
+  to { background-position: 70px 42px, -55px 32px, 0 0, 0 0, 0 0, 0 0, 100% 90%, 8% 8%; }
+}
+
+.hero-board-path {
+  opacity: .28;
+  stroke-dasharray: 3 12;
+  animation: route-signal 18s linear infinite;
+}
+
+.hero-board-tiles path {
+  opacity: .48;
+  animation: tile-signal 5s ease-in-out infinite alternate;
+}
+
+.hero-board-tiles path:nth-child(3n + 2) { animation-delay: -1.7s; }
+.hero-board-tiles path:nth-child(3n) { animation-delay: -3.2s; }
+
+.hero-board-signal circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: signal-pulse 3.2s ease-in-out infinite;
+}
+
+.hero-board-signal path { animation: signal-wave 3.2s ease-in-out infinite; }
+
+@keyframes route-signal { to { stroke-dashoffset: -180; } }
+@keyframes tile-signal { to { opacity: .24; } }
+@keyframes signal-pulse {
+  0%, 100% { opacity: .62; transform: scale(.92); }
+  50% { opacity: 1; transform: scale(1.12); }
+}
+@keyframes signal-wave { 50% { opacity: .32; } }
+
+/* The color highlight follows the pointer while preserving button contrast. */
+body:not(.in-game) .hero-actions .btn {
+  background-image:
+    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #91e7ff75 0%, #778aff32 32%, transparent 70%),
+    linear-gradient(125deg, #20a9e2 0%, #087ebc 48%, #155a91 100%);
+  background-size: 180% 180%, 100% 100%;
+  background-position: var(--pointer-x, 50%) var(--pointer-y, 50%), center;
+  transition: background-position .24s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+body:not(.in-game) .hero-actions .btn-secondary {
+  background-image:
+    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #81dcff55 0%, #7d75ff2b 34%, transparent 72%),
+    linear-gradient(125deg, #1b3b57 0%, #142f49 58%, #10253b 100%);
+}
+
+body:not(.in-game) .hero-actions .btn:hover:not(:disabled),
+body:not(.in-game) .hero-actions .btn:focus-visible {
+  background-size: 220% 220%, 100% 100%;
+  box-shadow: inset 0 1px #ffffff42, 0 8px 22px #087ebc3d;
+}
+
+body:not(.in-game) .mode-card {
+  background-image:
+    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #50c6ff28 0%, #687cff12 36%, transparent 72%),
+    linear-gradient(145deg, #173a58 0%, #122e49 53%, #10263d 100%);
+  transition: background-position .25s ease, transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+body:not(.in-game) .mode-card:nth-child(2) {
+  background-image:
+    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #50c6ff28 0%, #687cff12 36%, transparent 72%),
+    linear-gradient(145deg, #163b5d 0%, #112e4c 54%, #10253e 100%);
+}
+
+body:not(.in-game) .mode-card:nth-child(3) {
+  background-image:
+    radial-gradient(ellipse at var(--pointer-x, 50%) var(--pointer-y, 50%), #55e3cf24 0%, #7886ff12 36%, transparent 72%),
+    linear-gradient(145deg, #174052 0%, #123448 54%, #10283e 100%);
+}
+
+body:not(.in-game) .mode-card:hover,
+body:not(.in-game) .mode-card:focus-visible {
+  background-size: 220% 220%, 100% 100%;
+}
+
+@media (max-width: 760px) {
+  body:not(.in-game) .hero-art { opacity: .27; }
+}
+
+@media (max-width: 820px) {
+  body:not(.in-game):has(.hero) .main-column::before { left: 68px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-board-path,
+  .hero-board-tiles path,
+  .hero-board-signal circle,
+  .hero-board-signal path { animation: none !important; }
+
+  body:not(.in-game):has(.hero) .main-column::before { animation: none !important; }
+  body:not(.in-game) .hero-actions .btn,
+  body:not(.in-game) .mode-card { transition: none !important; }
+}

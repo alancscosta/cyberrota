@@ -14,5 +14,5 @@ test('lobby asks confirmation while seats remain and not after filling capacity'
 });
 
 test('share link carries the room code in the URL while preserving existing parameters', () => {
-  assert.equal(roomShareUrl('abcd2345', 'https://game.example/?from=friend'), 'https://game.example/?from=friend&sala=ABCD2345');
+  assert.equal(roomShareUrl('abc234', 'https://game.example/?from=friend'), 'https://game.example/?from=friend&sala=ABC234');
 });

@@ -163,7 +163,7 @@ async function routeRoom(request, env, url) {
   }
   if (parts.length < 3) { const error = new Error('Rota de sala inválida.'); error.status = 404; error.code = 'NOT_FOUND'; throw error; }
   const code = String(parts[2]).toUpperCase();
-  if (!/^[A-HJ-NP-Z2-9]{8}$/.test(code)) { const error = new Error('Código de sala inválido.'); error.status = 400; error.code = 'INVALID_CODE'; throw error; }
+  if (!/^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/.test(code)) { const error = new Error('Código de sala inválido.'); error.status = 400; error.code = 'INVALID_CODE'; throw error; }
   const suffix = parts.slice(3).join('/');
   if (suffix === 'ws' && request.headers.get('upgrade')?.toLowerCase() === 'websocket') {
     return doRoomRequest(request, env, code, 'ws', { websocket: true });

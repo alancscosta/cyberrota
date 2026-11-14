@@ -1,7 +1,8 @@
 import '../../dist/game-core.js';
 
 const Core = globalThis.GameCore;
-const ROOM_CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const ROOM_CODE_LETTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+const ROOM_CODE_DIGITS = '23456789';
 const GAME_THEMES = Core.THEMES;
 const ROOM_TTL_MS = 24 * 60 * 60 * 1000;
 export const PLAYER_COLORS = Object.freeze([
@@ -34,7 +35,7 @@ function normalizeName(value) {
 
 function normalizeCode(value) {
   const code = String(value ?? '').trim().toUpperCase();
-  if (!/^[A-HJ-NP-Z2-9]{8}$/.test(code)) throw roomError('INVALID_CODE', 'Código de sala inválido.');
+  if (!/^(?=(?:[^A-Z]*[A-Z]){3}[^A-Z]*$)(?=(?:[^2-9]*[2-9]){3}[^2-9]*$)[A-HJ-NP-Z2-9]{6}$/.test(code)) throw roomError('INVALID_CODE', 'Código de sala inválido.');
   return code;
 }
 
@@ -245,9 +246,21 @@ function resolveGameAnswer(room, game, player, answer, { forcedCorrect, random =
 
 export function generateRoomCode(cryptoProvider = globalThis.crypto) {
   if (!cryptoProvider?.getRandomValues) throw roomError('SECURE_RANDOM_UNAVAILABLE', 'Não foi possível gerar um código seguro.');
-  const bytes = new Uint8Array(8);
-  cryptoProvider.getRandomValues(bytes);
-  return Array.from(bytes, (byte) => ROOM_CODE_ALPHABET[byte & 31]).join('');
+  const byte = new Uint8Array(1);
+  const randomBelow = (limit) => {
+    const ceiling = Math.floor(256 / limit) * limit;
+    do { cryptoProvider.getRandomValues(byte); } while (byte[0] >= ceiling);
+    return byte[0] % limit;
+  };
+  const characters = [
+    ...Array.from({ length: 3 }, () => ROOM_CODE_LETTERS[randomBelow(ROOM_CODE_LETTERS.length)]),
+    ...Array.from({ length: 3 }, () => ROOM_CODE_DIGITS[randomBelow(ROOM_CODE_DIGITS.length)]),
+  ];
+  for (let index = characters.length - 1; index > 0; index -= 1) {
+    const other = randomBelow(index + 1);
+    [characters[index], characters[other]] = [characters[other], characters[index]];
+  }
+  return characters.join('');
 }
 
 export function createRoomState({ code, mode = 'coop', capacity = 6, host, config = {}, createdAt = Date.now() }) {

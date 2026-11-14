@@ -1,0 +1,80 @@
+{
+  "app.js": {
+    "mtime": 1794625099.031549,
+    "seen": 1794625369.2997031,
+    "ast_hash": "3ea88a97abbe54b881760378aa68bd77",
+    "semantic_hash": ""
+  },
+  "game-core.js": {
+    "mtime": 1794621212.0474937,
+    "seen": 1794622693.8928573,
+    "ast_hash": "4ff86757378d576e4788610c50476add",
+    "semantic_hash": ""
+  },
+  "race-mode.js": {
+    "mtime": 1794367013.3004224,
+    "seen": 1794457761.1717238,
+    "ast_hash": "1ba859ee98d64cc3e733a2e82c1d695a",
+    "semantic_hash": ""
+  },
+  "assets/IBM-Plex-Sans-OFL.txt": {
+    "mtime": 1794275298.7887976,
+    "seen": 1794457761.1717238,
+    "ast_hash": "4bee4ff696e5dd71f3d5e1a1043341b0",
+    "semantic_hash": ""
+  },
+  "assets/NunitoSans-OFL.txt": {
+    "mtime": 1794275298.8028107,
+    "seen": 1794457761.1717238,
+    "ast_hash": "295bb668b71e1755caa78b457337f2ab",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1794622296.1251502,
+    "seen": 1794622693.8928573,
+    "ast_hash": "828716eb4fef50f67cc8fddbd7df6564",
+    "semantic_hash": ""
+  },
+  "assets/cyberrota-logo.svg": {
+    "mtime": 1794190462.4919581,
+    "seen": 1794457761.1717238,
+    "ast_hash": "29e8f1213b3752364c3c38707a06a8d9",
+    "semantic_hash": ""
+  },
+  "assets/cyberrota-symbol.svg": {
+    "mtime": 1794190471.8389995,
+    "seen": 1794457761.1717238,
+    "ast_hash": "6ae5b3f1937048562f5e7055d93d0d97",
+    "semantic_hash": ""
+  },
+  "public/assets/cyberrota-logo.svg": {
+    "mtime": 1794190462.4919581,
+    "seen": 1794459439.109932,
+    "ast_hash": "29e8f1213b3752364c3c38707a06a8d9",
+    "semantic_hash": ""
+  },
+  "account-client.js": {
+    "mtime": 1794622622.021453,
+    "seen": 1794622693.8928573,
+    "ast_hash": "2549beda8fcf9d87647b3fe9925976d6",
+    "semantic_hash": ""
+  },
+  "multiplayer-ui.js": {
+    "mtime": 1794625665.1662219,
+    "seen": 1794625709.75757,
+    "ast_hash": "2d48ac69a57404347e4fce5e9388638e",
+    "semantic_hash": ""
+  },
+  "room-client.js": {
+    "mtime": 1794625665.1672232,
+    "seen": 1794625709.75757,
+    "ast_hash": "75484a6ecbe1173556e4bc6ed00a6ab3",
+    "semantic_hash": ""
+  },
+  "vercel.json": {
+    "mtime": 1794624622.5522547,
+    "seen": 1794624707.31768,
+    "ast_hash": "ce58c896c958626c7931358de91ee097",
+    "semantic_hash": ""
+  }
+}

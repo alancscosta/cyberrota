@@ -1,8 +1,8 @@
 {
   "tests/game-core.test.cjs": {
-    "mtime": 1794363822.0240352,
-    "seen": 1794364515.808636,
-    "ast_hash": "e7a2f359eea9291abcdb59e6e6a42db2",
+    "mtime": 1794621198.5823863,
+    "seen": 1794622684.2926915,
+    "ast_hash": "6c3ea7629009e6b19bd4e61fa7ce8da2",
     "semantic_hash": ""
   },
   "PLANO_DESENVOLVIMENTO.md": {
@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794363866.4259512,
-    "seen": 1794364515.808636,
-    "ast_hash": "b1441c0118056098e757eaac88cff089",
+    "mtime": 1794622629.594071,
+    "seen": 1794622684.295694,
+    "ast_hash": "ea47c2a7135de5af2965639caaeb9bac",
     "semantic_hash": ""
   },
   "docs/print-and-play.md": {
@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "specs/acceptance.md": {
-    "mtime": 1794364267.7113001,
-    "seen": 1794364515.808636,
-    "ast_hash": "0b66c1979af0ada28eda9e6bf1277f16",
+    "mtime": 1794367534.2678392,
+    "seen": 1794457753.0284607,
+    "ast_hash": "be2c6d92f58f3d36dbf1905be32b16d6",
     "semantic_hash": ""
   },
   "specs/content.md": {
@@ -36,9 +36,9 @@
     "semantic_hash": ""
   },
   "specs/game-rules.md": {
-    "mtime": 1794364262.2410173,
-    "seen": 1794364515.808636,
-    "ast_hash": "bc108d76788648b40d09e8007d8f4c79",
+    "mtime": 1794457973.558074,
+    "seen": 1794458044.02645,
+    "ast_hash": "a6d80a219dbe2aed0528680928e4f5ce",
     "semantic_hash": ""
   },
   "specs/rooms-and-decks.md": {
@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1794193361.8455355,
-    "seen": 1794362169.230677,
-    "ast_hash": "98bc892bf2717b53e45c37c237501e7e",
+    "mtime": 1794622499.2989843,
+    "seen": 1794622684.286686,
+    "ast_hash": "9497e82db5c542511992abc80cef1c88",
     "semantic_hash": ""
   },
   "vite.config.js": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "tests/visual-contract.test.cjs": {
-    "mtime": 1794364430.9231758,
-    "seen": 1794364515.808636,
-    "ast_hash": "faa6fb4d291946047697160a22164728",
+    "mtime": 1794621507.0615551,
+    "seen": 1794622684.2926915,
+    "ast_hash": "c69e73523927a80a1b64b80a00527580",
     "semantic_hash": ""
   },
   ".agents/skills/ui-art-direction/SKILL.md": {
@@ -131,10 +131,802 @@
     "ast_hash": "04ad24f9372d1914586892a6a5c929d5",
     "semantic_hash": ""
   },
+  "build_article.py": {
+    "mtime": 1794445312.3673308,
+    "seen": 1794457753.0284607,
+    "ast_hash": "c8f35d23ecbceff4512ee07030a59c1e",
+    "semantic_hash": ""
+  },
+  "ppt_build/.codex-finalizer/design-validation.json": {
+    "mtime": 1794447410.6124673,
+    "seen": 1794457753.0284607,
+    "ast_hash": "c035d4aeb1eb0b152ba19664eec0a696",
+    "semantic_hash": ""
+  },
+  "ppt_build/.codex-finalizer/professional-validation.json": {
+    "mtime": 1794445794.499579,
+    "seen": 1794457753.0284607,
+    "ast_hash": "c9c64b8dbd40b5b1f4a24cde4a5158e7",
+    "semantic_hash": ""
+  },
+  "ppt_build/.codex-finalizer/short-deck-validation.json": {
+    "mtime": 1794446494.535294,
+    "seen": 1794457753.0284607,
+    "ast_hash": "41e24450e446fe117e549973789dea41",
+    "semantic_hash": ""
+  },
+  "ppt_build/.codex-finalizer/validation.json": {
+    "mtime": 1794445185.4458764,
+    "seen": 1794457753.0284607,
+    "ast_hash": "ac5e3c74dd1adf3193d36d3108dfd6fc",
+    "semantic_hash": ""
+  },
+  "ppt_build/.codex-finalizer/validation2.json": {
+    "mtime": 1794445246.7009885,
+    "seen": 1794457753.0284607,
+    "ast_hash": "5f9b063046aa4a27e8c49f90db6e1e8e",
+    "semantic_hash": ""
+  },
+  "ppt_build/build_design.mjs": {
+    "mtime": 1794447400.2599156,
+    "seen": 1794457753.0284607,
+    "ast_hash": "90a8a98de71b0c0de426535fd9d0c84b",
+    "semantic_hash": ""
+  },
+  "ppt_build/build_presentation.mjs": {
+    "mtime": 1794445241.7341726,
+    "seen": 1794457753.0284607,
+    "ast_hash": "14f9b6b75f5f4b37d37f723569fe0fda",
+    "semantic_hash": ""
+  },
+  "ppt_build/build_professional.mjs": {
+    "mtime": 1794445787.6654341,
+    "seen": 1794457753.0284607,
+    "ast_hash": "fe47933c8d930d94916fb78f8572bc88",
+    "semantic_hash": ""
+  },
+  "ppt_build/build_short.mjs": {
+    "mtime": 1794446484.6165385,
+    "seen": 1794457753.0284607,
+    "ast_hash": "2603994299bffd4047ec9581921aea02",
+    "semantic_hash": ""
+  },
+  "ppt_build/export_pdf.mjs": {
+    "mtime": 1794447908.6606877,
+    "seen": 1794457753.0284607,
+    "ast_hash": "b85954fe9ddba2d974a8472b2d7c9ce6",
+    "semantic_hash": ""
+  },
+  "ppt_build/make_contacts.py": {
+    "mtime": 1794448975.3465364,
+    "seen": 1794457753.0284607,
+    "ast_hash": "132d9030ca2168a71bef4274f6c6472c",
+    "semantic_hash": ""
+  },
+  "ppt_build/make_original_pdf.py": {
+    "mtime": 1794448943.6022968,
+    "seen": 1794457753.0284607,
+    "ast_hash": "68467b30ef102674adec3b738ec4ad5b",
+    "semantic_hash": ""
+  },
+  "ppt_build/make_pdf.py": {
+    "mtime": 1794447938.4365642,
+    "seen": 1794457753.0284607,
+    "ast_hash": "5fa3d8b97fc970400de6838480642b22",
+    "semantic_hash": ""
+  },
+  "ppt_build/render_original.mjs": {
+    "mtime": 1794448911.5062442,
+    "seen": 1794457753.0284607,
+    "ast_hash": "3054c7ffc76530184ab7a7434150adbe",
+    "semantic_hash": ""
+  },
+  "specs/turn-and-solo-map-sdd.md": {
+    "mtime": 1794459901.0488071,
+    "seen": 1794460018.5243914,
+    "ast_hash": "7fbb7f3bbd4274425a42cdadcf58c515",
+    "semantic_hash": ""
+  },
+  "arquivos_finais/apresentacao_artigo_5min.pdf": {
+    "mtime": 1794458985.8160646,
+    "seen": 1794459436.3026085,
+    "ast_hash": "bf21a29a6fc737317b12741e6ea1e80a",
+    "semantic_hash": ""
+  },
+  "ppt_build/aligned-slide-01.png": {
+    "mtime": 1794458961.5262458,
+    "seen": 1794459436.3026085,
+    "ast_hash": "ebb234f35da49a3f58ed2652b0830ac3",
+    "semantic_hash": ""
+  },
+  "ppt_build/aligned-slide-02.png": {
+    "mtime": 1794458961.6724012,
+    "seen": 1794459436.3026085,
+    "ast_hash": "b5128a3c4348091fbb9d314d996ce6e9",
+    "semantic_hash": ""
+  },
+  "ppt_build/aligned-slide-03.png": {
+    "mtime": 1794458961.781005,
+    "seen": 1794459436.3026085,
+    "ast_hash": "b4559844232d7872e71a811dd602471e",
+    "semantic_hash": ""
+  },
+  "ppt_build/aligned-slide-04.png": {
+    "mtime": 1794458961.9066255,
+    "seen": 1794459436.3026085,
+    "ast_hash": "6477a88d8d1f0f827be671f9b3a8daa7",
+    "semantic_hash": ""
+  },
+  "ppt_build/aligned-slide-05.png": {
+    "mtime": 1794458961.9937046,
+    "seen": 1794459436.3026085,
+    "ast_hash": "7d6e903be7a8086dc8cec5968f4476e4",
+    "semantic_hash": ""
+  },
+  "ppt_build/aligned-slide-06.png": {
+    "mtime": 1794458962.070292,
+    "seen": 1794459436.3026085,
+    "ast_hash": "55df64a425e6a9fef3c0d75464e453de",
+    "semantic_hash": ""
+  },
+  "ppt_build/aligned-slide-07.png": {
+    "mtime": 1794458962.2079346,
+    "seen": 1794459436.3026085,
+    "ast_hash": "d9303327180c4dba7045fa1c4a30b40e",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/contact-1.png": {
+    "mtime": 1794448975.756009,
+    "seen": 1794457753.0284607,
+    "ast_hash": "5b699da91efa4977e7e1c9fa5bcc3bea",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/contact-2.png": {
+    "mtime": 1794448975.906159,
+    "seen": 1794457753.0284607,
+    "ast_hash": "5f5bba09b4b9751dfa7f987bc2475000",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-01.png": {
+    "mtime": 1794448956.955754,
+    "seen": 1794457753.0284607,
+    "ast_hash": "735c3bbae61bfa7ec3c6d5eea59640d3",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-02.png": {
+    "mtime": 1794448957.0468483,
+    "seen": 1794457753.0284607,
+    "ast_hash": "c7510b90482d8ebaa9dc82a0961065f5",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-03.png": {
+    "mtime": 1794448957.1519446,
+    "seen": 1794457753.0284607,
+    "ast_hash": "50ca88c12b36fdb2375db6f724a5b1b4",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-04.png": {
+    "mtime": 1794448957.2635522,
+    "seen": 1794457753.0284607,
+    "ast_hash": "37e7de94701db94ab314931403fbdb09",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-05.png": {
+    "mtime": 1794448957.3822062,
+    "seen": 1794457753.0284607,
+    "ast_hash": "a5005f8f23589ff838b5c1e8ea2ba85c",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-06.png": {
+    "mtime": 1794448957.492815,
+    "seen": 1794457753.0284607,
+    "ast_hash": "008aded37ec6ad88d842227b874588e4",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-07.png": {
+    "mtime": 1794448957.5949419,
+    "seen": 1794457753.0284607,
+    "ast_hash": "fed39c628c65f7a6ee97d7e15739cc89",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-08.png": {
+    "mtime": 1794448957.6870394,
+    "seen": 1794457753.0284607,
+    "ast_hash": "df751d159e9ec35d2b99d1e2d4e30a24",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-09.png": {
+    "mtime": 1794448957.7601056,
+    "seen": 1794457753.0284607,
+    "ast_hash": "238669b6e4ec7b378e97083d59335c0a",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-10.png": {
+    "mtime": 1794448957.862704,
+    "seen": 1794457753.0284607,
+    "ast_hash": "a205601be5a9647cf7e5ca5c3c01e517",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-11.png": {
+    "mtime": 1794448957.9743125,
+    "seen": 1794457753.0284607,
+    "ast_hash": "6ddc7f5096499d53567776d0f23965b7",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-12.png": {
+    "mtime": 1794448958.0548923,
+    "seen": 1794457753.0284607,
+    "ast_hash": "f7d6f57bb1df28e9ee69fdabdbdee76d",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-13.png": {
+    "mtime": 1794448958.1715274,
+    "seen": 1794457753.0284607,
+    "ast_hash": "6887abd4b018d808b47b842ea211a763",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-14.png": {
+    "mtime": 1794448958.2836697,
+    "seen": 1794457753.0284607,
+    "ast_hash": "efa7e6e37d53693c4ed21e62f3e96ffb",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-15.png": {
+    "mtime": 1794448958.3872702,
+    "seen": 1794457753.0284607,
+    "ast_hash": "2a05b68fbd4d33c1400f68391922669c",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-16.png": {
+    "mtime": 1794448958.5013738,
+    "seen": 1794457753.0284607,
+    "ast_hash": "8a0567d00fa0811260e39df8fa600637",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-17.png": {
+    "mtime": 1794448958.593473,
+    "seen": 1794457753.0284607,
+    "ast_hash": "fdc5378ea2c924daf8d56aef035bcfcc",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-18.png": {
+    "mtime": 1794448958.7065973,
+    "seen": 1794457753.0284607,
+    "ast_hash": "5dd29c4218e451fca01b300682b9ab03",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-19.png": {
+    "mtime": 1794448958.7906885,
+    "seen": 1794457753.0284607,
+    "ast_hash": "1981a580b06fa1e7fce2fcef2da1b954",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-20.png": {
+    "mtime": 1794448958.9494743,
+    "seen": 1794457753.0284607,
+    "ast_hash": "b1ac64a8e79d587b863d5b38b8dd375b",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-21.png": {
+    "mtime": 1794448959.090109,
+    "seen": 1794457753.0284607,
+    "ast_hash": "926728acde9fb79fbbed8f90cec3d756",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-22.png": {
+    "mtime": 1794448959.190201,
+    "seen": 1794457753.0284607,
+    "ast_hash": "da6d841521f87901e0ff31102d9e73a4",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-23.png": {
+    "mtime": 1794448959.2542584,
+    "seen": 1794457753.0284607,
+    "ast_hash": "2471ea221dba5e41fcfb9f396de5e23e",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-24.png": {
+    "mtime": 1794448959.3553503,
+    "seen": 1794457753.0284607,
+    "ast_hash": "5e712a70c73b83a20e48e525b91ef3ae",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-25.png": {
+    "mtime": 1794448959.4739685,
+    "seen": 1794457753.0284607,
+    "ast_hash": "f2568a5234307bd638567521d5dc48a8",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-26.png": {
+    "mtime": 1794448959.5875776,
+    "seen": 1794457753.0284607,
+    "ast_hash": "97875373d68438bbc54ac7324f1179ab",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-27.png": {
+    "mtime": 1794448959.6980908,
+    "seen": 1794457753.0284607,
+    "ast_hash": "ca0977926d6d02a534999e129427e0fc",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-28.png": {
+    "mtime": 1794448959.8212173,
+    "seen": 1794457753.0284607,
+    "ast_hash": "83454b500d977fac0e7f7d4316358ccd",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-29.png": {
+    "mtime": 1794448959.9403253,
+    "seen": 1794457753.0284607,
+    "ast_hash": "bac3b1e31d53ccc5a942a841e266662b",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-30.png": {
+    "mtime": 1794448960.0454383,
+    "seen": 1794457753.0284607,
+    "ast_hash": "785ff3a691b72b02518332d02da21e8b",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_pdf_render/page-31.png": {
+    "mtime": 1794448960.1485815,
+    "seen": 1794457753.0284607,
+    "ast_hash": "0699720175c589d5c101377b8f48da32",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-01.png": {
+    "mtime": 1794448916.111591,
+    "seen": 1794457753.0284607,
+    "ast_hash": "da0369053c951439a7a96be2d9ae69b3",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-02.png": {
+    "mtime": 1794448916.4885325,
+    "seen": 1794457753.0284607,
+    "ast_hash": "36e59ddafda2286c512170bff9d27f82",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-03.png": {
+    "mtime": 1794448916.6146636,
+    "seen": 1794457753.0284607,
+    "ast_hash": "98d020188f016b708911edaa8268cffc",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-04.png": {
+    "mtime": 1794448916.7493193,
+    "seen": 1794457753.0284607,
+    "ast_hash": "4ed6e2f84f09de24168cb4ce4521ced7",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-05.png": {
+    "mtime": 1794448916.899966,
+    "seen": 1794457753.0284607,
+    "ast_hash": "588cc84c2d8ff8f5175a15df3538901a",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-06.png": {
+    "mtime": 1794448917.0391097,
+    "seen": 1794457753.0284607,
+    "ast_hash": "17d0813437403687be86bcd748653128",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-07.png": {
+    "mtime": 1794448917.1622212,
+    "seen": 1794457753.0284607,
+    "ast_hash": "4bcc0a0041722d1c1329dcd507c2270c",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-08.png": {
+    "mtime": 1794448917.2983615,
+    "seen": 1794457753.0284607,
+    "ast_hash": "831ecef5e7fefb9d2ceb0b7ed0823e75",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-09.png": {
+    "mtime": 1794448917.4055202,
+    "seen": 1794457753.0284607,
+    "ast_hash": "966b51e5762aa6019197a9b378c589e6",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-10.png": {
+    "mtime": 1794448917.5686984,
+    "seen": 1794457753.0284607,
+    "ast_hash": "877dc6c63fdc0062edd6b4dc0d01d554",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-11.png": {
+    "mtime": 1794448917.7053607,
+    "seen": 1794457753.0284607,
+    "ast_hash": "4f7bf55c720aaf56d9573447044eaffe",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-12.png": {
+    "mtime": 1794448917.7974615,
+    "seen": 1794457753.0284607,
+    "ast_hash": "12866c92898d946a88970dc0d5a14d9e",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-13.png": {
+    "mtime": 1794448917.958658,
+    "seen": 1794457753.0284607,
+    "ast_hash": "a44d52357cbe5c1c80324f958c5bb5e7",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-14.png": {
+    "mtime": 1794448918.0687578,
+    "seen": 1794457753.0284607,
+    "ast_hash": "55ba3dc92551545ddbf734f7622e7ebe",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-15.png": {
+    "mtime": 1794448918.1803668,
+    "seen": 1794457753.0284607,
+    "ast_hash": "6ca790f7384626a0b101cc0352f05b58",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-16.png": {
+    "mtime": 1794448918.272477,
+    "seen": 1794457753.0284607,
+    "ast_hash": "87da0454e436b0f38d65650040d47fa3",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-17.png": {
+    "mtime": 1794448918.3675637,
+    "seen": 1794457753.0284607,
+    "ast_hash": "3553604e76f95ce0b3255aedcce85492",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-18.png": {
+    "mtime": 1794448918.521719,
+    "seen": 1794457753.0284607,
+    "ast_hash": "d5a9757d837fcae166fe9e256f167a41",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-19.png": {
+    "mtime": 1794448918.6408274,
+    "seen": 1794457753.0284607,
+    "ast_hash": "291043dc3bec4a4506c6bfa86ca78e06",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-20.png": {
+    "mtime": 1794448918.718405,
+    "seen": 1794457753.0284607,
+    "ast_hash": "3111e654e29efb5343f5f4eec0229840",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-21.png": {
+    "mtime": 1794448918.8145618,
+    "seen": 1794457753.0284607,
+    "ast_hash": "ab6683f78346d6a2fb3b1cb31dc2fb22",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-22.png": {
+    "mtime": 1794448918.9252214,
+    "seen": 1794457753.0284607,
+    "ast_hash": "9c8bd8407ac8c643e6ca2a3713e96421",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-23.png": {
+    "mtime": 1794448918.9882784,
+    "seen": 1794457753.0284607,
+    "ast_hash": "c56c6497b53c12aa7aae71403d836e68",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-24.png": {
+    "mtime": 1794448919.0998888,
+    "seen": 1794457753.0284607,
+    "ast_hash": "68413d8b833b047840f0575dd131752b",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-25.png": {
+    "mtime": 1794448919.2054925,
+    "seen": 1794457753.0284607,
+    "ast_hash": "e2cb8d09ef64a0f39fa1fea9a8bab3d9",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-26.png": {
+    "mtime": 1794448919.313616,
+    "seen": 1794457753.0284607,
+    "ast_hash": "e8d31208ea2898d72860e8723c069fb3",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-27.png": {
+    "mtime": 1794448919.39871,
+    "seen": 1794457753.0284607,
+    "ast_hash": "b466cf25c440897f62f71f4398c77052",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-28.png": {
+    "mtime": 1794448919.4908185,
+    "seen": 1794457753.0284607,
+    "ast_hash": "86c35533911feeb240993b3386d6d79e",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-29.png": {
+    "mtime": 1794448919.5909245,
+    "seen": 1794457753.0284607,
+    "ast_hash": "c74d1155e9b145e4ebec54863a9e5697",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-30.png": {
+    "mtime": 1794448919.6900146,
+    "seen": 1794457753.0284607,
+    "ast_hash": "00cae6465c87d5f457be136debd8cb57",
+    "semantic_hash": ""
+  },
+  "ppt_build/original_render/slide-31.png": {
+    "mtime": 1794448919.8251376,
+    "seen": 1794457753.0284607,
+    "ast_hash": "b1a385898a4d75094647c81daa27a0ec",
+    "semantic_hash": ""
+  },
+  "ppt_build/pdf_render/page-1.png": {
+    "mtime": 1794458987.174416,
+    "seen": 1794459436.3026085,
+    "ast_hash": "71ed70809ee1049e1d25ad341145d957",
+    "semantic_hash": ""
+  },
+  "ppt_build/pdf_render/page-2.png": {
+    "mtime": 1794458987.3886335,
+    "seen": 1794459436.3026085,
+    "ast_hash": "ab7b62d46685123714d4ada88d3f558c",
+    "semantic_hash": ""
+  },
+  "ppt_build/pdf_render/page-3.png": {
+    "mtime": 1794458987.598351,
+    "seen": 1794459436.3026085,
+    "ast_hash": "e5e57345be74c12fea9d207bab6e8dd4",
+    "semantic_hash": ""
+  },
+  "ppt_build/pdf_render/page-4.png": {
+    "mtime": 1794458987.8140793,
+    "seen": 1794459436.3026085,
+    "ast_hash": "bf503d581c4a66ceac1fb68087ceb89c",
+    "semantic_hash": ""
+  },
+  "ppt_build/pdf_render/page-5.png": {
+    "mtime": 1794458988.0223007,
+    "seen": 1794459436.3026085,
+    "ast_hash": "001e13cb4eb60174e6c675cf0f597522",
+    "semantic_hash": ""
+  },
+  "ppt_build/pdf_render/page-6.png": {
+    "mtime": 1794458988.2310052,
+    "seen": 1794459436.3026085,
+    "ast_hash": "215024237e4b508e0078fa6d45a2f964",
+    "semantic_hash": ""
+  },
+  "ppt_build/pdf_render/page-7.png": {
+    "mtime": 1794458988.455726,
+    "seen": 1794459436.3026085,
+    "ast_hash": "0e5d28d61af462cd7887124581078779",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-01.png": {
+    "mtime": 1794445790.0522525,
+    "seen": 1794457753.0284607,
+    "ast_hash": "89bdce8f71a4522b69e590ddae3b10fb",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-02.png": {
+    "mtime": 1794445790.2429345,
+    "seen": 1794457753.0284607,
+    "ast_hash": "d9ba70a59f964ac032274ebaebf146aa",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-03.png": {
+    "mtime": 1794445790.3405285,
+    "seen": 1794457753.0284607,
+    "ast_hash": "769586f208dd6fe1f350a29c111191d5",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-04.png": {
+    "mtime": 1794445790.4446232,
+    "seen": 1794457753.0284607,
+    "ast_hash": "22696cadb1b8ba1947a0f6a796f44857",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-05.png": {
+    "mtime": 1794445790.531715,
+    "seen": 1794457753.0284607,
+    "ast_hash": "a4998ae6d0681f5c5a2eae8ea4ab5d78",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-06.png": {
+    "mtime": 1794445790.6097858,
+    "seen": 1794457753.0284607,
+    "ast_hash": "04eacf0e9b743491171ba1201dc06687",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-07.png": {
+    "mtime": 1794445790.6778474,
+    "seen": 1794457753.0284607,
+    "ast_hash": "c191b187f946debcf8ee428dd6e7a46e",
+    "semantic_hash": ""
+  },
+  "ppt_build/professional-slide-08.png": {
+    "mtime": 1794445790.8189876,
+    "seen": 1794457753.0284607,
+    "ast_hash": "f134d1bf9e009980d8ec5d597ee07b00",
+    "semantic_hash": ""
+  },
+  "ppt_build/short-slide-01.png": {
+    "mtime": 1794446487.9493613,
+    "seen": 1794457753.0284607,
+    "ast_hash": "10ee22e62bbbcd62b65ec08cc70016cf",
+    "semantic_hash": ""
+  },
+  "ppt_build/short-slide-02.png": {
+    "mtime": 1794446488.1855907,
+    "seen": 1794457753.0284607,
+    "ast_hash": "f682e5b00650a70a1cda99d3d34885bb",
+    "semantic_hash": ""
+  },
+  "ppt_build/short-slide-03.png": {
+    "mtime": 1794446488.3263183,
+    "seen": 1794457753.0284607,
+    "ast_hash": "5db64091ec8b0313da10e92db0eb8762",
+    "semantic_hash": ""
+  },
+  "ppt_build/short-slide-04.png": {
+    "mtime": 1794446488.5335052,
+    "seen": 1794457753.0284607,
+    "ast_hash": "1dea63c1622fd2a06719902e10263839",
+    "semantic_hash": ""
+  },
+  "ppt_build/short-slide-05.png": {
+    "mtime": 1794446488.667627,
+    "seen": 1794457753.0284607,
+    "ast_hash": "f8099fcd6d91a8852084a90f66ed1018",
+    "semantic_hash": ""
+  },
+  "ppt_build/short-slide-06.png": {
+    "mtime": 1794446488.773232,
+    "seen": 1794457753.0284607,
+    "ast_hash": "e0ae94ed56778fb0d99b1a64ccfe740f",
+    "semantic_hash": ""
+  },
+  "ppt_build/short-slide-07.png": {
+    "mtime": 1794446488.9504068,
+    "seen": 1794457753.0284607,
+    "ast_hash": "a9c323357f6239e1319b230f39601835",
+    "semantic_hash": ""
+  },
+  "ppt_build/slide-01.png": {
+    "mtime": 1794445243.6295507,
+    "seen": 1794457753.0284607,
+    "ast_hash": "7745ba8e392b96cf42d197f39d8aa636",
+    "semantic_hash": ""
+  },
+  "ppt_build/slide-02.png": {
+    "mtime": 1794445243.6991313,
+    "seen": 1794457753.0284607,
+    "ast_hash": "30eedf7eba2cfc5946c3ee97874b7320",
+    "semantic_hash": ""
+  },
+  "ppt_build/slide-03.png": {
+    "mtime": 1794445243.7737215,
+    "seen": 1794457753.0284607,
+    "ast_hash": "20cf29867d59f8da16c1f4d522b50bde",
+    "semantic_hash": ""
+  },
+  "ppt_build/slide-04.png": {
+    "mtime": 1794445243.8407834,
+    "seen": 1794457753.0284607,
+    "ast_hash": "8cf9db65188c002b1abe4046073b600f",
+    "semantic_hash": ""
+  },
+  "ppt_build/slide-05.png": {
+    "mtime": 1794445243.9038408,
+    "seen": 1794457753.0284607,
+    "ast_hash": "0b15e9f6d0665e8da05048349b4871d7",
+    "semantic_hash": ""
+  },
+  "ppt_build/slide-06.png": {
+    "mtime": 1794445243.9619124,
+    "seen": 1794457753.0284607,
+    "ast_hash": "4630961ba76dedbd80f996523afad22a",
+    "semantic_hash": ""
+  },
+  "ppt_build/.codex-finalizer/official-title-validation.json": {
+    "mtime": 1794458966.3222363,
+    "seen": 1794459436.3026085,
+    "ast_hash": "d94f8e6bf60b52f4c44894d118df61b7",
+    "semantic_hash": ""
+  },
+  "ppt_build/build_official_title.mjs": {
+    "mtime": 1794458953.9785705,
+    "seen": 1794459436.3026085,
+    "ast_hash": "ab3a080994a89bedec6b0e9b4d6169c4",
+    "semantic_hash": ""
+  },
+  "server/src/accounts.js": {
+    "mtime": 1794621585.773034,
+    "seen": 1794622684.2926915,
+    "ast_hash": "2f0b8e0457c2c63aaa14659f35779b17",
+    "semantic_hash": ""
+  },
+  "server/test/accounts.test.cjs": {
+    "mtime": 1794621591.8287537,
+    "seen": 1794622684.2926915,
+    "ast_hash": "6b161f78b5aad11d9a16b9f18e0a67e8",
+    "semantic_hash": ""
+  },
+  "tests/multiplayer-ui.test.mjs": {
+    "mtime": 1794622304.2070372,
+    "seen": 1794622684.2926915,
+    "ast_hash": "3981da2ddead0fffc0c3834571b7ee82",
+    "semantic_hash": ""
+  },
+  "tests/room-client.test.mjs": {
+    "mtime": 1794621831.1718009,
+    "seen": 1794622684.2926915,
+    "ast_hash": "c89f4736c77001aa1088416f4221b78a",
+    "semantic_hash": ""
+  },
+  "tests/room-do.test.mjs": {
+    "mtime": 1794622185.2261937,
+    "seen": 1794622684.2926915,
+    "ast_hash": "1878e74f8c0060e8a6a9f083dd2e575e",
+    "semantic_hash": ""
+  },
+  "tests/rooms.test.mjs": {
+    "mtime": 1794622180.5118196,
+    "seen": 1794622684.2926915,
+    "ast_hash": "78168588620a61ccd6a8c8556c27c62a",
+    "semantic_hash": ""
+  },
+  "tests/worker-api.test.mjs": {
+    "mtime": 1794621780.4092238,
+    "seen": 1794622684.2926915,
+    "ast_hash": "926d0c355f26a741b587fb237801fb25",
+    "semantic_hash": ""
+  },
+  "worker/src/index.mjs": {
+    "mtime": 1794622496.6007147,
+    "seen": 1794622684.2926915,
+    "ast_hash": "b7c0a66390f1213414add908be7f57da",
+    "semantic_hash": ""
+  },
+  "worker/src/rooms.mjs": {
+    "mtime": 1794622161.9695473,
+    "seen": 1794622684.2926915,
+    "ast_hash": "b227ba817f7cc7fe528c5116fd8ba2ff",
+    "semantic_hash": ""
+  },
+  "specs/accounts-storage-sdd.md": {
+    "mtime": 1794621199.9597864,
+    "seen": 1794622684.296695,
+    "ast_hash": "254eba9cfba1f292493e49a3b2cfa7c2",
+    "semantic_hash": ""
+  },
+  "specs/online-rooms-sdd.md": {
+    "mtime": 1794622191.2794302,
+    "seen": 1794622684.297696,
+    "ast_hash": "bd2ac551c51f6bff95367643fb20e71d",
+    "semantic_hash": ""
+  },
+  "specs/podium-sdd.md": {
+    "mtime": 1794621185.3316817,
+    "seen": 1794622684.297696,
+    "ast_hash": "33da57596ec12c10096dc947a3251a7f",
+    "semantic_hash": ""
+  },
+  "specs/worker-api-sdd.md": {
+    "mtime": 1794621719.8452623,
+    "seen": 1794622684.2986972,
+    "ast_hash": "da3bdb8ce56e789fa674a895d8d05c92",
+    "semantic_hash": ""
+  },
+  "vercel.json": {
+    "mtime": 1794624622.5522547,
+    "seen": 1794624698.8378356,
+    "ast_hash": "ce58c896c958626c7931358de91ee097",
+    "semantic_hash": ""
+  },
   "package-lock.json": {
-    "mtime": 1794181735.660503,
-    "seen": 1794182111.653569,
-    "ast_hash": "2f71352d916879ec75925dd10b4c4c56",
+    "mtime": 1794622017.5977857,
+    "seen": 1794622684.3427482,
+    "ast_hash": "afd68e7de00af18f8ac826180ac7e971",
     "semantic_hash": ""
   }
 }

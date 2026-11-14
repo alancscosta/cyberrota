@@ -9,8 +9,16 @@ test('online launcher offers co-op, fixed 3v3, join-by-code, and custom deck sel
   assert.match(markup, /Defenda a Rede/);
   assert.match(markup, /Desligue o Servidor · 3v3/);
   assert.match(markup, /Entrar em uma sala/);
-  assert.match(markup, /8 letras ou números/);
+  assert.match(markup, /3 letras e 3 números/);
   assert.match(markup, /customDecks/);
+});
+
+test('lobby offers distinct buttons to copy the room code and share its link', async () => {
+  const lobby = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
+  assert.match(lobby, /data-room-copy-code/);
+  assert.match(lobby, /Copiar código/);
+  assert.match(lobby, /data-room-copy-link/);
+  assert.match(lobby, /Copiar link/);
 });
 
 test('online question UI renders answer choices and disables turns for non-active players', () => {
