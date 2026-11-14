@@ -185,6 +185,22 @@ test('co-op Engineer carries its prepared hint onto the next selected question',
   assert.equal(room.gameState.pendingHint, false);
 });
 
+test('online co-op Ping spends one point once and adds a hint to the next selected question', () => {
+  let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, config: { deck }, host });
+  room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;
+  room = startRoom(room, 'host-1', { random: () => 0 });
+  room.gameState.players[0].score = 2;
+  room = applyGameCommand(room, 'host-1', 'game.roll', {}, { random: () => 0 });
+  room = applyGameCommand(room, 'host-1', 'game.ping');
+  assert.equal(room.gameState.players[0].score, 1);
+  assert.equal(room.gameState.players[0].usedPing, true);
+  assert.equal(room.gameState.pendingHint, true);
+  room = applyGameCommand(room, 'host-1', 'game.choose-difficulty', { difficulty: 2 }, { random: () => 0 });
+  assert.ok(room.gameState.question.hint);
+  assert.equal(room.gameState.pendingHint, false);
+  assert.throws(() => applyGameCommand(room, 'host-1', 'game.ping'), { code: 'ROLE_USED' });
+});
+
 test('co-op healing is rejected after the active player rolls', () => {
   let room = createRoomState({ code: 'ABC234', mode: 'coop', capacity: 2, host });
   room = joinRoom(room, { playerId: 'p2', resumeToken: 'p2-secret', name: 'Bia', colorIndex: 1 }).room;

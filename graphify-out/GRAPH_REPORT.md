@@ -1,7 +1,7 @@
 # Graph Report - cyberrota  (2026-11-14)
 
 ## Corpus Check
-- 55 files · ~51,279 words
+- 55 files · ~53,163 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 21 file(s) not represented in the graph (top: .pptx 12, .ndjson 5, (none) 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `04f0f832`
+- Built from commit: `1f8f0549`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -152,7 +152,7 @@ Nodes (4): Objetivo, Pódio multiplayer — SDD, Regras, TDD
 Cohesion: 0.22
 Nodes (8): Auditoria dos fluxos de jogo — inventário SDD/TDD, Cobertura já presente (não é garantia de E2E), Divergências nas especificações resolvidas, Estado, Fila de investigação para fechar o inventário, Objetivo e sequência, Resultado da primeira regressão, Superfícies analisadas
 
-### Community 25 - "room-do.test.mjs"
+### Community 23 - "room-do.test.mjs"
 Cohesion: 0.20
 Nodes (3): deck, MemoryState, MemoryStorage
 
@@ -166,7 +166,7 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Should `README.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
-- **Why does `RoomDurableObject` connect `RoomDurableObject` to `room-do.test.mjs`, `index.mjs`, `rooms.mjs`?**
+- **Why does `RoomDurableObject` connect `RoomDurableObject` to `index.mjs`, `rooms.mjs`, `room-do.test.mjs`?**
   _High betweenness centrality (0.018) - this node is a cross-community bridge._
 - **Should `Plano de execução — SDD/TDD` be split into smaller, more focused modules?**
   _Cohesion score 0.06439393939393939 - nodes in this community are weakly interconnected._

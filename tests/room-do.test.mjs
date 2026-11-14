@@ -113,6 +113,31 @@ test('co-op role commands update the same shared question snapshot delivered to 
   assert.equal(visitorSnapshot.gameState.players.some((player) => player.playerId === visitor.body.player.playerId), true);
 });
 
+test('online co-op Ping is authoritative and its hint reaches every room snapshot', async () => {
+  const state = new MemoryState();
+  const room = new RoomDurableObject(state, {});
+  await send(room, '/initialize', { method: 'POST', body: {
+    code: 'ABC234', mode: 'coop', capacity: 2, config: { deck: [{ ...deck[0], hint: 'Dica da rede' }] },
+    host: { playerId: 'host', resumeToken: 'host-secret', name: 'Ana', colorIndex: 0 },
+  } });
+  const visitor = await send(room, '/join', { method: 'POST', body: { name: 'Bia', colorIndex: 1 } });
+  let visitorSnapshot;
+  state.sockets.push({ send(message) { visitorSnapshot = JSON.parse(message).snapshot; } });
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'room.start' } });
+  const stored = await state.storage.get('room');
+  stored.gameState.players[0].score = 1;
+  await state.storage.put('room', stored);
+  await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.roll' } });
+  const pinged = await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.ping' } });
+
+  assert.equal(pinged.body.snapshot.gameState.players[0].score, 0);
+  assert.equal(pinged.body.snapshot.gameState.players[0].usedPing, true);
+  assert.equal(visitorSnapshot.gameState.players[0].usedPing, true);
+  const question = await send(room, '/command', { method: 'POST', body: { resumeToken: 'host-secret', action: 'game.choose-difficulty', payload: { difficulty: 2 } } });
+  assert.equal(question.body.snapshot.gameState.question.hint, 'Dica da rede');
+  assert.equal(visitor.body.player.playerId, question.body.snapshot.players[1].playerId);
+});
+
 test('an expired turn broadcasts who passed their turn to every room client', async () => {
   const state = new MemoryState();
   const room = new RoomDurableObject(state, {});

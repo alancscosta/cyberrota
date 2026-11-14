@@ -4,7 +4,7 @@
   "2": "renderCoopVictory",
   "3": "render",
   "4": "app.js",
-  "5": "difficultyName",
+  "5": "esc",
   "6": "room-client.js",
   "7": "RoomClient",
   "8": "renderBoardPawnAvatar",
@@ -15,6 +15,5 @@
   "13": "race-mode.js",
   "14": "renderBoardPawnAvatar",
   "15": "home-motion.js",
-  "16": "renderGame",
-  "17": "renderOnlineSnapshot"
+  "16": "renderGame"
 }

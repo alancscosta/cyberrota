@@ -58,9 +58,13 @@ Resolver estas divergências antes de declarar o SDD fechado; atualizar as espec
 - Identificar comportamentos de jogo importantes sem teste direto e acrescentar testes antes de alterar a implementação.
 - Relógio atualizado conforme a regra revisada pelo usuário; testes cobrem 20 segundos, aviso final e broadcast do nome após timeout.
 
+| GF-13 | Defenda a Rede online — tela de dificuldade após o dado | O servidor avançava corretamente para choose-difficulty, enquanto a UI lia game.pending.theme e game.currentPlayerData.usedPing, exclusivos do estado local. | Exceção de theme interrompia a renderização; o próximo clique enviava outro game.roll e recebia HTTP 400 por fase inválida. | Renderer usa tema do snapshot, dados de jogador seguros e teste de contrato; Worker DO testa o ciclo online de Ping/dica. |
+| GF-14 | Salas online — WebSocket no domínio Vercel | O rewrite de API HTTP do Vercel não conclui o upgrade WebSocket para o Worker; conexão direta ao hostname do Worker abre o socket. | Clientes repetiam falhas de socket e dependiam somente do polling. | Testar URL de produção/local e manter polling de recuperação; verificar handshake sem credenciais inválidas. |
+| GF-15 | COOP online — aviso de turno por participante | Um aviso lateral indicava o turno de outra pessoa e não entregava o aviso central esperado em cada tela. | A pessoa ativa e observadores viam semântica/posição inadequadas. | Testar aviso central uma vez por turno: ativa vê “SUA VEZ!!!”, demais “VEZ DE FULANO”. |
+
 ## Estado
 
-Auditoria atualizada: GF-01 a GF-12 estão cobertos por implementação/testes, incluindo rejeição de snapshots obsoletos e recuperação após erro no COOP, regras de erro no 3v3, sequência entre os dois jogadores e lobby modal. GF-07 usa harness de WebSocket do Durable Object; não houve browser real de duas sessões nesta verificação. Regressão: 147 testes passaram e o build de produção concluiu.
+Auditoria atualizada: GF-01 a GF-15 estão cobertos por implementação/testes, incluindo rejeição de snapshots obsoletos e recuperação após erro no COOP, regras de erro no 3v3, sequência entre os dois jogadores e lobby modal. GF-07 usa harness de WebSocket do Durable Object; não houve browser real de duas sessões nesta verificação. Regressão final: 152 testes passaram e o build de produção concluiu. Wrangler dry-run confirmou o bundle, D1, Durable Object e Assets.
 
 ## Resultado da primeira regressão
 

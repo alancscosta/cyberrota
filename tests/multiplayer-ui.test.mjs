@@ -41,7 +41,7 @@ test('lobby host can rotate the room code and choose characters with pawn icons'
 test('room client exports the API consumed by the multiplayer controls module', async () => {
   const roomClient = await readFile(new URL('../dist/room-client.js', import.meta.url), 'utf8');
   const controls = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
-  assert.match(controls, /import\s*\{[^}]*\bcanReuseActiveRoom\b[^}]*\}\s*from\s*['"]\.\/room-client\.js\?v=7['"]/);
+  assert.match(controls, /import\s*\{[^}]*\bcanReuseActiveRoom\b[^}]*\}\s*from\s*['"]\.\/room-client\.js\?v=8['"]/);
   assert.match(roomClient, /export\s*\{[^}]*\bRoomClient\b[^}]*\bcanReuseActiveRoom\b[^}]*\}/s);
 });
 
@@ -93,14 +93,14 @@ test('a newly created room opens its lobby over the create/join screen and closi
 test('the deployed room, game-core, and lobby style URLs load the updated versions together', async () => {
   const html = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
   assert.match(html, /game-core\.js\?v=18/);
-  assert.match(html, /room-client\.js\?v=7/);
-  assert.match(html, /multiplayer-ui\.js\?v=7/);
+  assert.match(html, /room-client\.js\?v=8/);
+  assert.match(html, /multiplayer-ui\.js\?v=8/);
   assert.match(html, /rooms\.css\?v=3/);
 });
 
 test('a room opened from a saved link keeps rendering websocket snapshots after resuming', async () => {
   const ui = await readFile(new URL('../dist/multiplayer-ui.js', import.meta.url), 'utf8');
-  assert.match(ui, /from '\.\/room-client\.js\?v=7'/);
+  assert.match(ui, /from '\.\/room-client\.js\?v=8'/);
   assert.match(ui, /new RoomClient\(\{\s*code: initialCode,\s*onEvent: \(\) => renderActive\(root, saved\)\s*\}\)/);
   assert.match(ui, /canAutoResumeRoom\(current\.snapshot, initialMode\)/);
   assert.match(ui, /saved\.request\(`\/api\/rooms\/\$\{encodeURIComponent\(initialCode\)\}`\)/);
@@ -114,6 +114,11 @@ test('online matches reuse the original game renderer and send its controls to t
   assert.match(app, /game\.answer/);
   assert.match(app, /TURN_WARNING_SECONDS/);
   assert.match(app, /function renderOnlineTurnBanner\(/);
+  assert.match(app, /online-turn-announcement/);
+  assert.match(app, /SUA VEZ!!!/);
+  assert.match(app, /VEZ DE \$\{esc\(cp\.name\)\}/);
+  assert.match(app, /game\.currentPlayerId===game\.localPlayerId\?'SUA VEZ':'VEZ DE '\+esc\(cp\.name\)/);
+  assert.match(app, /announcedTurnKey/);
   const raceMode = await readFile(new URL('../dist/race-mode.js', import.meta.url), 'utf8');
   assert.match(raceMode, /VEZ DE \$\{ui\.esc\(player\)\}/);
   assert.match(app, /game\.turnClock=onlineRendererState\.clock/);
@@ -127,6 +132,22 @@ test('online matches reuse the original game renderer and send its controls to t
   assert.match(app, /rankPodium/);
   assert.match(source, /CyberrotaOnlineRenderer\.render/);
   assert.doesNotMatch(source, /online-turn-card|function gameMarkup/);
+});
+
+test('Defenda a Rede online renders the difficulty phase without local-only fields and sends Ping to the server', async () => {
+  const app = await readFile(new URL('../dist/app.js', import.meta.url), 'utf8');
+  assert.ok(app.includes('game.pending?.theme||game.attackTheme'), 'the online attack theme is the difficulty theme when no local pending event exists');
+  assert.ok(app.includes("ping:'game.ping'"), 'Ping is an authoritative room action');
+  assert.ok(app.includes('const active=currentPlayer();const pingDisabled=active?.usedPing'), 'online Ping reads the active roster entry safely');
+  assert.ok(app.includes('...stats,...player'), 'the online renderer carries authoritative player abilities and scores into the game UI');
+  assert.ok(app.includes('[data-action=\"ping\"]'), 'Ping is disabled for players who are not active');
+  assert.doesNotMatch(app, /game\.currentPlayerData\.usedPing/);
+});
+
+test('the online turn announcement uses the centered full-screen treatment', async () => {
+  const styles = await readFile(new URL('../dist/hacker-visual.css', import.meta.url), 'utf8');
+  assert.match(styles, /body\.in-game \.online-turn-announcement\s*\{[^}]*position:\s*fixed;[^}]*inset:\s*0;[^}]*place-content:\s*center/s);
+  assert.match(styles, /body\.in-game \.online-turn-announcement strong\s*\{[^}]*font:\s*900 clamp\(/s);
 });
 
 test('finished online rooms reuse the original 3D podium and room actions', async () => {

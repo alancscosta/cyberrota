@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as roomClient from '../dist/room-client.js';
-const { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, roomUrlWithoutCode, canReuseActiveRoom, canAutoResumeRoom } = roomClient;
+const { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, roomUrlWithoutCode, roomWebSocketUrl, canReuseActiveRoom, canAutoResumeRoom } = roomClient;
 
 test('lobby color options hide characters selected by other people', () => {
   const room = { players: [{ playerId: 'a', colorIndex: 0 }, { playerId: 'b', colorIndex: 1 }] };
@@ -19,6 +19,12 @@ test('share link carries the room code in the URL while preserving existing para
 
 test('leaving a room removes only its code from the current URL', () => {
   assert.equal(roomUrlWithoutCode('https://game.example/play?sala=ABC234&from=friend#board'), 'https://game.example/play?from=friend#board');
+});
+
+test('production WebSockets connect directly to the room Worker while local development stays same-origin', () => {
+  assert.equal(roomWebSocketUrl('ABC234', '', 'https://cyberrota.vercel.app'), 'wss://cyberrota.cyberrota.workers.dev/api/rooms/ABC234/ws');
+  assert.equal(roomWebSocketUrl('ABC234', '', 'https://cyberrota-git-fix.vercel.app'), 'wss://cyberrota.cyberrota.workers.dev/api/rooms/ABC234/ws');
+  assert.equal(roomWebSocketUrl('ABC234', '', 'http://localhost:5173'), 'ws://localhost:5173/api/rooms/ABC234/ws');
 });
 
 test('a different mode or a finished room cannot hijack the newly opened mode picker', () => {

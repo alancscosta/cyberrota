@@ -39,6 +39,15 @@ function roomApiBase(code, base = '') {
   return `${base}/api/rooms${code ? `/${encodeURIComponent(code)}` : ''}`;
 }
 
+function roomWebSocketUrl(code, base = '', pageUrl = globalThis.location?.href || 'http://localhost') {
+  const url = new URL(`${roomApiBase(code, base)}/ws`, pageUrl);
+  if (url.hostname === 'cyberrota.vercel.app' || url.hostname.endsWith('.vercel.app')) {
+    url.hostname = 'cyberrota.cyberrota.workers.dev';
+  }
+  url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+  return url.toString();
+}
+
 function credentialsKey(code) {
   return `cyberrota-room-${String(code).toUpperCase()}`;
 }
@@ -168,8 +177,7 @@ class RoomClient extends EventTarget {
     if (!globalThis.WebSocket) return null;
     const saved = this.player?.resumeToken ? this.player : this.savedPlayer();
     if (!saved?.resumeToken) return null;
-    const url = new URL(`${roomApiBase(this.code, this.apiBase)}/ws`, globalThis.location?.href || 'http://localhost');
-    url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+    const url = roomWebSocketUrl(this.code, this.apiBase);
     const socket = new WebSocket(url);
     this.socket = socket;
     socket.addEventListener('open', () => {
@@ -396,4 +404,4 @@ const api = {
 };
 
 if (typeof window !== 'undefined') window.RoomClient = api;
-export { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, roomUrlWithoutCode, canReuseActiveRoom, canAutoResumeRoom, renderLobby };
+export { RoomClient, availableRoomColors, needsEarlyStartConfirmation, roomShareUrl, roomUrlWithoutCode, roomWebSocketUrl, canReuseActiveRoom, canAutoResumeRoom, renderLobby };

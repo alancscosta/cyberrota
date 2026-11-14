@@ -129,6 +129,7 @@ function makeGameState(room, { random = Math.random, now = Date.now() } = {}) {
     wrongAnswers: 0,
     correctByDifficulty: { easy: 0, medium: 0, hard: 0 },
     usedRoles: [],
+    usedPing: false,
   }));
   const game = {
     mode: room.mode,
@@ -613,6 +614,16 @@ export function applyGameCommand(roomState, actorPlayerId, action, payload = {},
       const healed = Core.useCoopHealingNode(game.coop, payload.nodeId);
       if (healed === game.coop) throw roomError('INVALID_HEALING_NODE', 'Esse nó não pode ser usado agora.');
       game.coop = healed;
+      game.lastActorId = actor.playerId;
+    } else if (action === 'game.ping') {
+      if (game.mode !== 'coop') throw roomError('INVALID_GAME_MODE', 'O Ping só está disponível em Defenda a Rede.');
+      const player = game.players.find((entry) => entry.playerId === actor.playerId);
+      if (!player || player.usedPing) throw roomError('ROLE_USED', 'O Ping já foi usado nesta partida.');
+      if (game.phase !== 'choose-difficulty') throw roomError('INVALID_GAME_PHASE', 'O Ping só pode ser usado antes de escolher a dificuldade.');
+      if (Number(player.score) < 1) throw roomError('PING_NO_POINTS', 'É preciso ter 1 ponto para pedir uma dica.');
+      player.score -= 1;
+      player.usedPing = true;
+      game.pendingHint = true;
       game.lastActorId = actor.playerId;
     } else if (action === 'game.role') {
       if (game.mode !== 'coop') throw roomError('INVALID_GAME_MODE', 'Os papéis só estão disponíveis em Defenda a Rede.');
